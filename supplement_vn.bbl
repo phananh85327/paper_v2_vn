@@ -1,0 +1,110 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{5}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter does
+%%% not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+\makeatletter
+\@ifundefined{NAT@parse@date}{}{\let\NAT@parse@date@orig\NAT@parse@date}
+\@ifundefined{NAT@parse@date}{}{\def\NAT@parse@date#1#2#3#4#5#6@@{\NAT@parse@date@orig#1#2#3#4#5#6@@\def\NAT@tempyear{0000}\def\NAT@tempexlab{{?}}\ifx\NAT@year\NAT@tempyear\ifx\NAT@exlab\NAT@tempexlab\def\NAT@date{[n.\,d.]}\else\edef\NAT@date{[n.\,d.]\NAT@exlab}\fi\fi}}
+\makeatother
+
+\bibitem[Dong et~al\mbox{.}(2017)]%
+        {dong2017metapath2vec}
+\bibfield{author}{\bibinfo{person}{Yuxiao Dong}, \bibinfo{person}{Nitesh~V.
+  Chawla}, {and} \bibinfo{person}{Ananthram Swami}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{metapath2vec: Scalable Representation Learning for
+  Heterogeneous Networks}. In \bibinfo{booktitle}{\emph{Proceedings of the 23rd
+  ACM SIGKDD International Conference on Knowledge Discovery and Data Mining
+  (KDD)}}. \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{135--144}.
+\newblock
+\href{https://doi.org/10.1145/3097983.3098036}{doi:\nolinkurl{10.1145/3097983.3098036}}
+
+
+\bibitem[Krichene and Rendle(2022)]%
+        {krichene2022sampled}
+\bibfield{author}{\bibinfo{person}{Walid Krichene} {and}
+  \bibinfo{person}{Steffen Rendle}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{On Sampled Metrics for Item Recommendation}.
+\newblock \bibinfo{journal}{\emph{Commun. ACM}} \bibinfo{volume}{65},
+  \bibinfo{number}{7} (\bibinfo{year}{2022}), \bibinfo{pages}{75--83}.
+\newblock
+\href{https://doi.org/10.1145/3535335}{doi:\nolinkurl{10.1145/3535335}}
+
+
+\bibitem[Li et~al\mbox{.}(2024)]%
+        {li2024longrange}
+\bibfield{author}{\bibinfo{person}{Chao Li}, \bibinfo{person}{Zijie Guo},
+  \bibinfo{person}{Qiuting He}, {and} \bibinfo{person}{Kun He}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Long-range Meta-path Search on Large-scale
+  Heterogeneous Graphs}. In \bibinfo{booktitle}{\emph{Advances in Neural
+  Information Processing Systems (NeurIPS)}}, Vol.~\bibinfo{volume}{37}.
+  \bibinfo{publisher}{Curran Associates, Inc.}, \bibinfo{address}{Red Hook, NY,
+  USA}.
+\newblock
+\href{https://doi.org/10.52202/079017-1404}{doi:\nolinkurl{10.52202/079017-1404}}
+
+
+\bibitem[McAuley et~al\mbox{.}(2015)]%
+        {mcauley2015image}
+\bibfield{author}{\bibinfo{person}{Julian McAuley},
+  \bibinfo{person}{Christopher Targett}, \bibinfo{person}{Qinfeng Shi}, {and}
+  \bibinfo{person}{Anton van~den Hengel}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Image-Based Recommendations on Styles and
+  Substitutes}. In \bibinfo{booktitle}{\emph{Proceedings of the 38th
+  International ACM SIGIR Conference on Research and Development in Information
+  Retrieval (SIGIR)}}. \bibinfo{publisher}{Association for Computing
+  Machinery}, \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{43--52}.
+\newblock
+\href{https://doi.org/10.1145/2766462.2767755}{doi:\nolinkurl{10.1145/2766462.2767755}}
+
+
+\bibitem[Wang et~al\mbox{.}(2019)]%
+        {wang2019heterogeneous}
+\bibfield{author}{\bibinfo{person}{Xiao Wang}, \bibinfo{person}{Houye Ji},
+  \bibinfo{person}{Chuan Shi}, \bibinfo{person}{Bai Wang},
+  \bibinfo{person}{Peng Cui}, \bibinfo{person}{Philip~S. Yu}, {and}
+  \bibinfo{person}{Yanfang Ye}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Heterogeneous Graph Attention Network}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2019 World Wide Web Conference
+  (WWW)}}. \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{2022--2032}.
+\newblock
+\href{https://doi.org/10.1145/3308558.3313562}{doi:\nolinkurl{10.1145/3308558.3313562}}
+
+
+\end{thebibliography}

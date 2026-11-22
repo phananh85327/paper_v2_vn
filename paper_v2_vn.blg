@@ -1,0 +1,67 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper_v2_vn.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: references.bib
+Database file #2: notes_extra.bib
+Database file #3: reading_list.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--page numbers missing in both pages and numpages fields in ji2023leakage
+Warning--page numbers missing in both pages and numpages fields in li2024longrange
+Warning--empty address in li2019random
+Warning--empty address in liu2019darts
+Warning--page numbers missing in both pages and numpages fields in liu2019darts
+Warning--empty address in velickovic2018graph
+Warning--page numbers missing in both pages and numpages fields in velickovic2018graph
+Warning--empty address in yu2020evaluating
+Warning--page numbers missing in both pages and numpages fields in yu2020evaluating
+You've used 25 entries,
+            6335 wiz_defined-function locations,
+            1700 strings with 24884 characters,
+and the built_in function-call counts, 31321 in all, are:
+= -- 3744
+> -- 1105
+< -- 0
++ -- 382
+- -- 367
+* -- 2382
+:= -- 2978
+add.period$ -- 130
+call.type$ -- 25
+change.case$ -- 213
+chr.to.int$ -- 25
+cite$ -- 34
+duplicate$ -- 2836
+empty$ -- 1990
+format.name$ -- 463
+if$ -- 7547
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 113
+newline$ -- 260
+num.names$ -- 175
+pop$ -- 1132
+preamble$ -- 1
+purify$ -- 413
+quote$ -- 0
+skip$ -- 1028
+stack$ -- 0
+substring$ -- 2321
+swap$ -- 293
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 652
+warning$ -- 9
+while$ -- 140
+width$ -- 0
+write$ -- 560
+(There were 9 warnings)
