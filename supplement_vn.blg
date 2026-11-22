@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: supplement_vn.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: references.bib
+Database file #2: notes_extra.bib
+Database file #3: reading_list.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--page numbers missing in both pages and numpages fields in li2024longrange
+You've used 5 entries,
+            6335 wiz_defined-function locations,
+            1570 strings with 19925 characters,
+and the built_in function-call counts, 6244 in all, are:
+= -- 680
+> -- 203
+< -- 0
++ -- 69
+- -- 68
+* -- 470
+:= -- 598
+add.period$ -- 25
+call.type$ -- 5
+change.case$ -- 40
+chr.to.int$ -- 5
+cite$ -- 6
+duplicate$ -- 588
+empty$ -- 412
+format.name$ -- 88
+if$ -- 1454
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 24
+newline$ -- 84
+num.names$ -- 35
+pop$ -- 234
+preamble$ -- 1
+purify$ -- 80
+quote$ -- 0
+skip$ -- 215
+stack$ -- 0
+substring$ -- 481
+swap$ -- 62
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 136
+warning$ -- 1
+while$ -- 31
+width$ -- 0
+write$ -- 146
+(There was 1 warning)
