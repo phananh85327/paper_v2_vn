@@ -1,0 +1,118 @@
+% notes_extra.bib -- works the notes cite that are not in references.bib:
+% the dataset page, the code the project builds on, and the methods and caveats the notes name.
+% Load it after references.bib: \bibliography{references,notes_extra}. Move an entry into
+% references.bib when the final report or the paper cites it.
+% Entries added for the notes were checked by web search on 2 November 2026; fields not confirmed
+% are marked CHECK.
+% rendle2009bpr moved to references.bib on 11 November 2026, when the final report came to cite it.
+
+% FIXED: the proposal, copying a misprint on SNAP's page, lists the third author as
+% "Bernardo A. Adamic". The paper SNAP cites (leskovec2007viral) names Bernardo A. Huberman.
+@misc{snap_amazon_meta,
+  author    = {Jure Leskovec and Lada A. Adamic and Bernardo A. Huberman},
+  title     = {Amazon product co-purchasing network metadata},
+  publisher = {Stanford Network Analysis Project (SNAP)},
+  year      = {2006},
+  url       = {https://snap.stanford.edu/data/amazon-meta.html},
+  note      = {Dataset collected summer 2006. Accessed: 2026-02-13}
+}
+
+@misc{lmsps_code,
+  title        = {{LMSPS}: official code},
+  author       = {Li, Chao and Guo, Zijie and He, Qiuting and He, Kun},
+  howpublished = {\url{https://github.com/JHL-HUST/LMSPS}},
+  year         = {2024},
+  note         = {Commit 1a1e2e8, 4 December 2024}
+}
+
+% Checked 2026-11-02: the repository's README calls it "the source code of Heterogeneous
+% Graph Attention Network (WWW-2019)", and models/gat.py defines HeteGAT_multi, which the
+% HAN repository's model_han.py follows for node-level attention. The account name Jhy1993
+% appears to be the paper's second author (Houye Ji): check before citing a personal name.
+@misc{han_code,
+  title        = {{HAN}: source code of {Heterogeneous Graph Attention Network} ({WWW} 2019)},
+  author       = {{Jhy1993}},
+  howpublished = {\url{https://github.com/Jhy1993/HAN}},
+  year         = {2020},
+  note         = {TensorFlow; commit 71bac29, 6 May 2020}
+}
+
+% Checked 2026-11-02 (AAAI's proceedings page, via web search).
+@inproceedings{yang2023sehgnn,
+  title     = {Simple and Efficient Heterogeneous Graph Neural Network},
+  author    = {Yang, Xiaocheng and Yan, Mingyu and Pan, Shirui and Ye, Xiaochun and Fan, Dongrui},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume    = {37},
+  pages     = {10816--10824},
+  note      = {Issue 9},
+  year      = {2023},
+  doi       = {10.1609/aaai.v37i9.26283}
+}
+
+% Checked 2026-11-02 (web search): authors, venue and DOI. Pages 1150--1160 from the ACM published
+% version (uploaded 6 November 2026), which prints them.
+@inproceedings{lv2021hgb,
+  title     = {Are We Really Making Much Progress? {R}evisiting, Benchmarking, and Refining Heterogeneous Graph Neural Networks},
+  author    = {Lv, Qingsong and Ding, Ming and Liu, Qiang and Chen, Yuxiang and Feng, Wenzheng and He, Siming and Zhou, Chang and Jiang, Jianguo and Dong, Yuxiao and Tang, Jie},
+  booktitle = {Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD)},
+  pages     = {1150--1160},
+  year      = {2021},
+  doi       = {10.1145/3447548.3467350},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% Checked 2026-11-02 (web search): ICLR 2017, Toulon.
+@inproceedings{jang2017gumbel,
+  title     = {Categorical Reparameterization with {G}umbel-Softmax},
+  author    = {Jang, Eric and Gu, Shixiang and Poole, Ben},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2017},
+  url       = {https://openreview.net/forum?id=rkE3y85ee}
+}
+
+% Checked 2026-11-02 (web search): authors and venue (NeurIPS 2020, the 34th conference,
+% hence volume 33). CHECK: the pages (not found).
+@inproceedings{hu2020ogb,
+  title     = {Open Graph Benchmark: Datasets for Machine Learning on Graphs},
+  author    = {Hu, Weihua and Fey, Matthias and Zitnik, Marinka and Dong, Yuxiao and Ren, Hongyu and Liu, Bowen and Catasta, Michele and Leskovec, Jure},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {33},
+  year      = {2020}
+}
+
+% Checked 2026-11-02 (web search): DOI from doi.org; pages from a third-party listing (CHECK
+% them in the ACM Digital Library). Its finding, that sampled metrics need not keep the
+% order of two recommenders, even in expectation, is what the notes cite it for.
+@inproceedings{krichene2020sampled,
+  title     = {On Sampled Metrics for Item Recommendation},
+  author    = {Krichene, Walid and Rendle, Steffen},
+  booktitle = {Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)},
+  pages     = {1748--1757},
+  year      = {2020},
+  doi       = {10.1145/3394486.3403226}
+}
+
+@inproceedings{mcauley2015image,
+  author    = {Julian McAuley and Christopher Targett and Qinfeng Shi and Anton van den Hengel},
+  title     = {Image-Based Recommendations on Styles and Substitutes},
+  booktitle = {Proceedings of the 38th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR)},
+  pages     = {43--52},
+  year      = {2015},
+  doi       = {10.1145/2766462.2767755},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% Read 2026-11-05 (the uploaded CACM version). Its first page says the original version appeared
+% at KDD 2020 (krichene2020sampled, which the notes cite).
+@article{krichene2022sampled,
+  title   = {On Sampled Metrics for Item Recommendation},
+  author  = {Krichene, Walid and Rendle, Steffen},
+  journal = {Communications of the {ACM}},
+  volume  = {65},
+  number  = {7},
+  pages   = {75--83},
+  year    = {2022},
+  doi     = {10.1145/3535335}
+}

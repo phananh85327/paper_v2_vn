@@ -1,0 +1,194 @@
+% references.bib -- the works the final report cites: the 12 papers of the thesis proposal's
+% reference list, and Rendle et al. (BPR), added on 11 November 2026 because the report describes
+% the BPR loss. The notes and the final report share this file. Other works the notes cite are in
+% notes_extra.bib; candidate references for the paper are in reading_list.bib (paper folder).
+% Add an entry here only when the report or the paper cites it.
+%
+% FIXED comments record fields corrected against the papers or DBLP-type records.
+
+% ---------------------------------------------------------------------------
+% Dataset
+% ---------------------------------------------------------------------------
+
+% Verified against the paper itself (39 pages). SNAP asks users of amazon-meta to cite it;
+% its Section 3.1 describes how the data were collected.
+@article{leskovec2007viral,
+  title   = {The Dynamics of Viral Marketing},
+  author  = {Leskovec, Jure and Adamic, Lada A. and Huberman, Bernardo A.},
+  journal = {ACM Transactions on the Web},
+  volume  = {1},
+  number  = {1},
+  note    = {Article 5},
+  year    = {2007},
+  doi     = {10.1145/1232722.1232727},
+  numpages = {39}
+}
+
+% ---------------------------------------------------------------------------
+% Models
+% ---------------------------------------------------------------------------
+
+% Checked against the paper (2.pdf in the HAN repository): authors, venue, pages 2022--2032.
+% Formatting made uniform on 6 November 2026 (no places or dates; DOIs in doi fields).
+@inproceedings{wang2019heterogeneous,
+  author    = {Xiao Wang and Houye Ji and Chuan Shi and Bai Wang and Peng Cui and Philip S. Yu and Yanfang Ye},
+  title     = {Heterogeneous Graph Attention Network},
+  booktitle = {Proceedings of the 2019 World Wide Web Conference (WWW)},
+  year      = {2019},
+  pages     = {2022--2032},
+  doi       = {10.1145/3308558.3313562},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% Checked 2026-11-03 against the paper: authors, venue, pages (its page 4 is numbered 138).
+@inproceedings{dong2017metapath2vec,
+  author    = {Yuxiao Dong and Nitesh V. Chawla and Ananthram Swami},
+  title     = {metapath2vec: Scalable Representation Learning for Heterogeneous Networks},
+  booktitle = {Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD)},
+  year      = {2017},
+  pages     = {135--144},
+  doi       = {10.1145/3097983.3098036},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% A standard reference (ICLR 2018), cited for standard points; not re-read for these notes.
+@inproceedings{velickovic2018graph,
+  author    = {Petar Veli\v{c}kovi\'{c} and Guillem Cucurull and Arantxa Casanova and Adriana Romero and Pietro Li\`{o} and Yoshua Bengio},
+  title     = {Graph Attention Networks},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+  note      = {arXiv:1710.10903},
+  url       = {https://openreview.net/forum?id=rJXMpikCZ},
+  publisher = {OpenReview.net}
+}
+
+% FIXED 2026-11-02 (the arXiv listing, found by web search): an arXiv preprint, with no
+% published venue found. The first author is Jinghan Shi, not Jianan. Checked against the paper
+% (8 pages): its footer is the ICML 2020 template's default text ("Proceedings of the 37th
+% International Conference on Machine Learning, Vienna, Austria, PMLR 108"), which is where the
+% proposal's venue came from; it is not a publication record.
+@misc{shi2020hgrec,
+  author       = {Jinghan Shi and Houye Ji and Chuan Shi and Xiao Wang and Zhiqiang Zhang and Jun Zhou},
+  title        = {Heterogeneous Graph Neural Network for Recommendation},
+  howpublished = {arXiv preprint arXiv:2009.00799},
+  year         = {2020},
+  doi          = {10.48550/arXiv.2009.00799}
+}
+
+% Checked 2026-11-03 against the paper: authors, venue, DOI.
+@inproceedings{hu2018leveraging,
+  author    = {Binbin Hu and Chuan Shi and Wayne Xin Zhao and Philip S. Yu},
+  title     = {Leveraging Meta-path based Context for Top-{N} Recommendation with A Neural Co-Attention Model},
+  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining (KDD)},
+  year      = {2018},
+  pages     = {1531--1540},
+  doi       = {10.1145/3219819.3219965},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% FIXED 2026-11-03, checked against the paper itself: the authors are Nan Mu and Daren Zha (the
+% proposal had Ning Mu and Ding Zha), the pages 1105--1110 (6 pages, the last numbered 1110; the
+% proposal had 1102--1107), and the DOI was missing. The title says "Recommendation System"; the
+% abstract calls the model "...Top-N Recommender System (FHRec)".
+@inproceedings{mu2021fhrec,
+  author    = {Nan Mu and Daren Zha},
+  title     = {First-order and High-order Information Fusion over Heterogeneous Information Network for Top-{N} Recommendation System},
+  booktitle = {Proceedings of the 24th IEEE International Conference on Computer Supported Cooperative Work in Design (CSCWD)},
+  year      = {2021},
+  pages     = {1105--1110},
+  doi       = {10.1109/CSCWD49262.2021.9437779},
+  publisher = {IEEE},
+  address   = {Piscataway, NJ, USA}
+}
+
+% FIXED 2026-11-03 (British Library catalogue and another record, found by web search): the
+% proposal had five wrong first names (Shuai, Huaijun, Ying, Yi, Le). Checked against the paper:
+% authors, journal, volume 174, article 114601, DOI.
+@article{yan2021attention,
+  author  = {Surong Yan and Haosen Wang and Yixiao Li and Yuan Zheng and Long Han},
+  title   = {Attention-aware metapath-based network embedding for {HIN} based recommendation},
+  journal = {Expert Systems With Applications},
+  volume  = {174},
+  pages   = {114601},
+  year    = {2021},
+  doi     = {10.1016/j.eswa.2021.114601}
+}
+
+% ---------------------------------------------------------------------------
+% Meta-path discovery
+% ---------------------------------------------------------------------------
+
+% FIXED 2026-11-02 (the NeurIPS 2024 paper itself): four authors; the proposal's entry added
+% a fifth, "Hao Xu".
+% The DOI is from the NeurIPS proceedings page (found by web search, 2 November 2026).
+@inproceedings{li2024longrange,
+  author    = {Chao Li and Zijie Guo and Qiuting He and Kun He},
+  title     = {Long-range Meta-path Search on Large-scale Heterogeneous Graphs},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {37},
+  year      = {2024},
+  doi       = {10.52202/079017-1404},
+  url       = {https://proceedings.neurips.cc/paper_files/paper/2024/file/4e392aa9bc70ed731d3c9c32810f92fb-Paper-Conference.pdf},
+  publisher = {Curran Associates, Inc.},
+  address   = {Red Hook, NY, USA}
+}
+
+% FIXED 2026-11-02 (DBLP record journals/tkde/ZhuCCDHZ22 and the HKBU record, found by web
+% search). The proposal had Zheng Zhu, Ziniu Huang and Haotian Zhang, issue 8, pages
+% 3799--3813 and the year 2020; the paper appeared online in November 2020, in print in 2022.
+% The key keeps the proposal's name. Authors, title and DOI checked against the paper (the
+% accepted version, printed before it had an issue); the issue, pages and year are DBLP's.
+@article{zhu2020topk,
+  author  = {Zichen Zhu and Tsz Nam Chan and Reynold Cheng and Loc Do and Zhipeng Huang and Haoci Zhang},
+  title   = {Effective and Efficient Discovery of Top-k Meta Paths in Heterogeneous Information Networks},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  volume  = {34},
+  number  = {9},
+  pages   = {4172--4185},
+  year    = {2022},
+  doi     = {10.1109/TKDE.2020.3037218}
+}
+
+% FIXED 2026-11-03 (DBLP record conf/cikm/NingCSHK0HLL022, found by web search): the proposal
+% had "Wenzhuo" and "Jiatong" for Wentao Ning and Jiajun Shen, and pages 1561--1571. Authors,
+% venue and DOI checked against the paper (arXiv v5, the CIKM version; it shows no page numbers).
+@inproceedings{ning2022automatic,
+  author    = {Wentao Ning and Reynold Cheng and Jiajun Shen and Nur Al Hasan Haldar and Ben Kao and Xiao Yan and Nan Huo and Wai Kit Lam and Tian Li and Bo Tang},
+  title     = {Automatic Meta-Path Discovery for Effective Graph-Based Recommendation},
+  booktitle = {Proceedings of the 31st ACM International Conference on Information and Knowledge Management (CIKM)},
+  year      = {2022},
+  pages     = {1563--1572},
+  doi       = {10.1145/3511808.3557244},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA}
+}
+
+% ---------------------------------------------------------------------------
+% Others
+% ---------------------------------------------------------------------------
+
+% Checked 2026-11-02 (web search): ICLR 2019, as the arXiv version states.
+@inproceedings{liu2019darts,
+  title     = {{DARTS}: Differentiable Architecture Search},
+  author    = {Liu, Hanxiao and Simonyan, Karen and Yang, Yiming},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  note      = {arXiv:1806.09055},
+  publisher = {OpenReview.net}
+}
+
+% Moved from notes_extra.bib on 11 November 2026: the search and every model are trained with the
+% BPR loss. Checked against the paper (UAI 2009; arXiv 1205.2618): authors, title, pages 452--461;
+% the PMLR reprint numbers them 460--469.
+@inproceedings{rendle2009bpr,
+  title     = {{BPR}: {B}ayesian Personalized Ranking from Implicit Feedback},
+  author    = {Rendle, Steffen and Freudenthaler, Christoph and Gantner, Zeno and Schmidt-Thieme, Lars},
+  booktitle = {Proceedings of the 25th Conference on Uncertainty in Artificial Intelligence (UAI)},
+  pages     = {452--461},
+  publisher = {AUAI Press},
+  year      = {2009},
+  address   = {Arlington, Virginia, USA}
+}
