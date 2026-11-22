@@ -1,0 +1,71 @@
+% sections/intro.tex -- Section 1 (paper_v2_vn, translated in L4 from paper_v2's
+% sections/intro.tex; terms as in glossary_vn.tex). The claims stay within paper_v2's; every number
+% is \val{} from numbers.tex.
+\section{Giới thiệu}
+\label{sec:intro}
+
+Các hệ thống gợi ý thường biết nhiều hơn việc ai đã mua gì: sản phẩm thuộc về các danh mục, khách
+hàng mua kèm một số sản phẩm với nhau và người dùng nhận xét về chúng. Một đồ thị không đồng nhất
+chứa được mọi quan hệ này và meta-path là một cách phổ biến để khai thác nó:
+\code{PUP}, sản phẩm--người dùng--sản phẩm, nối hai sản phẩm được cùng một người dùng nhận xét.
+HAN \citep{wang2019heterogeneous} biến mỗi meta-path thành một đồ thị và gán trọng số cho các
+meta-path bằng cơ chế chú ý. Nhiều mô hình gợi ý được xây dựng trên meta-path
+\citep{hu2018leveraging,shi2020hgrec,mu2021fhrec,yan2021attention}. Việc chọn meta-path có ảnh
+hưởng: hiệu năng của các mô hình gợi ý dựa trên meta-path
+``\foreignlanguage{english}{highly sensitive to the meta-paths they use}'' (rất nhạy với các meta-path mà chúng sử dụng) \citep{ning2022automatic}.
+
+Các meta-path thường được chọn thủ công, một việc đòi hỏi kiến thức chuyên gia và không dùng lại
+được từ bộ dữ liệu này sang bộ dữ liệu khác \citep[][Phụ lục~D]{han2020genetic,li2024longrange}.
+Hướng phát hiện tự động nhằm đảm nhận việc lựa chọn này (Mục~\ref{sec:related}). LMSPS
+\citep{li2024longrange}, một phương pháp tìm kiếm được thực hiện trên một không gian lớn các
+meta-path ứng viên, cho biết các meta-path nó tìm được nâng Micro-F1 của HAN thêm
+\val{lmsps-t4-gain-min} đến \val{lmsps-t4-gain-max} điểm trên bốn bộ dữ liệu cho bài toán phân loại nút
+\citep[Bảng~4]{li2024longrange}. Liệu chúng có giúp ích cho HAN trong bài toán gợi ý hay không
+thì, theo hiểu biết của chúng tôi, chưa được kiểm chứng và câu trả lời không hiển nhiên, vì ba lý do.
+Thứ nhất, LMSPS đánh giá meta-path bằng mạng riêng mà nó dùng khi tìm kiếm chứ không phải bằng HAN,
+nên những meta-path tốt nhất với mạng đó chưa chắc là tốt nhất với HAN. Thứ hai, trong tìm kiếm kiến trúc mạng nơ-ron, các phương pháp tìm kiếm thường không tốt
+hơn các lựa chọn ngẫu nhiên \citep{li2019random,yu2020evaluating}. Thứ ba, việc tìm kiếm tốn giờ
+GPU, trong khi thiết kế thủ công không cần giờ GPU nào.
+
+Vì vậy, chúng tôi đặt câu hỏi: \emph{so với thiết kế thủ công, tìm kiếm meta-path cho gợi ý
+sản phẩm dựa trên HAN có đáng với chi phí không?} Trên Amazon-Meta \citep{leskovec2007viral},
+chúng tôi so sánh hai cách chọn meta-path cho HAN từ cùng \val{search-cands} ứng viên.
+Cách thứ nhất là thủ công, với các tập được thiết kế với sự hỗ trợ
+của AI theo các nguyên tắc nêu rõ và cố định trước khi có bất kỳ kết quả nào. Cách thứ hai là tìm
+kiếm bằng LMSPS, được điều chỉnh cho bài toán dự đoán liên kết người dùng--sản phẩm và chạy
+\val{search-runs} lần cho mỗi kích thước tập, vì một lần chạy không xếp hạng được các tập tốt nhất
+của nó. Để biết việc chọn meta-path ảnh hưởng đến đâu, chúng tôi dùng các tập chọn ngẫu nhiên từ
+cùng các ứng viên làm đối chứng. Mỗi tập được huấn luyện trên HAN và metapath2vec
+\citep{dong2017metapath2vec} và thử nghiệm trên cùng các cạnh giữ lại. Độ đo chính là Hit@10 lấy
+mẫu, cố định từ trước, còn xếp hạng toàn bộ dùng để kiểm tra. Mô hình phổ biến và một GAT không
+phân biệt kiểu làm mô hình cơ sở.
+
+Trên lược đồ này, câu trả lời tùy thuộc vào bối cảnh, vì kết quả của tìm kiếm khá gần với thiết kế thủ công.
+Theo độ đo đã cố định từ trước, các tập tìm được kém các tập thủ công \val{han-4-hit-relabs}\% và
+\val{han-6-hit-relabs}\% trong HAN với bốn và sáu meta-path (\val{han-4-hit-pt} và \val{han-6-hit-pt})
+và kém \val{mtv-4-hit-relabs}\% và \val{mtv-6-hit-relabs}\% trong metapath2vec. Trong HAN, chúng ngang bằng
+khi xếp hạng toàn bộ, sau khoảng \val{search-total-h}~giờ~GPU tìm kiếm. Vì vậy, thiết kế thủ công là lựa chọn
+tốt hơn khi có chuyên gia làm được việc này trong thời gian ngắn hơn thời gian tìm kiếm, còn tìm kiếm cho
+các tập gần tương đương khi không có chuyên gia. Các tập tìm được thua chủ yếu ở sách và nhạc, những sản phẩm
+mà các meta-path danh mục của chúng không đến được. Đối chứng ngẫu nhiên cho thấy trên lược đồ này việc chọn
+meta-path ít ảnh hưởng: trong HAN, các tập chọn ngẫu nhiên đạt kết quả ít nhất ngang bằng cả hai cách. Ngoài
+ra, GAT vượt cả hai mô hình dùng meta-path. Có hai giới hạn vẫn cần xem xét. Thứ nhất, khi giai đoạn khởi động
+(warm-up) của trọng số meta-path trong HAN ngắn hơn, tập tìm được lại vượt tập thủ công ở sáu meta-path, trong
+một phép kiểm tra chỉ dùng một seed (Mục~\ref{sec:res-sensitivity}). Thứ hai, do lược đồ nhỏ, bộ dữ liệu này
+không kiểm chứng được trường hợp mà tìm kiếm tự động nhắm tới, đó là những lược đồ quá lớn để thiết kế thủ công
+hay chọn ngẫu nhiên.
+
+Các đóng góp của chúng tôi gồm:
+\begin{itemize}
+  \item Một phiên bản Amazon-Meta đã làm sạch cho bài toán dự đoán liên kết, trong đó việc gộp các
+        ấn bản trùng lặp giảm tỷ lệ cạnh thử nghiệm có bản sao trong tập huấn luyện từ
+        \val{before-testleak-pct}\% xuống \val{after-testleak-pct}\% (Mục~\ref{sec:data}).
+  \item LMSPS được điều chỉnh cho bài toán dự đoán liên kết, kèm các biện pháp chống rò rỉ dữ liệu
+        và một cách kết hợp nhiều lần chạy tìm kiếm thành một quyết định
+        (Mục~\ref{sec:method}).
+  \item Một phép so sánh có kiểm soát giữa các tập meta-path tìm được và thủ công trên HAN và
+        metapath2vec, với đối chứng ngẫu nhiên, trong đó các tập và độ đo chính được cố định từ
+        trước (Mục~\ref{sec:setup} và~\ref{sec:results}).
+  \item Một góc nhìn chi phí--hiệu quả về tìm kiếm so với thiết kế thủ công, với bằng chứng ở mức
+        meta-path cho thấy các tập tìm được thua ở đâu (Mục~\ref{sec:results}).
+\end{itemize}

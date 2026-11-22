@@ -1,0 +1,169 @@
+% sections/results.tex -- Section 7 (paper_v2_vn, translated in L6 from paper_v2's
+% sections/results.tex; terms as in glossary_vn.tex). The details that left it in paper_v2 (the
+% paths' ranks, the delta check, the user groups, more paths, the path weights and preferences, HAN
+% against metapath2vec) are in the supplementary document (supplement_vn.tex, N31). A few of their
+% numbers are given here in the text. Every number is \val{} from numbers.tex. Tables: T4
+% (tab:main), T7 (tab:cost); figures: F3 (fig:sets),
+% F4 (fig:weights).
+\section{Kết quả}
+\label{sec:results}
+
+Mọi con số đều là kết quả trên tập thử nghiệm trừ khi có ghi chú khác.
+
+\subsection{Tập tìm được so với tập thủ công}
+\label{sec:res-main}
+
+Theo độ đo đã cố định từ trước, \code{a1} thua tập thủ công cùng kích thước trên cả hai mô hình
+(Bảng~\ref{tab:main}). Trong HAN nó kém M5 \val{han-4-hit-diffabs} (\val{han-4-hit-relabs}\%,
+\val{han-4-hit-pt}) và kém M6 \val{han-6-hit-diffabs} (\val{han-6-hit-relabs}\%,
+\val{han-6-hit-pt}), bằng \val{han-4-hit-sdx} và \val{han-6-hit-sdx} lần độ lệch chuẩn giữa các
+seed (lấy bên lớn hơn). Trong metapath2vec, chênh lệch rộng hơn: \val{mtv-4-hit-diffabs}
+(\val{mtv-4-hit-relabs}\%) và \val{mtv-6-hit-diffabs} (\val{mtv-6-hit-relabs}\%). Khi xếp hạng
+toàn bộ, các tập của HAN ngang bằng nhau (\val{han-4-fhit-pt} và \val{han-6-fhit-pt}). Trong
+metapath2vec, \code{a1} ngang bằng với $M = 4$ meta-path (\val{mtv-4-fhit-pt}) và thua với $M = 6$ (\val{mtv-6-fhit-pt}). Trong
+HAN sự thua kém này cũng đúng với \code{a2} và \code{c} (Hình~\ref{fig:sets}) và ở mọi nhóm người
+dùng (chênh lệch từ \val{han-6-hit-d3-diff} đến \val{han-4-hit-d1-diff}).
+
+\input{tables/t4_main}
+
+\subsection{Đối chứng ngẫu nhiên}
+\label{sec:res-random}
+
+Để biết khoảng cách giữa tìm kiếm và thiết kế thủ công lớn đến đâu so với ảnh hưởng của việc chọn
+meta-path, Hình~\ref{fig:sets} đặt các tập tìm được và các tập thủ công giữa cả 24 tập, cùng với các tập
+chọn ngẫu nhiên làm đối chứng. Trong tám tập của mỗi kích thước được lấy
+từ cùng \val{search-cands} ứng viên, gồm ba tập tìm được và năm tập ngẫu nhiên, HAN xếp các tập
+tìm được ở vị trí \val{han-4-pos-hit} với $M = 4$ meta-path và \val{han-6-pos-hit} với $M = 6$, giống như
+BPR xác thực. Khi xếp hạng toàn bộ, các tập này đứng ở vị trí \val{han-4-pos-fhit} với $M = 4$ và
+\val{han-6-pos-fhit} với $M = 6$. Các khoảng cách này nằm trong nhiễu giữa các seed: tập tìm được tốt
+nhất đạt \val{han-f4c-hit-s1} với $M = 4$ và \val{han-f6a1-hit-s1} với $M = 6$, so với
+\val{han-r4-hit-min} và \val{han-r6-hit-min} của những tập ngẫu nhiên yếu nhất. Vì vậy, các vị trí này cho
+thấy tìm kiếm không vượt được chính các ứng viên của nó, chứ không cho thấy mọi tập ngẫu nhiên đều vượt nó.
+Các tập thủ công đạt kết quả xấp xỉ một tập ngẫu nhiên trung bình: M5 đạt \val{han-m5-hit-mean} so với
+trung bình \val{han-r4-hit-mean} của các tập ngẫu nhiên $M = 4$ meta-path (khoảng
+\val{han-r4-hit-min}--\val{han-r4-hit-max}) và M6 đạt \val{han-m6-hit-mean} so với
+\val{han-r6-hit-mean} (\val{han-r6-hit-min}--\val{han-r6-hit-max}).
+
+\input{figures/f3_sets}
+
+Do đó, việc chọn meta-path ít ảnh hưởng đến HAN: cả \val{han-4-nsets} tập $M = 4$ meta-path chỉ chênh
+nhau trong phạm vi \val{han-4-span} Hit@10, còn cả \val{han-6-nsets} tập $M = 6$ meta-path chênh nhau trong phạm vi
+\val{han-6-span}. Chọn theo xác thực là hiệu quả: trên 24 tập, BPR xác thực và Hit@10 thử nghiệm có
+hệ số tương quan Spearman \val{han-valtest-rho} (\val{han-valfull-rho} với Hit@10 xếp hạng toàn
+bộ). Tập chọn theo xác thực vốn là một tập ngẫu nhiên đạt \val{han-r6d2-hit-s1}, mức mà không tập
+nào khác vượt được theo độ đo đã cố định từ trước. Như vậy, lựa chọn rẻ nhất là chọn ngẫu nhiên vài tập
+rồi giữ tập có điểm xác thực tốt nhất. Trong metapath2vec, so sánh với ngẫu nhiên cho kết quả trái
+chiều: các tập tìm được đứng \val{mtv-4-pos-hit} trong tám tập với $M = 4$ meta-path, trên tập ngẫu nhiên
+trung bình, nhưng \val{mtv-6-pos-hit} với $M = 6$ meta-path, dưới mức đó. Hai mô hình cũng ưa thích các
+tập khác nhau: trên 23 tập có meta-path qua người dùng, giá trị Hit@10 của chúng có hệ số tương
+quan Spearman chỉ \val{han-mtv-rho}.
+
+\subsection{Chi phí so với hiệu quả}
+\label{sec:res-cost}
+
+Thiết kế thủ công không dùng GPU và thời gian của nó cũng không được ghi lại (Bảng~\ref{tab:cost}).
+Các công trình trước cũng chỉ mô tả chi phí này bằng lời \citep[][Phụ lục~D]{han2020genetic,li2024longrange}.
+LMSPS còn bỏ thời gian thiết kế thủ công ra khỏi phép so sánh hiệu quả của mình, cùng với thời gian
+tìm kiếm của chính nó \citep[Phụ lục~E.1]{li2024longrange}. Tuy vậy, chi phí của tìm kiếm cho chúng
+tôi một mốc để so sánh: toàn bộ \val{search-runs-total} lần chạy tìm kiếm mất khoảng
+\val{search-total-h}~giờ~GPU, chưa kể thời gian điều chỉnh mã nguồn. Thiết kế thủ công rẻ hơn tìm
+kiếm chừng nào việc thiết kế mất ít hơn khoảng thời gian này. Chúng tôi cho rằng điều đó hợp lý trên
+một lược đồ chỉ có ba kiểu nút, nơi các tập thủ công được thiết kế theo bốn nguyên tắc trong một
+buổi, cùng các phép kiểm tra độ dày đặc chỉ mất vài phút CPU. Trong khi đó, tìm kiếm thu được những
+tập kém các tập thủ công \val{han-4-hit-relabs}\% và \val{han-6-hit-relabs}\% theo độ đo đã cố định
+từ trước và chỉ ngang bằng chúng khi xếp hạng toàn bộ. Như vậy, trên lược đồ này, khoản chi phí tìm
+kiếm chưa đem lại cho HAN kết quả vượt trội hơn thiết kế thủ công. Đối chứng ngẫu nhiên vốn không
+tốn chi phí, cũng đạt kết quả ít nhất ngang bằng cả hai cách. Khi xếp hạng toàn bộ, trung bình kết
+quả của các tập ngẫu nhiên ít nhất cũng cao bằng, dù phân tán rộng hơn
+(\val{han-r4-fhit-min}--\val{han-r4-fhit-max} và \val{han-r6-fhit-min}--\val{han-r6-fhit-max}).
+
+\input{tables/t7_cost}
+
+\subsection{HAN làm gì với các meta-path}
+\label{sec:res-weights}
+
+Hình~\ref{fig:weights} so sánh mức ưa thích của tìm kiếm đối với từng meta-path với trọng số mà
+HAN gán cho nó. Hai bên thống nhất về các meta-path qua người dùng. \code{PUPUP} vốn nối các sản
+phẩm qua hai người dùng, có mặt trong cả \val{searched-with-pupup} tập tìm được và \code{PUPPUP}
+trong \val{searched-with-puppup} tập. Cả hai đều xếp gần đầu trong các ứng viên của tìm kiếm.
+HAN không bao giờ loại chúng hay \code{PUP}, đồng thời gán cho cả ba trọng số cao hơn mức chia
+đều. Hai bên bất đồng về danh mục. Mỗi tập tìm được chứa \val{searched-empty-min} đến
+\val{searched-empty-max} meta-path danh mục gần rỗng mà tìm kiếm xếp hạng cao, nhưng HAN chỉ giữ
+một trong số đó cho mỗi tập với trọng số \val{han-empty-kept-min} đến \val{han-empty-kept-max}
+(\val{han-empty-kept-f4c} với \code{c} ở $M = 4$ meta-path), nên các tập tìm được $M = 6$ vận hành
+như các tập $M = 4$. Các meta-path danh mục dày đặc của các tập thủ công xếp hạng thấp trong
+tìm kiếm nhưng nhận được khoảng mức chia đều hoặc hơn trong HAN (trung vị \val{kind-cat-weight}).
+Không tập tìm được nào chứa một meta-path danh mục đến được phần lớn sản phẩm.
+
+\input{figures/f4_weights}
+
+Trong các tập $M = 4$ và $M = 6$ meta-path, sự thiếu vắng này phân biệt các tập tìm được với tất cả các
+tập khác. Ở cả hai kích thước, mọi tập có một meta-path danh mục đến được gần như mọi sản phẩm
+đều vượt mọi tập không có meta-path như vậy: \val{han-4-dense-min}--\val{han-4-dense-max} so với
+\val{han-4-nodense-min}--\val{han-4-nodense-max} với $M = 4$ (cặp gần nhau nhất nằm trong
+nhiễu giữa các seed) và \val{han-6-dense-min}--\val{han-6-dense-max} so với \val{han-6-nodense-max}
+với $M = 6$. Trên \val{pref-cand-n} tập lấy từ các ứng viên, tìm kiếm càng ưa thích các meta-path của
+một tập thì HAN làm càng kém với tập đó (hệ số Spearman \val{pref-cand-rho} giữa Hit@10 thử nghiệm và
+hạng $\alpha$ trung bình của các meta-path, trong đó hạng càng thấp nghĩa là càng được ưa thích,
+\val{pref-cand-pt}). Quan hệ này dựa trên các tập tìm được: nếu chỉ xét mười tập chọn ngẫu nhiên,
+hệ số này chỉ còn \val{pref-random-rho} (\val{pref-random-pt}).
+
+\paragraph{Nơi tập trung sự thua kém.} Một bước đơn lẻ trên cây phân cấp danh mục, \code{PCCP} nối
+\val{bg-pccp-reach-products-pct}\% số sản phẩm với một sản phẩm khác, phần lớn là DVD và video vốn
+chiếm \val{bg-pccp-reach-test-pct}\% số cạnh thử nghiệm. Trên các sản phẩm mà \code{PCCP} không đến
+được, các tập tìm được kém các tập có meta-path danh mục dày đặc \val{bg-4-gapabs-no} Hit@10 với $M = 4$ meta-path
+và \val{bg-6-gapabs-no} với $M = 6$ meta-path (seed~1). Trên các sản phẩm nó đến được, các tập tìm được chỉ kém
+\val{bg-4-gapabs-reach} và \val{bg-6-gapabs-reach}. Như vậy, sự thua kém chủ yếu nằm ở sách và
+nhạc, những sản phẩm mà các meta-path danh mục của các tập tìm được là rỗng.
+
+\paragraph{Vì sao các tập tìm được thua.} Phép kiểm tra trên chỉ ra các meta-path danh mục gần
+rỗng. Trong tìm kiếm, một sản phẩm mà meta-path như vậy không đến được nhận một đặc trưng toàn số 0
+cho meta-path đó. Số 0 ấy vẫn mang thông tin: các sản phẩm mà một bước trên cây phân cấp đến được,
+phần lớn là DVD và video, chiếm \val{pccp-reach-train-pct}\% số cạnh huấn luyện nhưng chỉ
+\val{bg-pccp-reach-products-pct}\% số sản phẩm và do đó cũng chừng ấy phần các mẫu âm ngẫu nhiên,
+nên các meta-path rỗng làm lộ nhóm sản phẩm và một phần độ phổ biến của sản phẩm. Trong HAN, tín
+hiệu này phần lớn biến mất: mỗi sản phẩm giữ đặc trưng riêng của nó qua một cạnh tự nối trong mọi
+đồ thị, nên một kênh rỗng chỉ lặp lại các đặc trưng đó. HAN loại bỏ phần lớn các kênh này. Thứ mà
+các tập tìm được khi đó còn thiếu, một meta-path danh mục đến được sách và nhạc, chính là chỗ chúng
+thua nhiều nhất. Tìm kiếm cũng có thể tận dụng một meta-path dày đặc kém hơn HAN, vì nó lấy trung
+bình đặc trưng của meta-path trên mọi điểm cuối, trong khi HAN chỉ chú ý trên \val{han-set-topk} láng
+giềng được chọn. Tuy nhiên, phép kiểm tra theo nhóm sản phẩm chỉ xác định được nơi xảy ra sự thua
+kém chứ chưa cho thấy một meta-path danh mục dày đặc sẽ loại bỏ được nó.
+
+\subsection{Các mô hình khác}
+\label{sec:res-models}
+
+GAT vượt cả hai mô hình dùng meta-path trên mọi độ đo và ở mọi nhóm người dùng. Nó đạt Hit@10
+\val{gat-hit-mean}, so với
+\val{han-r6d2-hit-s1} của tập chọn theo xác thực của HAN và \val{mtv-m5-hit-mean} của metapath2vec.
+Khi xếp hạng toàn bộ, nó đạt \val{gat-fhit-mean} so với \val{han-r6d2-fhit-s1} của HAN. Mức dẫn trước
+của nó so với HAN lớn nhất với những người dùng có ít cạnh huấn luyện: \val{gat-lead-d1} với 1--5
+cạnh, \val{gat-lead-d2} với 6--20 và \val{gat-lead-d3} từ 21 cạnh trở lên. Khác với hai
+mô hình kia, GAT dựng mỗi người dùng từ các sản phẩm mà người đó đã nhận xét, trong khi HAN và
+metapath2vec học một embedding tự do cho mỗi người dùng, embedding này chỉ nhận được ít tín hiệu từ
+một vài cạnh. Điều này phù hợp với phát hiện của HGB rằng một GAT đồng nhất với đầu vào phù hợp là
+một mô hình cơ sở mạnh \citep{lv2021hgb}. Điều này cũng gợi ý rằng ở đây cách biểu diễn người dùng
+quan trọng hơn việc chọn những meta-path phía sản phẩm nào. Các meta-path phía người dùng vốn nằm
+ngoài thiết kế của chúng tôi sẽ kiểm chứng được điều này.
+
+HAN vượt metapath2vec về Hit@10 lấy mẫu trên cả
+\val{han-wins-sampled} tập nhưng metapath2vec thắng khi xếp hạng toàn bộ ở \val{mtv-wins-full} tập,
+nên thứ tự của hai mô hình phụ thuộc vào độ đo. Mọi mô hình đều vượt mức
+sàn của mô hình phổ biến (\val{pop-hit} lấy mẫu, \val{pop-fhit} khi xếp hạng toàn bộ), trừ
+metapath2vec trên M4 vốn đạt \val{mtv-m4-hit-s1}: tập này không có meta-path nào qua người
+dùng nên người dùng không được huấn luyện.
+
+\subsection{Độ nhạy}
+\label{sec:res-sensitivity}
+
+Với giai đoạn khởi động trọng số meta-path \val{wu5-warmup} epoch thay vì
+\val{han-set-beta-warmup} (seed~1, cả 24 tập), HAN huấn luyện kém hơn về trung bình
+(\val{wu5-diff-mean} Hit@10, từ \val{wu5-diff-min} đến \val{wu5-diff-max}), loại nhiều meta-path
+hơn (\val{wu5-dropped} trọng số dưới \val{weight-drop} so với \val{han-dropped}) và sắp thứ tự các
+tập khác đi (Spearman \val{wu5-rho} so với các lần chạy chính). Khi đó, các tập tìm được đứng
+\val{wu5-4-pos} trong tám tập ở cả hai kích thước thay vì đứng cuối. Với $M = 6$ meta-path, phép so
+sánh ở seed 1 đảo ngược: \code{a1} đạt \val{wu5-f6a1-hit} so với \val{wu5-m6-hit} của M6 vốn chỉ
+giữ \val{wu5-m6-kept} trong $M = 6$ meta-path của nó. Phép kiểm tra này dùng một seed và không được lên
+kế hoạch từ trước nên nó không thay đổi kết quả chính nhưng cho thấy phép so sánh phụ thuộc vào
+cách HAN học trọng số meta-path: các kết luận của chúng tôi đúng với giai đoạn khởi động
+\val{han-set-beta-warmup}~epoch.

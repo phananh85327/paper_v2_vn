@@ -1,0 +1,128 @@
+% paper_v2_vn.tex -- the Vietnamese version of paper_v2: the same paper in ACM's two-column format
+% (acmart, sigconf), translated in parts L1-L9 (plan_v2_vn.tex in this folder). ../paper_v2/ is the
+% source and is not edited for this one (N1); this folder has its own sections/, tables/, figures/
+% and numbers.tex, with the same file names as paper_v2's.
+% Since N31 the paper has no appendix: the former appendix is the supplementary document,
+% supplement_vn.tex, which is built from the same folder after this file (latexmkrc builds both).
+% Compile with LuaLaTeX and BibTeX (in Overleaf: Menu, Compiler, LuaLaTeX): under pdfLaTeX,
+% acmart's fonts have no Vietnamese letters. It uses the three .bib files at the project root.
+% numbers.tex and figures/*.dat: from the LMSPS repository's root, with the HAN repository next
+% to it, python paper/make_numbers.py --lmsps . --han ../han-improve --out <this folder> --lang vi
+\RequirePackage{iftex}
+\ifLuaTeX\else
+  \errmessage{paper_v2_vn.tex needs LuaLaTeX. In Overleaf: Menu, Compiler, LuaLaTeX}%
+  \expandafter\stop
+\fi
+\PassOptionsToPackage{quiet}{fontspec}   % notes on font features go to the log, not the warnings
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\PassOptionsToPackage{obeyspaces,spaces}{url}   % \code keeps its spaces and can break at them
+% nonacm: a draft not yet at an ACM venue, so no conference line, copyright block or ACM reference
+% box.
+\documentclass[sigconf,nonacm]{acmart}
+\makeatletter
+\@ACM@balancefalse   % no column balancing: acmart's \balance would come in the second column
+\makeatother         % of the last page and only warn that it cannot balance there
+\raggedbottom
+
+% Vietnamese is the main language: babel's captions (Hình, Bảng, Phụ lục) and line breaking.
+% English stays loaded for the reference list, which keeps the language of the works (N7), for
+% ACM's CCS terms, and for the English words of quotations (\foreignlanguage{english}, N13).
+\usepackage[english,vietnamese]{babel}
+\providecommand\ccsname{CCS Concepts}
+\addto\captionsvietnamese{%
+  \renewcommand\abstractname{Tóm tắt}%          babel's is Tóm tắt nội dung
+  \renewcommand\keywordsname{Từ khóa}%
+  \renewcommand\acksname{Lời cảm ơn}%
+  \renewcommand\refname{Tài liệu tham khảo}%    babel's is only Tài liệu
+  \renewcommand\ccsname{Phân loại CCS}}
+% acmart prints the heading of the CCS concepts as fixed text; this makes it \ccsname, and sets
+% ACM's terms under it as English.
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\maketitle}{\@specialsection{CCS Concepts}%
+         \noindent\@concepts\par}{\@specialsection{\ccsname}%
+         \noindent\foreignlanguage{english}{\@concepts}\par}{}%
+  {\PackageWarningNoLine{paper_v2_vn}{acmart's CCS block has changed, so its heading stays
+     English; see \string\ccsname}}   % the same code in acmart 2.03 (2024) and 2.21 (2026)
+\makeatother
+\setlength{\emergencystretch}{1em}   % Vietnamese words are not hyphenated: a little more stretch
+\AtEndPreamble{\hypersetup{pdflang={vi}}}   % the PDF's language; runs after acmart's pdflang={en}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\pgfkeys{/pgf/number format/use comma}   % axis numbers as 0,05 and 1.000, as in numbers.tex
+\usepackage{icomma}   % in a formula, a comma between digits is a decimal comma: $-0,034$
+
+\usepackage{xurl}   % long links may break anywhere in the narrow columns
+% File names and meta-paths in typewriter type; they may break only after / _ . or at a space, so
+% a meta-path such as PUPUP is never split.
+\DeclareUrlCommand\codeurl{\def\UrlBreaks{\do\/\do\_\do\.}\def\UrlBigBreaks{}\urlstyle{tt}}
+\DeclareRobustCommand{\code}[1]{\codeurl{#1}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% Wide tables and figures span both columns.
+\newenvironment{widetable}[1][tbp]{\begin{table*}[#1]}{\end{table*}}
+\newenvironment{widefigure}[1][tbp]{\begin{figure*}[#1]}{\end{figure*}}
+% Figure colours, as in paper_v2: searched sets blue, manual orange, random draws aqua.
+\definecolor{cSearch}{HTML}{2A78D6}
+\definecolor{cManual}{HTML}{EB6834}
+\definecolor{cRandom}{HTML}{1BAF7A}
+\definecolor{cOther}{HTML}{7C7B76}
+% Every number of the paper: \val{key}, from numbers.tex (Vietnamese number format, N4).
+\input{numbers}
+
+% The break keeps "có ... không" on one line; the running head has the title in one piece.
+\title[Đánh giá chi phí và hiệu quả của việc tìm kiếm meta-path cho gợi ý sản phẩm dựa trên HAN]{Đánh giá chi phí và hiệu quả của việc tìm kiếm meta-path\texorpdfstring{\\}{ } cho gợi ý sản phẩm dựa trên HAN}
+\subtitle{Nghiên cứu có kiểm soát về LMSPS trên Amazon-Meta}
+\author{Phan Hoàng Tuấn Anh}
+\email{phananh85327@gmail.com}
+\affiliation{%
+  \department{Khoa Công nghệ Thông tin}
+  \institution{Trường Đại học Công Thương Thành phố Hồ Chí Minh (HUIT)}
+  \city{Thành phố Hồ Chí Minh}
+  \country{Việt Nam}}
+
+\begin{document}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+% CCS concepts removed in L10 (N19): the paper is not for an ACM venue. To restore them, put back
+% \ccsdesc[500]{Information systems~Recommender systems} and
+% \ccsdesc[300]{Computing methodologies~Neural networks} here (the heading code above still works).
+
+\keywords{đồ thị không đồng nhất, tìm kiếm meta-path, HAN, hệ thống gợi ý, dự đoán liên kết,
+thiết kế meta-path thủ công}
+
+\maketitle
+\hypersetup{pdftitle={Đánh giá chi phí và hiệu quả của việc tìm kiếm meta-path cho gợi ý sản phẩm dựa trên HAN}, pdfauthor={Phan Hoàng Tuấn Anh},
+  pdfkeywords={đồ thị không đồng nhất, tìm kiếm meta-path, HAN, hệ thống gợi ý, dự đoán liên
+  kết, thiết kế meta-path thủ công}}
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/prelim}
+\input{sections/data}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/discussion}
+
+\input{sections/statements}
+
+\begin{acks}
+Tác giả xin cảm ơn TS.~Ngô Dương Hà và TS.~Phạm Nguyễn Huy Phương đã hướng dẫn. Nghiên cứu không
+nhận được tài trợ nào.
+\end{acks}
+
+% The reference list stays in English, as the works were published (N7).
+\begin{otherlanguage*}{english}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references,notes_extra,reading_list}
+\end{otherlanguage*}
+
+\end{document}

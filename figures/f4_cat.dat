@@ -1,0 +1,13 @@
+% paths of kind "cat" HAN used at seed 1: the search's mean alpha rank over both sizes
+% (1 = most preferred of 36) and HAN's mean weight as a multiple of an equal share
+rank weight uses path
+16.62 0.000 1 PCCCCP
+21.38 1.766 1 PCCCPP
+22.07 1.030 4 PCCCP
+23.37 0.357 2 PPCPPP
+23.40 1.292 1 PCPPPP
+25.15 1.213 1 PCPP
+25.47 0.000 1 PPCPP
+26.00 1.873 2 PCPCP
+26.82 1.548 2 PCPPCP
+27.63 1.041 7 PCP

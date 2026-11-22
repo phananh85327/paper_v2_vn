@@ -1,0 +1,79 @@
+% t9_full.tex -- every path set in HAN and in metapath2vec, every metric, seed 1 (supplementary
+% document; paper_v2_vn, translated in L3 from paper_v2's tables/t9_full.tex). Values from
+% numbers.tex (results.csv): <model>-<set>-<metric>-s1; GAT and popularity as in T4/T5.
+% \fullrow{label}{model tag}{set}: one row of six metrics.
+\newcommand{\fullrow}[3]{#1 & \val{#2-#3-hit-s1} & \val{#2-#3-ndcg-s1} & \val{#2-#3-fhit-s1}
+  & \val{#2-#3-fndcg-s1} & \val{#2-#3-frec-s1} & \val{#2-#3-val-s1} \\}
+% \fullbody{model tag}: the 24 sets, by family, as in Table 3.
+\newcommand{\fullbody}[1]{%
+  \multicolumn{7}{@{}l}{\emph{Tìm được}} \\
+  \fullrow{\code{a1}, 4 meta-path}{#1}{f4a1}
+  \fullrow{\code{a2}, 4 meta-path}{#1}{f4a2}
+  \fullrow{\code{c}, 4 meta-path}{#1}{f4c}
+  \fullrow{\code{a1}, 6 meta-path}{#1}{f6a1}
+  \fullrow{\code{a2}, 6 meta-path}{#1}{f6a2}
+  \fullrow{\code{c}, 6 meta-path}{#1}{f6c}
+  \midrule
+  \multicolumn{7}{@{}l}{\emph{Thủ công}} \\
+  \fullrow{M1}{#1}{m1}
+  \fullrow{M2}{#1}{m2}
+  \fullrow{M3}{#1}{m3}
+  \fullrow{M4}{#1}{m4}
+  \fullrow{M5}{#1}{m5}
+  \fullrow{M6}{#1}{m6}
+  \fullrow{M7}{#1}{m7}
+  \fullrow{M8}{#1}{m8}
+  \midrule
+  \multicolumn{7}{@{}l}{\emph{Ngẫu nhiên}} \\
+  \fullrow{4 meta-path, lần chọn 1}{#1}{r4d1}
+  \fullrow{4 meta-path, lần chọn 2}{#1}{r4d2}
+  \fullrow{4 meta-path, lần chọn 3}{#1}{r4d3}
+  \fullrow{4 meta-path, lần chọn 4}{#1}{r4d4}
+  \fullrow{4 meta-path, lần chọn 5}{#1}{r4d5}
+  \fullrow{6 meta-path, lần chọn 1}{#1}{r6d1}
+  \fullrow{6 meta-path, lần chọn 2}{#1}{r6d2}
+  \fullrow{6 meta-path, lần chọn 3}{#1}{r6d3}
+  \fullrow{6 meta-path, lần chọn 4}{#1}{r6d4}
+  \fullrow{6 meta-path, lần chọn 5}{#1}{r6d5}}
+\newcommand{\fullhead}{%
+  \toprule
+  & \multicolumn{2}{c}{Lấy mẫu} & \multicolumn{3}{c}{Xếp hạng toàn bộ} & \\
+  \cmidrule(lr){2-3}\cmidrule(lr){4-6}
+  Tập & Hit@10 & NDCG@10 & Hit@10 & NDCG@10 & Recall@20 & BPR xác thực \\
+  \midrule}
+
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{HAN trên mọi tập meta-path, seed~1 (Bảng~\ref*{P-tab:main} cho trung bình ba seed của so
+    sánh chính). Lấy mẫu: mỗi cạnh thử nghiệm được xếp hạng so với \val{split-negatives} mẫu âm.
+    Xếp hạng toàn bộ: so với mọi sản phẩm mà người dùng không có cạnh nối tới, với Recall@20 lấy
+    trung bình theo người dùng. BPR xác thực: giá trị hàm mất mát mà việc dừng sớm và tập chọn
+    theo xác thực sử dụng, càng thấp càng tốt. GAT: trung bình ba seed. Mô hình phổ biến không có
+    giá trị mất mát xác thực.}
+  \label{tab:full-han}
+  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lllllll@{}}
+    \fullhead
+    \fullbody{han}
+    \midrule
+    \multicolumn{7}{@{}l}{\emph{Không dùng meta-path}} \\
+    GAT & \val{gat-hit-mean} & \val{gat-ndcg-mean} & \val{gat-fhit-mean} & \val{gat-fndcg-mean}
+      & \val{gat-frec-mean} & \val{gat-val-mean} \\
+    Phổ biến & \val{pop-hit} & \val{pop-ndcg} & \val{pop-fhit} & \val{pop-fndcg} & \val{pop-frec}
+      & -- \\
+    \bottomrule
+  \end{tabular*}
+\end{widetable}
+
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{metapath2vec trên mọi tập meta-path, seed~1. Các cột như ở Bảng~\ref{tab:full-han}. M4
+    không có meta-path nào qua người dùng, nên các embedding người dùng của nó không được huấn luyện.}
+  \label{tab:full-mtv}
+  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lllllll@{}}
+    \fullhead
+    \fullbody{mtv}
+    \bottomrule
+  \end{tabular*}
+\end{widetable}

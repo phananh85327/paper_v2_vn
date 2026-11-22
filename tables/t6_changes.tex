@@ -1,0 +1,76 @@
+% t6_changes.tex -- T6 (appendix): what this study changes in the three base methods (paper_v2_vn,
+% translated in L3 from paper_v2's tables/t6_changes.tex). The base papers' own settings are typed
+% from the papers, here in the Vietnamese number format (S5 of glossary_vn.tex); this study's
+% settings are \val{} from numbers.tex (run records).
+\begin{widetable}[htbp]
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{1.15}
+  \caption{Những gì nghiên cứu này thay đổi so với LMSPS \citep{li2024longrange}, HAN
+    \citep{wang2019heterogeneous} và metapath2vec \citep{dong2017metapath2vec}, kèm lý do.}
+  \label{tab:changes}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}
+      >{\raggedright\arraybackslash}p{0.34\linewidth}L@{}}
+    \toprule
+    Trong bài báo gốc & Trong nghiên cứu này & Lý do \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{LMSPS}} \\
+    phân loại nút, entropy chéo & dự đoán liên kết từ người dùng đến sản phẩm: BPR trên tích vô
+      hướng của embedding sản phẩm và một embedding người dùng tự do \val{search-hidden} chiều & bài toán
+      của nghiên cứu này \\
+    mọi meta-path từ kiểu đích đến một kiểu bất kỳ, kể cả đặc trưng gốc & \val{search-cands}
+      meta-path từ sản phẩm đến sản phẩm dài 1--\val{search-hops} bước, mỗi meta-path gộp với
+      meta-path ngược của nó, không có cạnh tự nối & mỗi meta-path phải cho HAN một đồ thị sản
+      phẩm \\
+    đặc trưng meta-path tính từ toàn bộ đồ thị & $\alpha$ học trên các cạnh xác thực. Bước cập
+      nhật trọng số đọc đặc trưng meta-path qua người dùng được dựng lại khi bỏ lần lượt từng phần
+      tư số cạnh huấn luyện & mỗi cạnh huấn luyện cũng là một cạnh của đồ thị \\
+    $M = 30$ meta-path lấy mẫu từ nhóm ứng viên $V = 60$, 200 epoch, trong đó 20 epoch khởi động
+      (mã công bố không có) & $M = 4$ hoặc 6 từ $V = \val{search-pool}$, \val{search-epochs}
+      epoch, trong đó \val{search-warmup} epoch khởi động, dropout \val{search-dropout} & các kích
+      thước tập của nghiên cứu, để mọi tập của nhóm ứng viên cuối đều tính điểm được \\
+    200 tập lấy mẫu từ nhóm ứng viên cuối, mỗi tập tính điểm với nhiễu Gumbel mới & cả
+      \val{search-sets} tập được tính điểm một lần, không có nhiễu & nhiễu làm điểm của một tập
+      thay đổi nhiều hơn chênh lệch giữa các tập \\
+    một lần tìm kiếm & \val{search-runs} lần tìm kiếm cho mỗi kích thước tập, kết hợp bằng điểm
+      trung bình với quy tắc một sai số chuẩn và bằng bỏ phiếu được kiểm tra so với đối chứng xáo
+      trộn & một lần chạy không xếp hạng được các tập tốt nhất của nó \\
+    mạng riêng của LMSPS được huấn luyện lại trên các meta-path đã chọn & không huấn luyện lại:
+      các tập được chuyển cho HAN và metapath2vec & câu hỏi là các meta-path có giúp HAN hay
+      không \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{HAN}} \\
+    phân loại nút, entropy chéo & dự đoán liên kết, BPR. HAN tạo embedding cho sản phẩm, mỗi
+      người dùng là một embedding tự do \val{han-set-hidden} chiều & mọi tập meta-path có cùng phía
+      người dùng \\
+    mọi láng giềng theo meta-path & \val{han-set-topk} láng giềng mạnh nhất sau mỗi bước,
+      đối xứng, chỉ cạnh huấn luyện, một cạnh tự nối & meta-path dài không cắt tỉa đến được hầu hết
+      sản phẩm \\
+    tầng chú ý của mỗi meta-path có khởi tạo ngẫu nhiên riêng. Trọng số meta-path được học ngay từ
+      epoch đầu & cùng khởi tạo cho mọi meta-path. Trọng số giữ bằng nhau trong
+      \val{han-set-beta-warmup} epoch & nếu không, một meta-path chiếm toàn bộ trọng số chỉ sau vài
+      epoch \\
+    tốc độ học 0,005, L2 0,001, dropout 0,6, 8 đầu chú ý 8 chiều, patience 100 & tốc độ học
+      \val{han-set-lr}, không L2, dropout \val{han-set-feat-drop}, \val{han-set-num-heads} đầu chú
+      ý \val{han-set-head-dim} chiều, patience \val{han-set-patience}, tối đa \val{han-set-stage}
+      epoch & vừa với một GPU \val{env-gpu-mem}~GB \\
+    đặc trưng túi từ, 2--3 meta-path ngắn đối xứng & vectơ LSA của tiêu đề và nhóm sản phẩm,
+      \val{sets-size-min}--\val{sets-size-max} meta-path dài tối đa \val{sets-hops-max} bước & dữ
+      liệu và các tập được so sánh \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{metapath2vec}} \\
+    mỗi lần chạy một lược đồ meta-path đối xứng & mọi meta-path của một tập được đi cùng nhau &
+      mỗi tập một embedding, như với HAN \\
+    mẫu âm theo phân phối tần suất nút & \val{mtv-set-negatives} mẫu âm, lấy mẫu đều trong cùng kiểu nút
+      & đơn giản hơn \\
+    1.000 bước đi mỗi nút, độ dài 100, cửa sổ 7, 128 chiều & \val{mtv-set-walks-per-node} bước đi
+      cho mỗi nút và mỗi meta-path, độ dài \val{mtv-set-walk-length}, cửa sổ \val{mtv-set-window},
+      \val{mtv-set-dim} chiều & chi phí, bằng kích thước embedding của HAN \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{GAT, làm mô hình so sánh}} \\
+    trong bài báo HAN, chạy trên từng meta-path riêng lẻ & một GAT không phân biệt kiểu trên
+      mọi quan hệ cùng lúc, không dùng meta-path & mô hình so sánh đồng nhất của nghiên cứu
+      này \\
+    \bottomrule
+  \end{tabularx}
+\end{widetable}

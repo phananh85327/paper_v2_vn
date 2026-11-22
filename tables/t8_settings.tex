@@ -1,0 +1,88 @@
+% t8_settings.tex -- the settings of the search and of every model (appendix; paper_v2_vn,
+% translated in L3 from paper_v2's tables/t8_settings.tex). Values from numbers.tex: the search's
+% from its 60 run records, which make_numbers.py checks are alike apart from the seed and the set
+% size; the models' from the commands and model prints in their logs.
+\begin{widetable}[htbp]
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{1.0}
+  \caption{Mọi thiết lập của tìm kiếm và của các mô hình, cố định trước các lần chạy và dùng cho
+    mọi tập meta-path.}
+  \label{tab:settings}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}L@{}}
+    \toprule
+    Thiết lập & Giá trị \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{Tìm kiếm (LMSPS cho dự đoán liên kết)}} \\
+    Ứng viên & \val{search-cands-raw} meta-path từ sản phẩm đến sản phẩm dài 1 đến \val{search-hops}
+      bước, còn \val{search-cands} khi mỗi meta-path được gộp với meta-path ngược của nó. Không có
+      cạnh tự nối \\
+    Tập và nhóm ứng viên & $M = 4$ hoặc 6 meta-path. Nhóm ứng viên cuối $V = \val{search-pool}$,
+      nên cả \val{search-sets} tập gồm $M$ meta-path đều được tính điểm \\
+    Lịch huấn luyện & \val{search-epochs} epoch, \val{search-warmup} epoch đầu với toàn bộ nhóm
+      ứng viên. Nhiệt độ Gumbel giảm từ \val{search-tau-max} xuống \val{search-tau-min} \\
+    Mạng & mỗi meta-path một ánh xạ tuyến tính, PReLU, dropout \val{search-dropout} (dropout đầu
+      vào \val{search-input-drop}). Embedding sản phẩm và người dùng \val{search-hidden} chiều \\
+    Bộ tối ưu & Adam: tốc độ học \val{search-lr} cho trọng số và \val{search-alr} cho $\alpha$,
+      suy giảm trọng số \val{search-weight-decay}. Lô gồm \val{search-batch} cạnh \\
+    Chống rò rỉ & $\alpha$ học trên các cạnh xác thực. Bước cập nhật trọng số đọc đặc trưng meta-path qua người dùng từ \val{search-folds} phiên bản, mỗi phiên bản dựng khi bỏ một phần tư số
+      cạnh huấn luyện \\
+    Tính điểm & mỗi tập một lần, không có nhiễu Gumbel, theo BPR xác thực so với
+      \val{split-negatives} mẫu âm cố định. Nhóm đồng hạng trong phạm vi
+      $\delta = \val{search-delta}$ \\
+    Lần chạy & \val{search-runs} cho mỗi kích thước tập, seed 1 đến \val{search-runs}. Kernel GPU
+      tất định. Đặc trưng lan truyền lưu dạng số thực 16 bit trên CPU \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{HAN}} \\
+    Đồ thị & theo từng meta-path, \val{han-set-topk} láng giềng mạnh nhất của mỗi sản phẩm theo số
+      đường đi sau mỗi bước, bằng điểm thì xếp ngẫu nhiên. Nhị phân, đối xứng, mỗi sản phẩm một
+      cạnh tự nối. Chỉ cạnh huấn luyện \\
+    Bộ mã hóa & đặc trưng sản phẩm \val{han-set-in-dim} chiều. Mỗi meta-path một tầng chú ý đồ
+      thị gồm \val{han-set-num-heads} đầu chú ý \val{han-set-head-dim} chiều, mọi meta-path bắt đầu
+      từ cùng trọng số khởi tạo \\
+    Trọng số meta-path & chú ý mức ngữ nghĩa với vectơ chú ý \val{han-set-sem-dim} chiều và nhiệt
+      độ softmax \val{han-set-semantic-tau}. Trọng số giữ bằng nhau trong
+      \val{han-set-beta-warmup} epoch đầu \\
+    Người dùng & mỗi người dùng một embedding tự do \val{han-set-hidden} chiều \\
+    Huấn luyện & dropout \val{han-set-feat-drop} trên đặc trưng và \val{han-set-attn-drop} trên
+      chú ý. Adam, tốc độ học \val{han-set-lr}, suy giảm trọng số \val{han-set-weight-decay}. Lô
+      gồm \val{han-set-batch-size} cạnh huấn luyện, mỗi cạnh một mẫu âm mới \\
+    Dừng & tối đa \val{han-set-stage} epoch. Dừng khi BPR xác thực không cải thiện quá
+      \val{han-set-min-delta} trong \val{han-set-patience} epoch. Thử nghiệm điểm lưu tốt nhất \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{metapath2vec}} \\
+    Bước đi & với mỗi sản phẩm và meta-path, \val{mtv-set-walks-per-node} bước đi dài
+      \val{mtv-set-walk-length}. Mọi meta-path của một tập được đi cùng nhau, mỗi meta-path như một
+      khuôn mẫu lặp lại. Chỉ cạnh huấn luyện \\
+    Skip-gram & \val{mtv-set-dim} chiều, cửa sổ \val{mtv-set-window}, \val{mtv-set-negatives} mẫu
+      âm mỗi cặp, lấy mẫu đều từ kiểu của nút ngữ cảnh \\
+    Huấn luyện & Adam thưa (sparse Adam), tốc độ học \val{mtv-set-lr}. Lô gồm
+      \val{mtv-set-batch-walks} bước đi \\
+    Dừng & tối đa \val{mtv-set-epochs} lượt qua các bước đi. Kiểm tra BPR xác thực
+      \val{mtv-set-evals-per-epoch} lần mỗi lượt. Dừng sau \val{mtv-set-patience} lần kiểm tra
+      không cải thiện quá \val{mtv-set-min-delta} \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{GAT}} \\
+    Bộ mã hóa & mỗi kiểu nút một phép chiếu tuyến tính về \val{gat-set-in-dim} chiều, sau đó
+      \val{gat-set-layers} tầng gồm \val{gat-set-num-heads} đầu chú ý (tổng cộng
+      \val{gat-set-hidden} chiều) trên hợp của mọi quan hệ, ngoài ra bỏ qua kiểu nút \\
+    Huấn luyện & dropout \val{gat-set-feat-drop} trên đặc trưng và \val{gat-set-attn-drop} trên
+      chú ý. Adam, tốc độ học \val{gat-set-lr}, suy giảm trọng số \val{gat-set-weight-decay}. Lô
+      gồm \val{gat-set-batch-size} cạnh huấn luyện, các cạnh dương của lô được bỏ khỏi đồ thị mà
+      bước đó chạy trên \\
+    Dừng & như HAN, tối đa \val{gat-cap} epoch. Seed~\val{gat-rerun-seed} chạm mức trần đó và được
+      chạy lại với \val{gat-rerun-cap}, dừng ở epoch \val{gat-rerun-stop} \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{Mô hình phổ biến}} \\
+    Điểm & số người dùng huấn luyện của sản phẩm, bằng điểm thì xếp ngẫu nhiên. Một bảng xếp hạng
+      chung cho mọi người dùng \\
+    \midrule
+    \multicolumn{2}{@{}l}{\emph{Đánh giá}} \\
+    Phép chia & 80/10/10 ngẫu nhiên, seed của phép chia~\val{split-seed}. Mỗi cạnh xác thực
+      và thử nghiệm có \val{split-negatives} mẫu âm, lấy mẫu một lần \\
+    Độ đo & Hit@10 lấy mẫu (cố định từ trước) và NDCG@10. Khi xếp hạng toàn bộ, Hit@10 và NDCG@10
+      theo cạnh và Recall@20 theo người dùng \\
+    Seed & 1 đến 3 cho so sánh chính và GAT, 1 cho các tập khác \\
+    \bottomrule
+  \end{tabularx}
+\end{widetable}

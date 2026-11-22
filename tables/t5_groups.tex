@@ -1,0 +1,37 @@
+% t5_groups.tex -- T5: every model, overall and by the user's number of training edges
+% (paper_v2_vn, translated in L3 from paper_v2's tables/t5_groups.tex; results.csv and the run
+% logs, via numbers.tex).
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{Mọi mô hình, trên toàn bộ và theo số cạnh huấn luyện của người dùng: Hit@10 trên tập
+    thử nghiệm, trung bình qua các seed đã chạy. GAT, các tập thủ công và \code{a1} chạy với 3 seed.
+    Tập chọn theo xác thực của HAN (một tập ngẫu nhiên) và mô hình phổ biến chạy với 1 seed.
+    Kích thước nhóm là số cạnh thử nghiệm.}
+  \label{tab:groups}
+  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}
+    \toprule
+    & \multicolumn{2}{c}{Mọi cạnh thử nghiệm} & \multicolumn{3}{c}{Số cạnh huấn luyện của người
+      dùng} \\
+    \cmidrule(lr){2-3}\cmidrule(l){4-6}
+    Mô hình và tập & Lấy mẫu & Toàn bộ & 1--5 & 6--20 & từ 21 trở lên \\
+    & & & (\val{testdeg-d1}) & (\val{testdeg-d2}) & (\val{testdeg-d3}) \\
+    \midrule
+    GAT, không dùng meta-path & \val{gat-hit-mean} & \val{gat-fhit-mean} & \val{gat-hit-d1}
+      & \val{gat-hit-d2} & \val{gat-hit-d3} \\
+    HAN, tập chọn theo xác thực (6 meta-path, lần chọn 2) & \val{han-r6d2-hit-s1}
+      & \val{han-r6d2-fhit-s1} & \val{han-r6d2-hit-d1} & \val{han-r6d2-hit-d2}
+      & \val{han-r6d2-hit-d3} \\
+    HAN, M6 & \val{han-m6-hit-mean} & \val{han-m6-fhit-mean} & \val{han-m6-hit-d1}
+      & \val{han-m6-hit-d2} & \val{han-m6-hit-d3} \\
+    HAN, \code{a1}, 6 meta-path & \val{han-f6a1-hit-mean} & \val{han-f6a1-fhit-mean}
+      & \val{han-f6a1-hit-d1} & \val{han-f6a1-hit-d2} & \val{han-f6a1-hit-d3} \\
+    metapath2vec, M5 (tập chọn theo xác thực) & \val{mtv-m5-hit-mean} & \val{mtv-m5-fhit-mean}
+      & \val{mtv-m5-hit-d1} & \val{mtv-m5-hit-d2} & \val{mtv-m5-hit-d3} \\
+    metapath2vec, \code{a1}, 4 meta-path & \val{mtv-f4a1-hit-mean} & \val{mtv-f4a1-fhit-mean}
+      & \val{mtv-f4a1-hit-d1} & \val{mtv-f4a1-hit-d2} & \val{mtv-f4a1-hit-d3} \\
+    Phổ biến & \val{pop-hit} & \val{pop-fhit} & \val{pop-hit-d1} & \val{pop-hit-d2}
+      & \val{pop-hit-d3} \\
+    \bottomrule
+  \end{tabular*}
+\end{widetable}

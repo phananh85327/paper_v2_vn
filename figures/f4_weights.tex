@@ -1,0 +1,47 @@
+% f4_weights.tex -- F4: HAN's path weights against the search's preference, by kind of path
+% (paper_v2_vn, translated in L3 from paper_v2's figures/f4_weights.tex). Data: f4_*.dat, written
+% by make_numbers.py (search records; HAN seed-1 logs).
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=\linewidth, height=5.6cm,
+        xmin=0, xmax=33, ymin=-0.1, ymax=2.05, xtick={1,8,16,24,32},
+        xlabel={Mức ưa thích của tìm kiếm: hạng $\alpha$ trung bình (1 = tốt nhất trong
+          \val{search-cands})},
+        ylabel={Trọng số của HAN (1 = mức chia đều)},
+        tick label style={font=\scriptsize}, label style={font=\footnotesize},
+        ymajorgrids, grid style={black!8}, axis line style={black!60}, tick style={black!60},
+        legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, draw=none,
+          legend columns=2, /tikz/every even column/.append style={column sep=6pt}},
+        legend cell align=left]
+      \draw[black!45, dashed] (axis cs:0,1) -- (axis cs:33,1);
+      \addplot[only marks, mark=*, mark size=2.6pt, mark options={fill=cSearch, draw=white,
+          line width=0.4pt}] table[x=rank, y=weight] {figures/f4_users.dat};
+      \addlegendentry{qua người dùng (\val{kind-users-paths} meta-path)}
+      \addplot[only marks, mark=square*, mark size=2.4pt, mark options={fill=cManual, draw=white,
+          line width=0.4pt}] table[x=rank, y=weight] {figures/f4_empty.dat};
+      \addlegendentry{danh mục gần rỗng (\val{kind-empty-paths})}
+      \addplot[only marks, mark=triangle*, mark size=3pt, mark options={fill=cRandom, draw=white,
+          line width=0.4pt}] table[x=rank, y=weight] {figures/f4_cat.dat};
+      \addlegendentry{danh mục khác (\val{kind-cat-paths})}
+      \addplot[only marks, mark=diamond*, mark size=3pt, mark options={fill=cOther, draw=white,
+          line width=0.4pt}] table[x=rank, y=weight] {figures/f4_pp.dat};
+      \addlegendentry{chỉ sản phẩm (\val{kind-pp-paths})}
+      \addplot[only marks, mark=none, point meta=explicit symbolic,
+          visualization depends on={value \thisrow{anchor}\as\labelanchor},
+          nodes near coords, nodes near coords style={font=\scriptsize\ttfamily, text=black!80,
+            anchor=\labelanchor, inner sep=2.5pt}]
+        table[x=x, y=y, meta=label] {figures/f4_labels.dat};
+    \end{axis}
+  \end{tikzpicture}
+  \Description{Biểu đồ phân tán, mỗi điểm là một meta-path: mức ưa thích trung bình của tìm kiếm đối với meta-path so với trọng số trung bình mà HAN gán cho nó. Cả hai đều ưa các meta-path qua người dùng. Các meta-path danh mục gần rỗng được tìm kiếm ưa thích nhưng gần như không có trọng số trong HAN. Các meta-path danh mục dày đặc bị tìm kiếm xếp hạng thấp nhưng được HAN sử dụng.}
+  \caption{HAN làm gì với các meta-path: mỗi điểm là một meta-path, đặt theo mức ưa thích trung
+    bình của tìm kiếm đối với nó (cả hai kích thước tập) và trọng số trung bình HAN gán cho nó trên
+    các tập chứa nó (seed 1). Hai bên thống nhất về các meta-path qua người dùng. Hai bên bất đồng
+    về các meta-path danh mục gần rỗng, vốn được tìm kiếm xếp hạng cao còn HAN phần lớn loại bỏ
+    (\val{kind-empty-dropped} trong \val{kind-empty-uses} lần dùng có trọng số dưới
+    \val{weight-drop}) và về các meta-path danh mục dày đặc, vốn bị tìm kiếm xếp hạng thấp còn HAN
+    sử dụng.}
+  \label{fig:weights}
+\end{figure}

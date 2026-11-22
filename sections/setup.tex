@@ -1,0 +1,76 @@
+% sections/setup.tex -- Section 6 (paper_v2_vn, translated in L6 from paper_v2's sections/setup.tex;
+% terms as in glossary_vn.tex). The Thiết lập paragraph gives the key settings (the supplementary
+% document, supplement_vn.tex, has them all since N31), Table~\ref{tab:cost} the search's run
+% times. Every number is \val{} from numbers.tex. Table: tables/t3_sets.tex (T3).
+\section{Thiết lập thực nghiệm}
+\label{sec:setup}
+
+\paragraph{Các tập meta-path.} Chúng tôi so sánh các tập tìm được với các tập thủ công, cùng các
+tập chọn ngẫu nhiên làm đối chứng, tổng cộng 24 tập (Bảng~\ref{tab:sets}).
+\begin{itemize}
+  \item \emph{Tìm được:} với mỗi kích thước tập, \code{a1}, \code{a2} và \code{c}
+        (Mục~\ref{sec:fleet}).
+  \item \emph{Thủ công:} M1--M8, thiết kế theo bốn nguyên tắc nêu rõ.
+        (1) Mỗi loại bằng chứng một meta-path (mua kèm \code{PP}, đồng nhận xét \code{PUP}, chung
+        danh mục \code{PCP}). (2) Ưu tiên meta-path ngắn. (3) Tránh meta-path gần rỗng (Mục~\ref{sec:data}), nên
+        \code{PCCCP}, vốn đến được các danh mục anh em, được dùng thay cho \code{PCCP}. (4) Có các tập chính cùng kích thước
+        với các tập tìm được, M5 và M6. Sáu tập còn lại, mỗi tập thử một ý tưởng, chẳng hạn chỉ hành vi (M3) hoặc chỉ
+        danh mục (M4).
+  \item \emph{Ngẫu nhiên (đối chứng):} năm tập cho mỗi kích thước, chọn đều và không lặp lại từ
+        chính \val{search-cands} ứng viên của tìm kiếm, để biết việc chọn meta-path ảnh hưởng đến
+        đâu.
+\end{itemize}
+Các tập thủ công và các tập chọn ngẫu nhiên được cố định trước khi có bất kỳ kết quả tìm kiếm hay
+mô hình nào trên dữ liệu đã làm sạch. Các tập tìm được thì cố định trước mọi lần chạy HAN. Cả
+\val{sets-distinct-paths} meta-path khác nhau trong 24 tập đều nằm trong \val{search-cands} ứng
+viên, nên phương pháp tìm kiếm đã có thể chọn bất kỳ meta-path nào trong số đó.
+
+\input{tables/t3_sets}
+
+\paragraph{Độ đo.} Mỗi cạnh xác thực và thử nghiệm $(u, p)$ được xếp hạng so với
+\val{split-negatives} mẫu âm, lấy mẫu một lần trong số các sản phẩm mà $u$ không có cạnh nối tới.     
+Hạng $r$ của $p$ là số ứng viên có điểm cao hơn hoặc bằng điểm của $p$, tính cả chính $p$.
+Như vậy, $p$ luôn được xếp sau các ứng viên bằng điểm với nó, nên các trường hợp bằng điểm
+được tính bất lợi cho mô hình. Chúng tôi báo cáo Hit@10 ($[r \le 10]$) và NDCG@10
+($[r \le 10] / \log_2(r + 1)$) trên \val{split-test} cạnh thử nghiệm. Chúng tôi không báo cáo
+Recall@10 và Precision@10 vì với một sản phẩm liên quan cho mỗi lần xếp hạng, chúng lần lượt bằng
+Hit@10 và Hit@10$/10$. Hit@10 lấy mẫu là độ đo chúng tôi đã cố
+định từ trước, nhưng so với \val{split-negatives} sản phẩm ngẫu nhiên, một sản phẩm phổ biến dễ dàng
+thắng: riêng mô hình phổ biến đã đạt \val{pop-hit}. Ngoài ra, các độ đo lấy mẫu có thể xếp thứ tự các mô
+hình khác với xếp hạng toàn bộ \citep{krichene2022sampled}. Để kiểm tra, chúng tôi cũng xếp hạng
+mỗi cạnh thử nghiệm so với mọi sản phẩm mà người dùng của nó không có cạnh nối tới (gần như toàn bộ
+\val{after-products} sản phẩm), rồi báo cáo Hit@10 theo cạnh và Recall@20 theo người dùng, với mọi sản
+phẩm thử nghiệm của một người dùng được xếp hạng cùng nhau, trên \val{test-users} người dùng có
+cạnh thử nghiệm. Mô hình phổ biến được báo cáo bên cạnh các mô hình trong Bảng~\ref{tab:main}.
+Các cạnh thử nghiệm cũng được chia theo số cạnh huấn luyện của người dùng (1--5, 6--20 và từ 21 trở lên).
+
+\paragraph{Thiết lập.} Mỗi mô hình có một cấu hình duy nhất, cố định trước các lần chạy và dùng cho
+mọi tập meta-path. Không có gì được tinh chỉnh theo từng tập hay theo kết quả thử nghiệm. Các thiết
+lập được chọn để vừa với một GPU \val{env-gpu-mem}\,GB và để huấn luyện ổn định, chứ không được dò
+tìm để tối đa độ chính xác. HAN có \val{han-set-num-heads} đầu chú ý \val{han-set-head-dim} chiều
+cho mỗi meta-path và embedding người dùng \val{han-set-hidden} chiều. GAT có \val{gat-set-layers}
+tầng \val{gat-set-hidden} chiều. metapath2vec học embedding \val{mtv-set-dim} chiều với cửa sổ
+\val{mtv-set-window}. Mọi bộ tối ưu đều là Adam, với tốc độ học \val{mtv-set-lr} cho metapath2vec
+và \val{han-set-lr} cho tìm kiếm cùng các mô hình còn lại. Việc huấn luyện dừng khi BPR xác thực
+không cải thiện quá \val{han-set-min-delta} trong \val{han-set-patience} epoch
+(với metapath2vec là \val{mtv-set-patience} lần kiểm tra). Sau đó, điểm lưu tốt nhất được thử
+nghiệm một lần. Mọi lần chạy được báo cáo đều dừng sớm: HAN ở epoch
+\val{han-stop-min}--\val{han-stop-max} trong tối đa \val{han-set-stage} epoch.
+
+\paragraph{Seed và thống kê.} Phép chia được cố định, nên các seed chỉ thay đổi quá trình huấn
+luyện. So sánh chính (\code{a1} so với M5 và M6, trong HAN và trong metapath2vec) và GAT chạy với
+seed 1--3, các tập khác với seed~1. Qua ba seed, Hit@10 thử nghiệm của các lần chạy chính dao động
+nhiều nhất \val{main-hit-sd-max} (độ lệch chuẩn), nên các chênh lệch nhỏ giữa những tập chạy với
+một seed nằm trong nhiễu giữa các seed. Vì vậy, chúng tôi không xếp hạng chi li những tập như vậy. Chúng
+tôi so sánh các tập chính bằng kiểm định $t$ hai phía của Welch trên ba seed của mỗi bên
+\citep{welch1947generalization}. Với chỉ ba seed mỗi bên, kiểm định này khó phát hiện các chênh lệch nhỏ, nên
+chúng tôi cũng nêu mỗi chênh lệch theo đơn vị độ lệch chuẩn giữa các seed. Chỉ Hit@10 lấy mẫu được cố định từ
+trước. Các độ đo khác và giá trị $p$ của chúng chỉ mang tính bổ trợ. Các giá trị $p$ này không được hiệu
+chỉnh cho việc thực hiện nhiều phép so sánh. Quan hệ giữa các tập dùng hệ số tương quan Spearman với giá
+trị $p$ hoán vị từ \val{perm-shuffles} lần xáo trộn. \emph{Tập chọn theo xác thực} là tập có BPR
+xác thực thấp nhất.
+
+\paragraph{Phần cứng và chi phí.} Mọi lần chạy đều dùng một GPU NVIDIA \val{env-gpu} với Python
+\val{env-python} và PyTorch \val{env-torch} (CUDA \val{env-cuda}). Toàn bộ \val{search-runs-total}
+lần chạy tìm kiếm mất khoảng \val{search-total-h}~giờ~GPU (Bảng~\ref{tab:cost}), còn các lần chạy mô
+hình mất khoảng \val{models-hours}~giờ~GPU.

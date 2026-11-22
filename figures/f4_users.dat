@@ -1,0 +1,15 @@
+% paths of kind "users" HAN used at seed 1: the search's mean alpha rank over both sizes
+% (1 = most preferred of 36) and HAN's mean weight as a multiple of an equal share
+rank weight uses path
+3.47 1.310 5 PUPPUP
+3.60 1.758 10 PUPUP
+9.68 1.452 8 PUP
+10.90 1.190 1 PPPUPP
+10.92 1.693 1 PPPUP
+11.48 1.057 4 PPUPP
+12.67 1.138 7 PPUP
+12.97 1.333 1 PPPPUP
+17.57 1.339 2 PCPUPP
+19.18 1.526 4 PCPUP
+19.63 1.520 2 PCPPUP
+20.77 0.856 1 PPCPUP

@@ -1,0 +1,44 @@
+% f3_sets.tex -- F3: HAN test Hit@10 of all 24 sets by family (paper_v2_vn, translated in L3 from
+% paper_v2's figures/f3_sets.tex). Data: f3_*.dat, written by make_numbers.py from results.csv
+% (seed 1 of every set).
+\begin{widefigure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=0.9\linewidth, height=5.4cm,
+        xmin=0.45, xmax=3.6, ymin=0.612, ymax=0.712,
+        xtick={1,2,3}, xticklabels={2--3 meta-path, 4 meta-path, 6 meta-path},
+        ylabel={Hit@10 thử nghiệm của HAN (lấy mẫu)},
+        yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+        ytick={0.62,0.64,0.66,0.68,0.70},
+        tick label style={font=\scriptsize}, label style={font=\footnotesize},
+        ymajorgrids, grid style={black!8}, axis line style={black!60}, tick style={black!60},
+        legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west, draw=none,
+          fill=white, fill opacity=0.85, text opacity=1},
+        legend cell align=left]
+      \draw[black!20] (axis cs:1.5,0.612) -- (axis cs:1.5,0.712);
+      \draw[black!20] (axis cs:2.5,0.612) -- (axis cs:2.5,0.712);
+      \addplot[only marks, mark=*, mark size=2.6pt, mark options={fill=cSearch, draw=white,
+          line width=0.4pt}] table[x=x, y=hit] {figures/f3_searched.dat};
+      \addlegendentry{tìm được (LMSPS)}
+      \addplot[only marks, mark=square*, mark size=2.4pt, mark options={fill=cManual, draw=white,
+          line width=0.4pt}] table[x=x, y=hit] {figures/f3_manual.dat};
+      \addlegendentry{thủ công}
+      \addplot[only marks, mark=triangle*, mark size=3pt, mark options={fill=cRandom, draw=white,
+          line width=0.4pt}] table[x=x, y=hit] {figures/f3_random.dat};
+      \addlegendentry{chọn ngẫu nhiên}
+      \addplot[only marks, mark=none, point meta=explicit symbolic,
+          visualization depends on={value \thisrow{anchor}\as\labelanchor},
+          nodes near coords, nodes near coords style={font=\scriptsize, text=black!80,
+            anchor=\labelanchor, inner sep=2.5pt}]
+        table[x=x, y=y, meta=label] {figures/f3_labels.dat};
+    \end{axis}
+  \end{tikzpicture}
+  \Description{Biểu đồ điểm Hit@10 thử nghiệm của HAN cho cả 24 tập meta-path, nhóm theo kích thước tập, mỗi loại tập một hình dạng và màu điểm riêng. Các tập tìm được nằm ở phía thấp của các tập lấy từ các ứng viên. Các tập thủ công nằm giữa các tập chọn ngẫu nhiên.}
+  \caption{Hit@10 thử nghiệm của HAN cho cả 24 tập meta-path, mỗi tập một seed (độ lệch chuẩn qua
+    ba seed của các tập chính nhiều nhất là \val{han-m6-hit-sd}). Ở seed này, các tập tìm được đứng
+    cuối trong số các tập lấy từ cùng \val{search-cands} ứng viên ở cả hai kích thước, dù với chênh
+    lệch nằm trong nhiễu giữa các seed. M5 và M6 nằm gần giữa các tập chọn ngẫu nhiên. Để so sánh:
+    mô hình phổ biến \val{pop-hit}, GAT \val{gat-hit-mean}.}
+  \label{fig:sets}
+\end{widefigure}

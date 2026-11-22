@@ -1,0 +1,35 @@
+% t7_cost.tex -- T7: cost and performance of the three ways to choose HAN's paths (paper_v2_vn,
+% translated in L3 from paper_v2's tables/t7_cost.tex). Search cost from the 60 search logs (150
+% epochs at the logged epoch time plus the feature propagation); results from results.csv; all via
+% numbers.tex. The cost of the hand design is stated in words: none of the reference papers
+% measures it.
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{Chi phí và kết quả của từng cách chọn meta-path cho HAN: Hit@10 trên tập thử
+    nghiệm, lấy mẫu và xếp hạng toàn bộ. Thủ công và bằng tìm kiếm: trung bình qua 3 seed. Ngẫu
+    nhiên: trung bình của 5 lần chọn, mỗi lần một seed. Chênh lệch tương đối được tính so với tập
+    thủ công cùng kích thước. Huấn luyện HAN trên tập đã chọn tốn như nhau cho cả ba cách, trung vị
+    \val{han-run-min}~phút~GPU mỗi lần chạy.}
+  \label{tab:cost}
+  \begin{tabularx}{\linewidth}{@{}lLlll@{}}
+    \toprule
+    & & \multicolumn{2}{l}{Hit@10 lấy mẫu} & Hit@10 toàn bộ \\
+    \cmidrule(lr){3-4}\cmidrule(l){5-5}
+    Cách chọn & Chi phí lựa chọn & 4 / 6 meta-path & so với thủ công & 4 / 6 meta-path \\
+    \midrule
+    Thủ công (M5, M6) & không dùng GPU: một buổi thiết kế có AI hỗ trợ (không ghi lại thời gian)
+      cùng các phép kiểm tra độ dày đặc trên một đồ thị nhỏ, mất vài phút CPU
+      & \val{han-m5-hit-mean} / \val{han-m6-hit-mean} & --
+      & \val{han-m5-fhit-mean} / \val{han-m6-fhit-mean} \\
+    Bằng tìm kiếm (\code{a1}) & \val{search-runs} lần chạy cho mỗi kích thước, trung vị
+      \val{search-run-min-4} / \val{search-run-min-6}~phút~GPU mỗi lần:
+      \val{search-total-h}~giờ~GPU & \val{han-f4a1-hit-mean} / \val{han-f6a1-hit-mean}
+      & \val{han-4-hit-rel}\% / \val{han-6-hit-rel}\%
+      & \val{han-f4a1-fhit-mean} / \val{han-f6a1-fhit-mean} \\
+    Ngẫu nhiên (5 lần chọn) & không tốn & \val{han-r4-hit-mean} / \val{han-r6-hit-mean}
+      & \val{han-r4-vs-manual-rel}\% / \val{han-r6-vs-manual-rel}\%
+      & \val{han-r4-fhit-mean} / \val{han-r6-fhit-mean} \\
+    \bottomrule
+  \end{tabularx}
+\end{widetable}

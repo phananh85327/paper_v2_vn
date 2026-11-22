@@ -1,0 +1,128 @@
+% sections/method.tex -- Section 5 (paper_v2_vn, translated in L5 from paper_v2's
+% sections/method.tex; terms as in glossary_vn.tex). Every number is \val{} from numbers.tex.
+% Figure: figures/f2_ties.tex (F2). F1 (the overview), the changes from the base papers with their
+% reasons and the search's details are in the supplementary document (supplement_vn.tex, N31). The
+% key settings are in Section 6.
+\section{Phương pháp}
+\label{sec:method}
+
+\subsection{Tìm kiếm meta-path cho dự~đoán~liên~kết}
+\label{sec:search}
+
+\paragraph{LMSPS\@.} Trước hết, LMSPS \citep{li2024longrange} cho mỗi meta-path ứng
+viên một ma trận đặc trưng trên các nút đích: các đặc trưng gốc ở đầu kia của meta-path được lấy
+trung bình qua từng bước dọc theo meta-path. Một siêu mạng gán cho mỗi ứng viên $k$ một trọng số
+$\alpha_k$. Ở mỗi epoch siêu mạng này hợp nhất $M$ meta-path lấy mẫu từ một nhóm ứng viên với trọng số
+Gumbel-softmax tính từ $\alpha$. Nhóm ứng viên thu hẹp dần còn $V$ meta-path có $\alpha$ lớn
+nhất. Trọng số của mạng được học trên dữ liệu huấn luyện và $\alpha$ trên tập dữ liệu xác thực. Cuối cùng, các tập $M$ meta-path từ
+nhóm ứng viên cuối được tính điểm trên tập dữ liệu xác thực. Tập tốt nhất là kết quả. Chúng tôi bắt
+đầu từ mã nguồn của các tác giả\footnote{\url{https://github.com/JHL-HUST/LMSPS}}, vốn được xây
+dựng cho bài toán phân loại nút. Chúng tôi thay đổi mã nguồn cho bài toán dự đoán liên kết.
+
+\paragraph{Điểm và hàm mất mát.} Embedding $h_p$ của một sản phẩm là tổng có trọng số của các đặc
+trưng meta-path của nó, mỗi đặc trưng qua một ánh xạ tuyến tính riêng, tiếp theo là PReLU và
+dropout. Mỗi người dùng có một embedding tự do $e_u$ \val{search-hidden} chiều. Một cặp được tính điểm
+bằng
+\begin{equation}
+  s(u, p) = e_u^{\top} h_p ,
+  \label{eq:score}
+\end{equation}
+và được huấn luyện với hàm mất mát BPR \citep{rendle2009bpr}, $-\log \sigma\bigl(s(u, p^{+}) -
+s(u, p^{-})\bigr)$, trên các cạnh huấn luyện $(u, p^{+})$ và các sản phẩm $p^{-}$ lấy mẫu ngẫu nhiên
+từ những sản phẩm mà $u$ không có cạnh huấn luyện nối tới. HAN sẽ dùng cùng thang điểm và hàm mất mát này.
+
+\paragraph{Ứng viên.} Các ứng viên là những meta-path dài từ 1 đến \val{search-hops} bước bắt đầu và
+kết thúc tại một sản phẩm, vì HAN cần một đồ thị sản phẩm cho mỗi meta-path:
+\val{search-cands-raw} meta-path, hay \val{search-cands} khi mỗi meta-path được gộp với meta-path
+ngược của nó cho cùng một đồ thị sau khi đối xứng hóa.
+
+\paragraph{Biện pháp chống rò rỉ.} Các đặc trưng được tính trên đồ thị huấn luyện, vốn chứa cả chính
+các cạnh huấn luyện. Vì vậy, với một cạnh huấn luyện, đặc trưng meta-path qua người dùng của sản phẩm
+đã chứa sẵn người dùng của cạnh đó, điều mà một cạnh giữ lại không bao giờ có. Để tránh điều này,
+chúng tôi học $\alpha$ trên các cạnh xác thực. Ở bước cập nhật trọng số, chúng tôi tính đặc trưng
+meta-path qua người dùng \val{search-folds} lần, mỗi lần bỏ đi một phần tư khác nhau của các cạnh
+huấn luyện, rồi đọc đặc trưng của mỗi cạnh từ phiên bản không chứa cạnh đó.
+
+\paragraph{Lịch huấn luyện và cách chọn.} Một tập gồm $M = 4$ hoặc $M = 6$ meta-path. Nhóm ứng
+viên cuối gồm $V = \val{search-pool}$ meta-path, để có thể tính điểm cả \val{search-sets} tập của nhóm. Một lần chạy
+kéo dài \val{search-epochs} epoch, \val{search-warmup} epoch đầu với toàn bộ nhóm ứng viên. LMSPS
+tính điểm các tập lấy mẫu với nhiễu Gumbel mới, mà trên dữ liệu của chúng tôi làm điểm của một tập
+thay đổi nhiều hơn chênh lệch giữa các tập. Chúng tôi tính điểm mỗi tập một lần, không có nhiễu,
+bằng BPR xác thực của nó so với \val{split-negatives} mẫu âm cố định của mỗi cạnh xác thực. Mỗi lần
+chạy cũng ghi lại \emph{nhóm đồng hạng} của nó, tức các tập nằm trong phạm vi
+$\delta = \val{search-delta}$ so với tập có điểm tốt nhất.
+
+\subsection{Một quyết định từ nhiều lần chạy}
+\label{sec:fleet}
+
+Một lần chạy không xếp hạng được các tập tốt nhất của nó (Hình~\ref{fig:ties}): nhóm đồng hạng
+của nó chứa trung vị \val{search-tie-med-4} trong \val{search-sets} tập với $M = 4$ meta-path và
+\val{search-tie-med-6} với $M = 6$ meta-path. Qua \val{search-runs} lần chạy cho mỗi kích thước, có
+\val{search-winners-4} và \val{search-winners-6} tập thắng khác nhau. Vì vậy, chúng tôi chạy tìm
+kiếm \val{search-runs} lần cho mỗi kích thước, với seed từ 1 đến \val{search-runs} trên cùng dữ liệu
+và phép chia, rồi đưa ra một quyết định từ tất cả các lần chạy.
+
+\input{figures/f2_ties}
+
+\paragraph{Điểm trung bình.} Các lần chạy tính điểm những tập khác nhau, vì nhóm ứng viên cuối của
+chúng khác nhau, nhưng xếp hạng giống nhau những tập mà chúng cùng có (hệ số Spearman trung vị
+\val{search-agree-4} với $M = 4$ và \val{search-agree-6} với $M = 6$).
+Chúng tôi khớp giá trị mất mát xác thực của tập $s$ trong lần chạy $r$ dưới dạng $a_r + b_s$ bằng
+bình phương tối thiểu và so sánh \val{search-avg-sets-4} và \val{search-avg-sets-6} tập được tính
+điểm trong ít nhất năm lần chạy. Sau đó, chúng tôi áp dụng quy tắc một sai số chuẩn: các tập có $b_s$
+cách giá trị của tập tốt nhất không quá một sai số chuẩn (\val{search-se-4} với $M = 4$ meta-path và
+\val{search-se-6} với $M = 6$ meta-path) tạo thành một cửa sổ, trong đó tập đơn giản nhất theo tổng
+số bước được ưu tiên, vì các meta-path ngắn hơn cũng tạo ra đồ thị HAN thưa hơn. Với $M = 4$
+meta-path, cửa sổ này chứa \val{search-window-4} tập: \code{a1} (tập tốt nhất) và \code{a2}. Cả hai
+đều được chuyển cho các mô hình. Với $M = 6$ meta-path, nó chứa \val{search-window-6} tập gần ngang
+nhau, một vùng phẳng mà tìm kiếm không xếp hạng được. Chúng tôi lấy hai tập đơn giản nhất, bằng
+số tập với bốn meta-path. Chúng tôi cũng đã ghi lại lý do cho quyết định này.
+
+\paragraph{Bỏ phiếu.} Một quy tắc thứ hai cho mỗi lần chạy chọn, từ nhóm đồng hạng của nó, tập mà
+các meta-path của nó xuất hiện thường xuyên nhất trong các tập thắng của những lần chạy khác. Tập
+đồng thuận \code{c} gồm $M$ meta-path phổ biến nhất trong các lựa chọn. Vì bản thân cách bỏ phiếu
+đã tạo ra một mức đồng thuận nhất định, chúng tôi so sánh nó với \val{search-null-fleets} loạt chạy
+có điểm bị xáo trộn trong từng lần chạy (Hình~\ref{fig:ties}b). Mức đồng
+thuận giữa các lần chạy cao hơn mức ngẫu nhiên, nhưng không nhiều: \val{search-null-share-4}\% và
+\val{search-null-share-6}\% số loạt chạy xáo trộn có số lựa chọn khác nhau ít như vậy.
+
+\paragraph{Những gì được chuyển cho các mô hình.} Mỗi kích thước chuyển giao \code{a1}, \code{a2}
+và \code{c} (Bảng~\ref{tab:sets}). Tập \code{a1} là đối tượng của phép so sánh chính với các tập thủ
+công, đã được cố định từ trước. Ngưỡng dung sai $\delta$ được cố định trước các lần chạy cuối, dựa
+trên nhiễu giữa các lần chạy trước đó. Các điểm trung bình không phụ thuộc vào nó. Một $\delta$
+nhỏ hơn cũng không làm thay đổi \code{a1} lẫn \code{a2}.
+
+\subsection{Các mô hình dùng meta-path}
+\label{sec:models}
+
+\paragraph{HAN\@.} HAN \citep{wang2019heterogeneous} biến mỗi meta-path thành một đồ thị trên
+các nút đích, chạy cơ chế chú ý mức nút, tức một tầng chú ý đồ thị trên từng đồ thị rồi hợp nhất
+các embedding theo từng meta-path bằng cơ chế chú ý mức ngữ nghĩa, tức một trọng số $\beta$ cho
+mỗi meta-path dùng chung cho mọi nút. Chúng tôi giữ cả hai mức và thay đổi ba điểm.
+\emph{Đồ thị:} đồ thị sản phẩm của mỗi meta-path giữ \val{han-set-topk} láng giềng mạnh nhất của
+mỗi sản phẩm theo số đường đi (walk count) sau mỗi bước, vì nếu không cắt tỉa, các meta-path có hai
+bước qua người dùng sẽ nối một sản phẩm với phần lớn kho sản phẩm. Đồ thị là nhị phân, đối xứng và
+cho mỗi sản phẩm một cạnh tự nối. \emph{Người dùng:} HAN chỉ mã hóa các sản phẩm. Mỗi
+người dùng có một embedding tự do và một cặp được tính điểm bằng công thức~\eqref{eq:score} với BPR.
+Các embedding người dùng chiếm \val{han-user-params}~triệu trong số
+\val{han-params-min}--\val{han-params-max}~triệu tham số của HAN. \emph{Trọng số meta-path:} tầng
+chú ý của mọi meta-path bắt đầu từ cùng trọng số, còn $\beta$ được giữ bằng nhau trong
+\val{han-set-beta-warmup} epoch đầu. Nếu các tầng chú ý được khởi tạo ngẫu nhiên khác nhau cho từng meta-path, trọng số mà HAN gán cho
+một meta-path sẽ phụ thuộc vào vị trí của nó trong danh sách meta-path. Không có giai đoạn khởi động, một meta-path đã chiếm toàn bộ
+trọng số chỉ sau vài epoch.
+
+\paragraph{metapath2vec.} metapath2vec \citep{dong2017metapath2vec} học embedding của nút, không
+dùng đặc trưng, bằng một mô hình skip-gram trên các bước đi ngẫu nhiên theo một meta-path.
+Chúng tôi đi mọi meta-path của một tập cùng nhau, mỗi meta-path như một khuôn mẫu lặp lại
+(\code{PUP} cho P--U--P--U\ldots), bắt đầu từ mọi sản phẩm, rồi tính điểm các embedding đã cố định
+bằng công thức~\eqref{eq:score}. Người dùng chỉ được tiếp cận qua các meta-path có \code{U}, nên
+một tập không có meta-path nào như vậy sẽ để người dùng không được huấn luyện.
+
+\paragraph{GAT và mô hình phổ biến.} Làm đối chứng không dùng meta-path, một mạng chú ý đồ thị
+\citep{velickovic2018graph} được huấn luyện với BPR, chạy trên hợp của mọi quan hệ, bỏ qua kiểu nút
+ngoại trừ một phép chiếu đầu vào cho mỗi kiểu: đây là mô hình cơ sở đồng nhất của bộ đánh giá chuẩn
+HGB \citep{lv2021hgb}. Người dùng và sản phẩm cùng từ một mạng, nên một người dùng được dựng từ
+các sản phẩm mà người đó đã nhận xét. Mỗi bước huấn luyện bỏ các cạnh dương của chính nó khỏi đồ
+thị mà nó chạy trên, vì một cạnh giữ lại không bao giờ nằm trong đồ thị. Mô hình phổ biến tính
+điểm một sản phẩm bằng số người dùng huấn luyện của nó (bằng điểm thì xếp ngẫu nhiên) và đưa ra
+cùng một bảng xếp hạng cho mọi người dùng.

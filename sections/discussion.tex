@@ -1,0 +1,50 @@
+% sections/discussion.tex -- the conclusion (paper_v2_vn). Since 20 November (N26) there is no
+% Discussion or Threats section: their main points are in Section 7 (why the searched sets lose, why
+% GAT leads) and in the conclusion below (the cheapest choice, who should judge a search, the
+% limitations). The two minor limitations, in an appendix from N26, are back here since N31. Every
+% number is \val{} from numbers.tex.
+\section{Kết luận}
+\label{sec:conclusion}
+
+Trên một phiên bản Amazon-Meta đã làm sạch với ba kiểu nút và \val{search-cands} meta-path ứng
+viên, kết quả của tìm kiếm meta-path tự động khá gần với thiết kế thủ công cho gợi ý sản phẩm dựa
+trên HAN: các tập mà một phép tìm kiếm gồm \val{search-runs-total} lần chạy chọn ra kém các tập thủ
+công \val{han-6-hit-relabs}--\val{han-4-hit-relabs}\% theo độ đo đã cố định từ trước và ngang bằng
+chúng khi xếp hạng toàn bộ. Sự thua kém chủ yếu nằm ở những sản phẩm mà các meta-path danh mục của
+các tập tìm được không đến được. Vì vậy, nên chọn cách nào tùy thuộc vào bối cảnh. Nếu có chuyên
+gia để thiết kế được meta-path trong thời gian ngắn hơn thời gian tìm kiếm, ở đây sẽ khoảng
+\val{search-total-h}~giờ~GPU, thiết kế thủ công là lựa chọn tốt hơn. Nếu không có chuyên gia,
+tìm kiếm tự động cho các tập gần với thiết kế thủ công mà không cần kiến thức chuyên môn. Tuy
+nhiên, đối chứng ngẫu nhiên cho thấy trên lược đồ nhỏ này việc chọn meta-path ít ảnh hưởng: các
+tập chọn ngẫu nhiên từ cùng các ứng viên vốn không tốn chi phí, đạt kết quả ít nhất ngang bằng
+cả hai cách (Mục~\ref{sec:res-random}). Lợi thế của tìm kiếm (nếu có) nhiều khả năng nằm ở những
+lược đồ lớn hơn, nơi cả thiết kế thủ công lẫn chọn ngẫu nhiên đều khó, điều mà nghiên cứu này chưa
+kiểm chứng. Một GAT không phân biệt kiểu vượt cả hai mô hình dùng meta-path.
+
+Bài học chính là một phương pháp tìm kiếm cho một mô hình gợi ý nên được đánh giá bằng chính mô hình
+gợi ý đó, như RMS đã làm \citep{ning2022automatic}, hoặc ít nhất được kiểm tra so với các tập chọn
+ngẫu nhiên từ chính các ứng viên của nó. Các tập mà mạng riêng của LMSPS đánh giá là tốt nhất không
+phải là các tập tốt nhất đối với HAN. Mức cải thiện của LMSPS trên HAN
+\citep[Bảng~4]{li2024longrange} được đo trên bài toán phân loại nút, nơi mỗi nút được mã hóa từ vùng
+lân cận của nó. Trong bài toán dự đoán liên kết của chúng tôi, phần lớn tham số của HAN là các
+embedding người dùng tự do mà không meta-path nào định hình.
+
+\paragraph{Hạn chế.} Nghiên cứu dùng một bộ dữ liệu, một bài toán và một lược đồ nhỏ, chỉ với các
+meta-path phía sản phẩm. Phép chia ngẫu nhiên duy nhất bỏ qua ngày nhận xét, điều cho phép mô
+hình học từ các tương tác về sau và có thể làm thay đổi thứ hạng của các mô hình
+\citep{ji2023leakage,meng2020splitting}. Mọi tập dùng chung một cấu hình không tinh chỉnh. Khi giai
+đoạn khởi động trọng số meta-path ngắn hơn, tập tìm được lại vượt tập thủ công ở sáu meta-path,
+trong một phép kiểm tra chỉ dùng một seed (Mục~\ref{sec:res-sensitivity}). Phép tìm kiếm của chúng
+tôi nhỏ hơn so với bài báo gốc vì được định cỡ cho một GPU. Các lần chạy của nó đồng thuận hơn mức
+ngẫu nhiên, nhưng một phép tìm kiếm lớn hơn có thể chọn khác. Các tập thủ công được thiết kế theo các nguyên
+tắc nêu rõ chứ không phải bởi một chuyên gia về lĩnh vực này, nên một chuyên gia có thể chọn những
+tập khác. Việc huấn luyện HAN chưa hội tụ hẳn: BPR xác thực còn cải thiện tới \val{han-gain-max}
+trong mười epoch cuối, nhưng với các tập tìm được thì nhiều nhất chỉ \val{searched-gain-max}. Do
+đó, huấn luyện lâu hơn nhiều khả năng sẽ nới rộng hơn là thu hẹp khoảng cách giữa hai cách. Sản
+phẩm chỉ liên kết với các danh mục lá (Mục~\ref{sec:data}). Nếu liên kết mọi danh mục cấp trên, các
+ứng viên và lựa chọn của tìm kiếm sẽ khác.
+
+Hướng nghiên cứu tiếp theo gồm: (1) liệu một meta-path danh mục dày đặc có thu hẹp
+được khoảng cách không, (2) một phép tìm kiếm được đánh giá bằng chính mô hình gợi ý của nó, như
+RMS, (3) các meta-path phía người dùng, (4) truy vấn top-$k$ của \citet{zhu2020topk}, (5) các lược
+đồ lớn hơn, các bộ dữ liệu khác và các phép chia theo ngày, nơi tìm kiếm có thể đem lại lợi ích.

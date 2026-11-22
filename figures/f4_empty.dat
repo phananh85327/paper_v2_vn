@@ -1,0 +1,9 @@
+% paths of kind "empty" HAN used at seed 1: the search's mean alpha rank over both sizes
+% (1 = most preferred of 36) and HAN's mean weight as a multiple of an equal share
+rank weight uses path
+10.22 0.375 4 PCCPCP
+10.62 0.004 6 PPCCPP
+11.75 0.001 1 PCCPUP
+12.08 0.048 5 PCCPP
+12.38 1.380 4 PCCP
+13.62 0.340 5 PCCPPP

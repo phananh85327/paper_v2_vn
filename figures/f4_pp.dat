@@ -1,0 +1,7 @@
+% paths of kind "pp" HAN used at seed 1: the search's mean alpha rank over both sizes
+% (1 = most preferred of 36) and HAN's mean weight as a multiple of an equal share
+rank weight uses path
+27.48 0.943 3 PPPPP
+28.83 1.140 5 PPP
+29.18 0.802 2 PPPPPP
+29.52 0.304 6 PP

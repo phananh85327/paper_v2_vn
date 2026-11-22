@@ -1,0 +1,24 @@
+% sections/statements.tex -- the code and data statement and the AI statement (paper_v2_vn,
+% translated in L7 from paper_v2's sections/statements.tex. The AI statement is the author's own
+% wording, N28.) The details are in the Reproducibility section of supplement_vn.tex (N31). For a
+% repository the code paragraph says "bộ mã nguồn", as the AI statement does (the author's choice,
+% not the glossary's word).
+\section*{Mã nguồn và dữ liệu}
+Mã nguồn được công bố công khai: \url{https://github.com/phananh85327/LMSPS} chứa quy trình xử lý
+dữ liệu và tìm kiếm, còn \url{https://github.com/phananh85327/han-improve} chứa các mô hình và phần
+đánh giá. Các kết quả đến từ commit \texttt{\val{repo-lmsps-commit}} của bộ mã nguồn thứ nhất và
+commit \texttt{\val{repo-han-commit}} của bộ mã nguồn thứ hai. Bản ghi của mọi lần chạy được lưu cùng
+hai bộ mã nguồn này. Trong bộ thứ nhất, script \code{hgb/generate_data.bat} dựng lại dữ liệu đã làm
+sạch từ tệp thô của SNAP (vốn chúng tôi không phân phối lại) và script \code{paper/make_numbers.py}
+tính mọi con số, bảng và hình của bài báo từ các bản ghi đó.
+
+\section*{Sử dụng trợ lý AI}
+Chúng tôi đã sử dụng một trợ lý AI, Claude (Anthropic). Các tập meta-path thủ công được thiết kế với
+sự hỗ trợ của nó theo các nguyên tắc ở Mục~\ref{sec:setup}, trước khi có bất kỳ kết quả nào. Nó đã
+rà soát mã nguồn, đề xuất hướng đi và sửa lỗi. Nó cũng hỗ trợ viết script tính các con
+số, bảng và hình của bài báo từ các bản ghi lần chạy. Tác giả đã đề xuất nghiên cứu,
+cùng các phương pháp nền tảng, bộ dữ liệu và các bài báo tham chiếu, trong một đề cương dự án
+dự định so sánh các meta-path được tìm ra với các meta-path chọn thủ công trên HAN và metapath2vec,
+với GAT làm đối chứng. Tác giả cũng đã viết các phiên bản đầu tiên của cả hai bộ mã nguồn,
+điều chỉnh mã gốc của LMSPS và HAN cho bài toán dự đoán liên kết. Mọi thực nghiệm đều do tác giả chạy.
+Tác giả đã rà soát toàn bộ công việc này và chịu trách nhiệm hoàn toàn về nội dung.

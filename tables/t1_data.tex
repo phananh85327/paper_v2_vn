@@ -1,0 +1,32 @@
+% t1_data.tex -- T1: the data before and after the fixes (paper_v2_vn, translated in L3 from
+% paper_v2's tables/t1_data.tex; terms as in glossary_vn.tex). Every number is \val{} from
+% numbers.tex (make_numbers.py; sources: audit_before_fix.json and data/AMAZON/audit.json).
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Dữ liệu trước và sau khi gộp các ấn bản trùng lặp và loại các tài khoản có từ
+    \val{rule-placeholder-repeats} nhận xét trở lên cho một sản phẩm. Cả hai phiên bản đều giữ các
+    nhận xét tích cực và lọc theo \val{rule-kcore}-lõi. Số liệu rà soát trên toàn bộ dữ liệu, seed
+    của phép chia~\val{split-seed}.}
+  \label{tab:data}
+  \begin{tabularx}{\linewidth}{@{}Lrr@{}}
+    \toprule
+    & Trước & Sau \\
+    \midrule
+    Sản phẩm / danh mục & \val{before-products} / \val{before-categories}
+      & \val{after-products} / \val{after-categories} \\
+    Người dùng & \val{before-users} & \val{after-users} \\
+    Cạnh người dùng--sản phẩm & \val{before-edges} & \val{after-edges} \\
+    Bậc lớn nhất của người dùng & \val{before-maxdeg} & \val{after-maxdeg} \\
+    Cụm ấn bản trùng lặp (số sản phẩm trong các cụm) & \val{before-clusters}
+      (\val{before-clustered}) & \val{after-clusters} (\val{after-clustered}) \\
+    Cạnh lặp lại tương tác của người dùng với một ấn bản khác & \val{before-copyedges-pct}\%
+      & \val{after-copyedges-pct}\% \\
+    Cạnh xác thực / thử nghiệm có bản sao trong tập huấn luyện & \val{before-valleak-pct}\% /
+      \val{before-testleak-pct}\% & \val{after-valleak-pct}\% / \val{after-testleak-pct}\% \\
+    Cạnh xác thực / thử nghiệm mà người dùng có cạnh huấn luyện tới một sản phẩm cùng tiêu đề
+      (cận trên của số bản trùng còn lại) & \val{before-valtitle-pct}\% /
+      \val{before-testtitle-pct}\% & \val{after-valtitle-pct}\% / \val{after-testtitle-pct}\% \\
+    \bottomrule
+  \end{tabularx}
+\end{table}

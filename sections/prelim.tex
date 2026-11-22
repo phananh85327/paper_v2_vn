@@ -1,0 +1,26 @@
+% sections/prelim.tex -- Section 3 (paper_v2_vn, translated in L4 from paper_v2's
+% sections/prelim.tex; terms as in glossary_vn.tex): definitions as in HAN (its Definitions
+% 3.1-3.3) and the task.
+\section{Kiến thức cơ sở}
+\label{sec:prelim}
+
+\paragraph{Đồ thị không đồng nhất và meta-path.} Theo HAN \citep{wang2019heterogeneous}, một
+đồ thị không đồng nhất $G = (V, E)$ đi kèm một ánh xạ kiểu nút $\phi \colon V \to \mathcal{A}$ và
+một ánh xạ kiểu cạnh $\psi \colon E \to \mathcal{R}$, trong đó $|\mathcal{A}| + |\mathcal{R}| > 2$.
+Đồ thị của chúng tôi có ba kiểu nút, sản phẩm (P, product), danh mục (C, category) và người dùng
+(U, user), cùng bốn quan hệ: mua kèm (P--P),
+danh mục lá (P--C), cha và con (C--C) và nhận xét tích cực (U--P). Một meta-path
+$A_1 \xrightarrow{R_1} A_2 \xrightarrow{R_2} \cdots \xrightarrow{R_l} A_{l+1}$ gồm $l$ bước mô tả
+quan hệ hợp thành $R_1 \circ R_2 \circ \cdots \circ R_l$. Chúng tôi viết nó bằng chữ cái đầu của
+các kiểu nút. Mọi meta-path ở đây đều bắt đầu và kết thúc tại một sản phẩm: \code{PUP} nối hai sản
+phẩm được cùng một người dùng nhận xét, \code{PCP} nối hai sản phẩm trong cùng một danh mục lá.
+Láng giềng của một sản phẩm theo một meta-path là những sản phẩm được nối với nó bởi ít nhất một
+đường đi theo meta-path đó \citep{wang2019heterogeneous}. Số đường đi như vậy giữa hai sản phẩm có
+thể đếm được bằng cách nhân các ma trận kề của các quan hệ trong meta-path.
+
+\paragraph{Bài toán.} Các nhận xét tích cực, tức các cạnh giữa người dùng $\mathcal{U}$ và sản
+phẩm $\mathcal{P}$, được chia thành các cạnh huấn luyện, xác thực và thử nghiệm
+(Mục~\ref{sec:data}). Đồ thị mà một mô hình thấy chỉ chứa các cạnh huấn luyện. Với một cạnh
+giữ lại $(u, p)$, mô hình xếp hạng $p$ trong số các sản phẩm mà $u$ không có cạnh nối tới. Mọi mô
+hình cuối cùng đều cho một embedding $e_u$ cho mỗi người dùng và $h_p$ cho mỗi sản phẩm, rồi xếp hạng
+theo $e_u^{\top} h_p$ (công thức~\ref{eq:score}). Mục~\ref{sec:setup} trình bày các độ đo.

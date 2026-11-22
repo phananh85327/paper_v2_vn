@@ -1,0 +1,90 @@
+% sections/data.tex -- Section 4 (paper_v2_vn, translated in L5 from paper_v2's sections/data.tex;
+% terms as in glossary_vn.tex). The details that left it in paper_v2 (cluster sizes, the McAuley
+% data, the twin check, the title vocabulary, linking every ancestor) are in the supplementary
+% document (supplement_vn.tex, N31). The footnote on the McAuley data page, the source of the
+% quotation, moved here from the appendix. Every number is \val{} from numbers.tex.
+\section{Dữ liệu}
+\label{sec:data}
+
+Amazon-Meta\footnote{\url{https://snap.stanford.edu/data/amazon-meta.html}}
+\citep{leskovec2007viral} là dữ liệu thu thập từ các trang sản phẩm của Amazon vào mùa hè năm 2006,
+gồm \val{raw-records} bản ghi sản phẩm thuộc sách, CD nhạc, DVD và băng video VHS,
+\val{raw-reviews} dòng nhận xét và \val{raw-categories} danh mục. Mỗi bản ghi cho biết tiêu đề và
+nhóm của sản phẩm, các sản phẩm mà khách hàng mua kèm, các chuỗi danh mục của nó từ gốc đến lá và
+các nhận xét về nó, mỗi nhận xét kèm mã khách hàng, ngày, số sao và các lượt bình chọn.
+
+\subsection{Làm sạch dữ liệu thô}
+
+\paragraph{Ấn bản trùng lặp.} Amazon hiển thị các nhận xét về một tác phẩm trên trang của từng ấn
+bản và định dạng của nó. Quá trình thu thập đã ghi lại mọi trang. Vì vậy, cùng một dòng nhận
+xét xuất hiện dưới nhiều sản phẩm: bản DVD và bản VHS của một bộ phim có chung
+\val{example-shared} trong số \val{example-lines} dòng nhận xét của chúng. Tổng cộng,
+\val{raw-shared-pct}\% số dòng nhận xét thô cũng xuất hiện dưới một sản phẩm khác. Một bộ lọc chỉ
+loại các cặp (khách hàng, sản phẩm) lặp lại vẫn giữ những bản sao này. Trong dữ liệu được xây dựng
+theo cách đó (Bảng~\ref{tab:data}, \emph{trước}), \val{before-clustered-pct}\% số sản phẩm nằm
+trong \val{before-clusters} cụm ấn bản, còn \val{before-valleak-pct}\% số cạnh xác thực cùng
+\val{before-testleak-pct}\% số cạnh thử nghiệm có một bản sao trong tập huấn luyện: cùng một khách
+hàng nhận xét một ấn bản khác của cùng tác phẩm. Bản sao làm lộ cạnh giữ lại. Rò rỉ như vậy dẫn
+đến việc đánh giá quá cao hiệu năng \citep[\S3.3]{kaufman2012leakage}: một mô hình có thể đạt điểm
+cao nhờ tìm ra các bản sao thay vì học sở thích của người dùng. Meta-path tìm bản sao tốt nhất là
+meta-path đồng nhận xét ngắn nhất, \code{PUP}, nên sự rò rỉ này ưu ái chính loại meta-path mà một
+nghiên cứu về meta-path đem ra so sánh.
+
+Chúng tôi gộp hai sản phẩm khi chúng có chung ít nhất \val{rule-edition-shared} dòng nhận xét giống
+hệt nhau (khách hàng, ngày, số sao, lượt bình chọn và lượt bình chọn hữu ích), chiếm ít nhất
+\val{rule-edition-overlap-pct}\% số dòng của sản phẩm nhỏ hơn, bỏ qua các dòng xuất hiện dưới hơn
+\val{rule-edition-maxrun} sản phẩm. Quy tắc này nối \val{edition-pairs} cặp thành
+\val{edition-clusters} cụm. Mỗi cụm giữ thành viên có nhiều dòng nhận xét nhất. Dữ liệu nhận xét
+Amazon ra đời sau của \citet{mcauley2015image} cũng có loại trùng lặp này,
+``\foreignlanguage{english}{mainly due to near-identical products whose reviews Amazon merges,
+e.g.\ VHS and DVD versions of the same movie}'' (chủ yếu do các sản phẩm gần như giống hệt nhau mà
+Amazon gộp nhận xét, chẳng hạn các phiên bản VHS và DVD của cùng một bộ phim)\footnote{Trích từ trang
+dữ liệu \url{https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html}, truy cập ngày 5 tháng 11
+năm 2026.} và đi kèm các tệp đã loại bỏ trùng lặp. Theo hiểu biết của chúng tôi, chưa có bước nào như
+vậy được báo cáo cho Amazon-Meta.
+
+\paragraph{Các bước khác.} Chúng tôi loại mọi tài khoản khách hàng có ít nhất
+\val{rule-placeholder-repeats} nhận xét cho cùng một sản phẩm (\val{placeholder-ids} tài khoản,
+\val{placeholder-lines} dòng nhận xét). Một nhận xét là một tương tác tích cực khi nó có từ
+\val{rule-pos-rating} sao trở lên, như \val{raw-pos-pct}\% số dòng thô, trừ khi có ít nhất
+\val{rule-helpful-votes} người đọc đã bình chọn cho nó và chưa đến \val{rule-helpful-pct}\% thấy
+nó hữu ích, điều này loại \val{raw-unhelpful-pct}\% số nhận xét tích cực. Mỗi người dùng chỉ được
+tính một lần cho mỗi tác phẩm. Sau đó, một \val{rule-kcore}-lõi ($k$-core), áp dụng sau khi gộp và
+sau quy tắc tài khoản để chỉ đếm các tương tác khác nhau, giữ lại những người dùng và sản phẩm có
+ít nhất \val{rule-kcore} tương tác mỗi bên (\val{kcore-iterations} vòng).
+
+\input{tables/t1_data}
+
+\paragraph{Tác động.} Việc gộp và quy tắc tài khoản thu nhỏ đồ thị từ \val{before-edges} xuống
+\val{after-edges} cạnh người dùng--sản phẩm và giảm tỷ lệ cạnh thử nghiệm có bản sao trong tập huấn
+luyện từ \val{before-testleak-pct}\% xuống \val{after-testleak-pct}\% (Bảng~\ref{tab:data}). Một
+phép kiểm tra thứ hai, cho các sản phẩm có tập người nhận xét giống hệt nhau, tìm thấy
+\val{twin-test} cạnh thử nghiệm có một sản phẩm song sinh như vậy trong tập huấn luyện. Loại bỏ các
+cạnh này không làm Hit@10 thử nghiệm của lần chạy nào thay đổi quá \val{twin-maxdiff}.
+
+\subsection{Đồ thị và phép chia}
+
+Đặc trưng của mỗi sản phẩm gồm vectơ
+LSA \val{title-dim} chiều của tiêu đề và nhóm sản phẩm. Đặc trưng của mỗi người dùng
+chỉ là một vectơ nhị phân \val{user-dim} chiều sinh từ ID khách hàng bằng hàm băm, chứ không dựng từ các nhận xét của người đó, vì chính các nhận xét
+này là các cạnh cần dự đoán.
+
+\paragraph{Danh mục lá và meta-path gần rỗng.} Sản phẩm chỉ liên kết với các danh mục lá của nó.
+Nếu liên kết thêm mọi danh mục cấp trên, \val{cat-all-largest-pct}\% số sản phẩm sẽ rơi vào cùng
+một danh mục. Tuy nhiên, một bước đơn lẻ trên cây phân cấp hiếm khi dẫn
+tới một sản phẩm khác: \code{PCCP} nối một sản phẩm với một sản phẩm khác cho
+\val{pccp-reach-dvd-pct}\% số DVD và \val{pccp-reach-video-pct}\% số video, nhưng chỉ cho
+\val{pccp-reach-book-pct}\% số sách và \val{pccp-reach-music-pct}\% số sản phẩm nhạc. Chúng tôi gọi
+sáu meta-path ứng viên có một bước như vậy là \emph{gần rỗng}: \code{PCCP}, \code{PCCPP},
+\code{PCCPPP}, \code{PCCPCP}, \code{PCCPUP} và \code{PPCCPP}. Trong các đồ thị của HAN, mỗi meta-path này để \val{empty-isolated-min-pct}--\val{empty-isolated-max-pct}\% số sản phẩm không có láng
+giềng nào, trong khi \code{PCCCP}, vốn đến được các danh mục anh em qua danh mục cha của chúng, để
+lại \val{pcccp-graph-isolated} sản phẩm. Sách và nhạc chiếm \val{group-bookmusic-pct}\% số sản
+phẩm và \val{test-bookmusic-pct}\% số cạnh thử nghiệm, nên các meta-path này sẽ trở lại ở
+Mục~\ref{sec:results}.
+
+\paragraph{Phép chia.} Chúng tôi chia \val{after-edges} cạnh người dùng--sản phẩm một lần, ngẫu
+nhiên, thành \val{split-train} cạnh huấn luyện, \val{split-val} cạnh xác thực và \val{split-test}
+cạnh thử nghiệm (80/10/10, seed của phép chia~\val{split-seed}). Mọi đồ thị và mọi bước đi ngẫu
+nhiên chỉ dùng các cạnh huấn luyện. Các cạnh xác thực dẫn dắt việc tìm kiếm và mọi lựa chọn trong
+quá trình huấn luyện, còn các cạnh thử nghiệm chỉ dùng để báo cáo kết quả. Phép chia bỏ qua ngày
+nhận xét, một hạn chế mà chúng tôi sẽ quay lại ở Mục~\ref{sec:conclusion}.

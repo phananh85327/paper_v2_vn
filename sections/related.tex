@@ -1,0 +1,53 @@
+% sections/related.tex -- Section 2 (paper_v2_vn, translated in L4 from paper_v2's
+% sections/related.tex; terms as in glossary_vn.tex). Every work cited was read for this project;
+% each claim was checked against the paper's text.
+\section{Các nghiên cứu liên quan}
+\label{sec:related}
+
+\paragraph{Gợi ý dựa trên meta-path.} MCRec gán trọng số cho ngữ cảnh dựa trên meta-path
+của từng cặp người dùng--sản phẩm bằng cơ chế đồng chú ý (co-attention) \citep{hu2018leveraging}.
+Giống HAN \citep{wang2019heterogeneous}, HGRec \citep{shi2020hgrec}, FHRec \citep{mu2021fhrec} và
+AMERec \citep{yan2021attention} học một embedding cho mỗi meta-path và hợp nhất
+các embedding bằng cơ chế chú ý. Trong khi đó, metapath2vec học embedding của nút từ các bước đi ngẫu
+nhiên theo một meta-path \citep{dong2017metapath2vec}. Tất cả các phương pháp này đều coi
+meta-path là cho sẵn.
+
+\paragraph{Phát hiện meta-path tự động.} Các phương pháp dựa trên truy vấn tìm $k$ meta-path tốt nhất nối hai nút cho trước \citep{zhu2020topk}. Các phương pháp dựa trên tìm kiếm
+học xem một mô hình nên dùng những meta-path nào, hoặc những cấu trúc phong phú hơn. GEMS tiến hóa
+các tập cấu trúc meta bằng thuật toán di truyền \citep{han2020genetic} và RMS mở
+rộng các tập meta-path bằng học tăng cường \citep{ning2022automatic}. Cả hai đều đánh giá ứng
+viên bằng chính mô hình gợi ý. Cách làm này rất chậm vì phải huấn luyện một mô hình gợi ý cho mỗi ứng viên: theo
+so sánh của DiffMG, việc tìm kiếm của GEMS mất \val{diffmg-gems-min} đến \val{diffmg-gems-max}~phút~GPU
+cho mỗi bộ dữ liệu, trong khi ba lần chạy tìm kiếm của DiffMG chỉ mất nhiều nhất
+\val{diffmg-own-max}~phút \citep[Bảng~5]{ding2021diffmg}. Các phương pháp tìm kiếm theo
+kiểu DARTS \citep{liu2019darts} giảm chi phí này bằng cách chỉ huấn luyện một lần: mọi ứng viên được
+huấn luyện cùng lúc trong một siêu mạng. DiffMG tìm một đồ thị
+meta dẫn dắt một mạng nơ-ron đồ thị cho bài toán phân loại nút và dự đoán liên kết
+người dùng--sản phẩm, rồi giữ kết quả tốt nhất trong ba lần chạy tìm kiếm theo điểm xác thực
+\citep{ding2021diffmg}. LMSPS lấy mẫu dần các meta-path từ một tập ứng viên lớn
+\citep{li2024longrange}. Chúng tôi điều chỉnh LMSPS cho bài toán dự đoán liên kết. Khác với GEMS
+và RMS, LMSPS đánh giá các tập của nó bằng mạng riêng, một mạng đóng vai trò thay cho HAN
+(Mục~\ref{sec:res-weights} và~\ref{sec:conclusion}).
+
+\paragraph{Đánh giá phương pháp tìm kiếm.} LMSPS so sánh các meta-path của nó với các meta-path
+gốc của HAN, vốn được chọn thủ công, ngay trong HAN \citep[Bảng~4]{li2024longrange}, nhưng chỉ so
+sánh với các meta-path ngẫu nhiên trong mạng riêng của nó, nơi các meta-path ngẫu nhiên đạt điểm thấp
+hơn \citep[Bảng~1]{li2024longrange}. Một đối chứng ngẫu nhiên là cần thiết vì trong tìm kiếm kiến
+trúc mạng nơ-ron, tìm kiếm ngẫu nhiên kết hợp dừng sớm đạt kết quả ít nhất ngang bằng ENAS, một
+phương pháp tìm kiếm hàng đầu, trên hai bộ đánh giá chuẩn \citep{li2019random}. Xét trung bình, các
+chiến lược tìm kiếm tiên tiến nhất cho kết quả tương tự chiến lược ngẫu nhiên
+\citep{yu2020evaluating}. Trong số các phương pháp tìm kiếm meta-path, RMS vượt một đối chứng ngẫu
+nhiên: trong cùng khoảng thời gian, đối chứng này huấn luyện mô hình gợi ý trên các tập chọn ngẫu
+nhiên rồi giữ lại tập có điểm xác thực tốt nhất \citep{ning2022automatic}. GEMS và DiffMG không so
+sánh với các cấu trúc ngẫu nhiên \citep{han2020genetic,ding2021diffmg}. Chúng tôi so sánh các tập
+tìm được với các tập thủ công trên HAN và metapath2vec, nơi các meta-path được sử dụng, với các tập
+chọn ngẫu nhiên từ chính các ứng viên của tìm kiếm làm đối chứng.
+
+\paragraph{Đánh giá mô hình gợi ý.} Các mô hình cơ sở đơn giản thường vẫn cho kết quả cạnh tranh:
+trong \val{dacrema-algos} mô hình gợi ý nơ-ron gần đây, chỉ kết quả của \val{dacrema-repro} mô hình
+là tái hiện được với công sức hợp lý, trong đó \val{dacrema-beaten} mô hình thường có thể bị các
+phương pháp heuristic đơn giản vượt qua \citep{dacrema2019progress}. Vì vậy, chúng tôi so sánh thêm
+với mô hình phổ biến và một GAT không phân biệt kiểu, vốn là một mô hình cơ sở mạnh trên đồ thị
+không đồng nhất \citep{lv2021hgb}. Thứ hạng của các mô hình theo độ đo lấy mẫu có thể khác với thứ
+hạng khi xếp hạng toàn bộ \citep{krichene2022sampled}, nên chúng tôi cũng báo cáo kết quả xếp hạng
+toàn bộ cho mọi tập meta-path.

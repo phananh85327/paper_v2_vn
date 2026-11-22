@@ -1,0 +1,123 @@
+% supplement_vn.tex -- the supplementary document of paper_v2_vn (Tài liệu bổ sung, N31): the
+% former appendix of the paper (sections/appendix.tex, with tables t2, t3b, t5, t6, t8, t9 and
+% figure f1), built as a document of its own. Its sections are lettered A-H and its tables and
+% figure numbered S1, S2, ... Numbers without the S (Mục 4, Bảng 3) are the paper's: they are read
+% from paper_v2_vn.aux with the xr package (labels prefixed P-), so the paper is built first. The
+% latexmkrc in this folder does that on its own, also on Overleaf (Menu, Main document:
+% supplement_vn.tex). The preamble is the paper's, copied: keep the two alike.
+% Compile with LuaLaTeX and BibTeX, like the paper. It uses the same three .bib files.
+\RequirePackage{iftex}
+\ifLuaTeX\else
+  \errmessage{supplement_vn.tex needs LuaLaTeX. In Overleaf: Menu, Compiler, LuaLaTeX}%
+  \expandafter\stop
+\fi
+\PassOptionsToPackage{quiet}{fontspec}   % notes on font features go to the log, not the warnings
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\PassOptionsToPackage{obeyspaces,spaces}{url}   % \code keeps its spaces and can break at them
+% nonacm: a draft not yet at an ACM venue, so no conference line, copyright block or ACM reference
+% box.
+\documentclass[sigconf,nonacm]{acmart}
+\makeatletter
+\@ACM@balancefalse   % no column balancing: acmart's \balance would come in the second column
+\makeatother         % of the last page and only warn that it cannot balance there
+\raggedbottom
+
+% Vietnamese is the main language: babel's captions (Hình, Bảng, Phụ lục) and line breaking.
+% English stays loaded for the reference list, which keeps the language of the works (N7), for
+% ACM's CCS terms, and for the English words of quotations (\foreignlanguage{english}, N13).
+\usepackage[english,vietnamese]{babel}
+\providecommand\ccsname{CCS Concepts}
+\addto\captionsvietnamese{%
+  \renewcommand\abstractname{Tóm tắt}%          babel's is Tóm tắt nội dung
+  \renewcommand\keywordsname{Từ khóa}%
+  \renewcommand\acksname{Lời cảm ơn}%
+  \renewcommand\refname{Tài liệu tham khảo}%    babel's is only Tài liệu
+  \renewcommand\ccsname{Phân loại CCS}}
+% acmart prints the heading of the CCS concepts as fixed text; this makes it \ccsname, and sets
+% ACM's terms under it as English.
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\maketitle}{\@specialsection{CCS Concepts}%
+         \noindent\@concepts\par}{\@specialsection{\ccsname}%
+         \noindent\foreignlanguage{english}{\@concepts}\par}{}%
+  {\PackageWarningNoLine{supplement_vn}{acmart's CCS block has changed, so its heading stays
+     English; see \string\ccsname}}   % the same code in acmart 2.03 (2024) and 2.21 (2026)
+\makeatother
+\setlength{\emergencystretch}{1em}   % Vietnamese words are not hyphenated: a little more stretch
+\AtEndPreamble{\hypersetup{pdflang={vi}}}   % the PDF's language; runs after acmart's pdflang={en}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\pgfkeys{/pgf/number format/use comma}   % axis numbers as 0,05 and 1.000, as in numbers.tex
+\usepackage{icomma}   % in a formula, a comma between digits is a decimal comma: $-0,034$
+
+\usepackage{xurl}   % long links may break anywhere in the narrow columns
+% File names and meta-paths in typewriter type; they may break only after / _ . or at a space, so
+% a meta-path such as PUPUP is never split.
+\DeclareUrlCommand\codeurl{\def\UrlBreaks{\do\/\do\_\do\.}\def\UrlBigBreaks{}\urlstyle{tt}}
+\DeclareRobustCommand{\code}[1]{\codeurl{#1}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% Wide tables and figures span both columns.
+\newenvironment{widetable}[1][tbp]{\begin{table*}[#1]}{\end{table*}}
+\newenvironment{widefigure}[1][tbp]{\begin{figure*}[#1]}{\end{figure*}}
+% Figure colours, as in paper_v2: searched sets blue, manual orange, random draws aqua.
+\definecolor{cSearch}{HTML}{2A78D6}
+\definecolor{cManual}{HTML}{EB6834}
+\definecolor{cRandom}{HTML}{1BAF7A}
+\definecolor{cOther}{HTML}{7C7B76}
+% Every number of the paper: \val{key}, from numbers.tex (Vietnamese number format, N4).
+\input{numbers}
+
+% The paper's numbers. \ref*{P-...} prints them without a link, as the targets are in the other
+% PDF. \addFileDependency (Overleaf's recipe for xr) tells latexmk that this document needs
+% paper_v2_vn.aux, so the rule in latexmkrc builds the paper first when it is missing or old.
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{%
+  \typeout{(#1)}%
+  \@addtofilelist{#1}%
+  \IfFileExists{#1}{}{\typeout{No file #1.}}}
+\makeatother
+\externaldocument[P-]{paper_v2_vn}
+\addFileDependency{paper_v2_vn.tex}
+\addFileDependency{paper_v2_vn.aux}
+
+% This document's tables and figure: Bảng S1, Hình S1, ...
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\title[Tài liệu bổ sung]{Tài liệu bổ sung}
+\subtitle{cho bài báo ``Đánh giá chi phí và hiệu quả của việc tìm kiếm
+  meta-path\texorpdfstring{\\}{ } cho gợi ý sản phẩm dựa trên HAN''}
+\author{Phan Hoàng Tuấn Anh}
+\email{phananh85327@gmail.com}
+\affiliation{%
+  \department{Khoa Công nghệ Thông tin}
+  \institution{Trường Đại học Công Thương Thành phố Hồ Chí Minh (HUIT)}
+  \city{Thành phố Hồ Chí Minh}
+  \country{Việt Nam}}
+
+\begin{document}
+
+\maketitle
+\hypersetup{pdftitle={Tài liệu bổ sung: Đánh giá chi phí và hiệu quả của việc tìm kiếm meta-path
+  cho gợi ý sản phẩm dựa trên HAN}, pdfauthor={Phan Hoàng Tuấn Anh}}
+
+Tài liệu này chứa những chi tiết mà bài báo không trình bày. Các mục của tài liệu được đánh số bằng
+chữ cái (A--H), còn các bảng và hình mang tiền tố S. Những số mục, bảng và hình không có tiền tố
+(chẳng hạn Mục~\ref*{P-sec:data} hay Bảng~\ref*{P-tab:main}) chỉ đến bài báo.
+
+\appendix
+\input{sections/appendix}
+
+% The reference list stays in English, as the works were published (N7).
+\begin{otherlanguage*}{english}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references,notes_extra,reading_list}
+\end{otherlanguage*}
+
+\end{document}

@@ -1,0 +1,55 @@
+% f1_pipeline.tex -- F1: the study at a glance (paper_v2_vn, translated in L3 from paper_v2's
+% figures/f1_pipeline.tex; TikZ, no data file). Colours as in paper_v2_vn.tex (searched cSearch,
+% manual cManual, random cRandom).
+\begin{widefigure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+      font=\footnotesize,
+      box/.style={draw=black!45, rounded corners=2pt, align=center, inner sep=4pt,
+        text width=#1, minimum height=11mm, execute at begin node={\hyphenpenalty=10000}},
+      box/.default=36mm,
+      way/.style={box=44mm, draw=#1, fill=#1!10, line width=0.7pt},
+      flow/.style={-{Stealth[length=2.2mm]}, black!55, line width=0.6pt}]
+    % data
+    \node[box] (raw) {Amazon-Meta (SNAP)\\\val{raw-records} sản phẩm,\\\val{raw-reviews} dòng nhận
+      xét};
+    \node[box, below=4mm of raw] (clean) {Làm sạch: gộp ấn bản, loại \val{placeholder-ids} tài
+      khoản, giữ nhận xét tích cực, \val{rule-kcore}-lõi};
+    \node[box, below=4mm of clean] (graph) {Đồ thị: sản phẩm, danh mục, người dùng. Cạnh người
+      dùng--sản phẩm chia 80/10/10};
+    % three ways to choose the paths
+    \node[way=cManual, right=12mm of raw] (hand) {\textbf{Thủ công}: các tập M1--M8, thiết kế với
+      sự hỗ trợ của AI, cố định từ trước};
+    \node[way=cSearch, below=4mm of hand] (search) {\textbf{Tìm kiếm}: LMSPS cho dự đoán liên kết,
+      \val{search-runs} lần chạy cho mỗi kích thước tập, kết hợp thành \code{a1}, \code{a2},
+      \code{c}};
+    \node[way=cRandom, below=4mm of search] (random) {\textbf{Ngẫu nhiên (đối chứng)}: 5 lần chọn cho mỗi kích
+      thước từ cùng \val{search-cands} ứng viên};
+    % models and test
+    \node[box=36mm, right=12mm of search] (models) {HAN và metapath2vec, huấn luyện trên từng tập
+      trong 24 tập meta-path};
+    \node[box=36mm, right=10mm of models] (test) {Cạnh thử nghiệm: Hit@10 lấy mẫu (cố định từ
+      trước), NDCG@10, xếp hạng toàn bộ, nhóm người dùng};
+    \node[box=36mm, below=4mm of models, yshift=-6mm] (refs) {GAT trên toàn bộ đồ thị (bỏ qua
+      kiểu) và mô hình phổ biến};
+    % arrows
+    \draw[flow] (raw) -- (clean);
+    \draw[flow] (clean) -- (graph);
+    \draw[flow] (graph.east) -- ++(4mm,0) |- (hand.west);
+    \draw[flow] (graph.east) -- ++(4mm,0) |- (search.west);
+    \draw[flow] (graph.east) -- ++(4mm,0) |- (random.west);
+    \draw[flow] (hand.east) -- ++(4mm,0) |- (models.west);
+    \draw[flow] (search.east) -- (models.west);
+    \draw[flow] (random.east) -- ++(4mm,0) |- (models.west);
+    \draw[flow] (models) -- (test);
+    \draw[flow] (graph.south) -- ++(0,-6mm) -| ([xshift=-6mm]refs.west) -- (refs.west);
+    \draw[flow] (refs.east) -| (test.south);
+  \end{tikzpicture}}
+  \Description{Sơ đồ luồng. Dữ liệu Amazon-Meta được làm sạch và chuyển thành đồ thị. Hai hộp, thủ công và tìm kiếm, chọn các tập meta-path từ cùng các ứng viên, cùng một hộp ngẫu nhiên làm đối chứng. Mọi tập được chuyển cho HAN và metapath2vec. GAT và mô hình phổ biến dùng toàn bộ đồ thị. Mọi mô hình được thử nghiệm trên cùng các cạnh giữ lại.}
+  \caption{Tổng quan nghiên cứu. Từ cùng các meta-path ứng viên, các tập meta-path cho HAN được chọn
+    thủ công hoặc bằng tìm kiếm, cùng các tập chọn ngẫu nhiên làm đối chứng. Mọi tập được huấn luyện
+    trên HAN và metapath2vec rồi thử nghiệm trên cùng các cạnh giữ lại, với GAT và mô hình phổ biến
+    làm mô hình cơ sở không dùng meta-path.}
+  \label{fig:pipeline}
+\end{widefigure}

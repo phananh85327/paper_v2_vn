@@ -1,0 +1,439 @@
+% plan_v2_vn.tex -- the plan for paper_v2_vn: the Vietnamese version of paper_v2. A standalone
+% document; compile it with LuaLaTeX, like paper_v2_vn.tex (Section "Technical setup"). The
+% folders paper/ and paper_v2/ are not edited for this work (Section "Rules").
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\RequireLuaTeX   % Vietnamese letters need LuaLaTeX here, as in paper_v2_vn.tex
+\usepackage{fontspec}   % Latin Modern, which has every Vietnamese letter
+\usepackage[vietnamese,main=english]{babel}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{icomma}   % a comma between digits in a formula is a decimal comma
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\DeclareRobustCommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\vi}[1]{\foreignlanguage{vietnamese}{#1}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=2pt,topsep=3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+
+\title{Plan for \texttt{paper\_v2\_vn}\\[4pt]\large The Vietnamese version of \texttt{paper\_v2}}
+\author{}
+\date{10 November 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+All nine parts are done (10 November): \code{paper_v2_vn/} is the whole paper in Vietnamese and
+builds with LuaLaTeX with 0 warnings (Section~\ref{sec:l9} gives the final checks). The author
+committed \code{make_numbers.py} as \code{5e32eb6} of the LMSPS repository the same day, and
+\code{numbers.tex}, rebuilt from it, records that commit; no other value changed. One step is
+left, the author's: reading the Vietnamese text, ideally with the supervisors, since the AI
+statement says that the author reviewed the translation; corrections from that reading come in as
+L10, which started on 20 November (N17). The author's
+answers are decisions N3--N32 (Section~\ref{sec:decisions}); the parts are in
+Section~\ref{sec:parts}.
+
+\section{The target}
+
+A Vietnamese version of \code{paper_v2} with the same content, numbers and layout: ACM's
+two-column format (\code{acmart}, \code{sigconf}, \code{nonacm}) in its own Libertine fonts, and
+every claim, qualifier, number, citation, table and figure of \code{paper_v2}, with nothing added
+and nothing dropped. Vietnamese text usually takes somewhat more room than the English it
+translates, so the main text will probably end half a page to a page and a half after
+\code{paper_v2}'s 8 pages. Up to about one page more is fine (N3); L9 measures it.
+
+\section{Rules}\label{sec:rules}
+
+\begin{itemize}
+  \item \textbf{\code{paper/} and \code{paper_v2/} are frozen.} They change only for a must: a
+        factual error found while translating (a wrong number, claim, reference or
+        cross-reference). I report such an error first; its fix then goes into both folders, as
+        decision V5 of \code{plan_v2} did, and into \code{paper_v2_vn}. Wording that could
+        merely be better stays as it is.
+  \item \textbf{A faithful translation.} \code{paper_v2} is the source. The claims keep their
+        qualifiers (``mostly'', seed noise, the warm-up limit, the small schema), and no claim
+        is added or dropped. Where the English could be read two ways, I ask rather than guess.
+  \item \textbf{Every number comes from \code{numbers.tex}} as \verb|\val{key}|. A script
+        makes that file and nobody types it (N4). Design
+        constants typed in the text, such as 80/10/10, follow the same number format.
+  \item \textbf{What stays in English:} the names of models (HAN, GAT, LMSPS, metapath2vec),
+        metrics (Hit@10, NDCG@10, BPR), paths (\code{PUP}, \code{PCCP}), the dataset
+        (Amazon-Meta), files, commands and code, and the reference list.
+  \item \textbf{The AI statement stays accurate.} The Vietnamese one adds that the Vietnamese
+        text was translated from the English with the AI assistant's help and that the author
+        reviewed the translation. So the author has to review it, ideally with the supervisors,
+        before the version is used.
+  \item \textbf{Each part ends with checks:} the translated files carry exactly the same
+        \verb|\val|, \verb|\cite|, \verb|\ref|, \verb|\label|, \verb|\input| and \verb|\code|
+        keys as \code{paper_v2}'s (checked by script); a LuaLaTeX build with 0 warnings; and a
+        page count. It sends only
+        the files it added or changed (L1 sends the new folder once).
+\end{itemize}
+
+\section{The folder}\label{sec:folder}
+
+\code{paper_v2_vn/} mirrors \code{paper_v2/}, with the same file names so that each file can be
+checked against its source: \code{paper_v2_vn.tex}, \code{numbers.tex}, \code{sections/},
+\code{tables/}, \code{figures/}, this plan and the glossary (\code{glossary_vn.tex}, L2). The three \code{.bib} files stay at the project root,
+shared by all three versions; the reference list stays in English. Since N31 the folder also holds
+the supplementary document, \code{supplement_vn.tex}, built after the paper (\code{latexmkrc}
+builds both).
+
+\section{Technical setup (tested 10 November)}\label{sec:setup}
+
+\begin{itemize}
+  \item \textbf{pdfLaTeX cannot do it.} Under pdfLaTeX, \code{acmart} uses Libertine fonts that
+        have no Vietnamese encoding (T5), so Vietnamese letters fail (``Font shape
+        \code{T5/LinuxLibertineT-TLF/m/n} undefined'').
+  \item \textbf{LuaLaTeX can.} Under LuaLaTeX, \code{acmart} loads Libertine's OpenType fonts,
+        which have every Vietnamese letter. A test page in \code{acmart} had no missing letters
+        and no warnings, with babel's Vietnamese captions (\vi{Hình~1}, \vi{Bảng~1},
+        \vi{Phụ lục}), headings that \code{acmart} sets in capitals (\vi{GIỚI THIỆU}), and
+        decimal commas in formulas (\vi{$-0,034$}, \vi{$p<0,001$}) through the package
+        \code{icomma}. We set the other names ourselves: \vi{Tóm tắt} (babel's is \vi{Tóm tắt
+        nội dung}), \vi{Từ khóa} and \vi{Lời cảm ơn}, which \code{acmart} has no Vietnamese
+        for, and \vi{Tài liệu tham khảo} for the reference list, which babel calls only
+        \vi{Tài liệu}.
+  \item \textbf{The layout carries over.} The English \code{paper_v2}, built with LuaLaTeX and
+        one added line (\code{fontspec}'s \code{quiet} option, which keeps font-feature notes
+        out of the warnings), gives 14 pages and 0 warnings, with the code statement at the same
+        place on page~8 and the references from the top of page~9, as with pdfLaTeX. So L1 starts
+        from \code{paper_v2}'s exact layout, and any later change in length comes from the
+        translation.
+  \item \textbf{Overleaf.} The compiler and the main document are settings of the whole project
+        (Menu). For \code{paper_v2_vn}, choose LuaLaTeX and \code{paper_v2_vn/paper_v2_vn.tex};
+        for \code{paper/} and \code{paper_v2/}, go back to pdfLaTeX. Compiled with pdfLaTeX by
+        mistake, \code{paper_v2_vn.tex} stops at once with a message saying so. If the switching
+        is a nuisance, a separate Overleaf project with the three \code{.bib} files works the
+        same.
+  \item \textbf{Build time.} A LuaLaTeX pass took about 6~seconds here, against 4.7 for pdfLaTeX.
+        If Overleaf's time limit ever becomes a problem, the four figures can be compiled once
+        into PDF files and included as images.
+  \item \textbf{Line breaks.} Vietnamese words are not hyphenated, which leaves the narrow
+        columns less room. L1 allows a little more stretch, and each part fixes any line that
+        still overflows.
+\end{itemize}
+
+\section{What L1 set up (10 November)}\label{sec:l1}
+
+\begin{itemize}
+  \item \textbf{The main file,} \code{paper_v2_vn.tex}, is \code{paper_v2.tex} with: the LuaLaTeX
+        check (under pdfLaTeX the run stops after about a second with the one error
+        ``paper\_v2\_vn.tex needs LuaLaTeX. In Overleaf: Menu, Compiler, LuaLaTeX.'' and no PDF);
+        babel with Vietnamese as the main language and English for the rest; the names
+        \vi{Tóm tắt}, \vi{Từ khóa}, \vi{Lời cảm ơn}, \vi{Tài liệu tham khảo} and \vi{Phân loại
+        CCS} (Q7); decimal commas in formulas (\code{icomma}) and on the figures' axes
+        (pgfplots' \code{use comma}); 1\,em of emergency stretch; Vietnamese as the PDF's
+        language; and the names of N6 in the author block, the acknowledgments and the PDF's
+        author field. The CCS heading needs a small patch of \code{acmart}'s \verb|\maketitle|,
+        whose CCS block is the same in \code{acmart} 2.03 (2024) and 2.21 (2026); should it ever
+        fail, the heading stays English with a warning, not an error.
+  \item \textbf{Text not yet translated:} each section file is read inside \code{entext}, which
+        sets it as English (hyphenation and spacing) under the Vietnamese captions. Each part
+        removes the wrapper from the files it translates. The reference list and ACM's CCS terms
+        are set as English for good (N7). The tables and figures, translated in L3 but read in
+        by sections still in English, each sit in \code{vitext}, which sets them as Vietnamese;
+        L9 removes these wrappers once no section is in \code{entext}. (L9 removed both kinds of
+        wrapper.)
+  \item \textbf{\code{numbers.tex}} is written by \code{make_numbers.py --lang vi}: 971 of the
+        1,262 values change. The other 291 are whole numbers below 1,000, the path sets, the
+        commits and branches, the split fingerprint, the GPU's name, the names of two sets
+        (\code{r6d2}, \code{m5}) and the five version numbers. The figure data are identical in
+        both languages. Without \code{--lang vi}, the script writes the same \code{numbers.tex}
+        as before apart from the date in its second line. Until the author committed the script,
+        the file recorded the LMSPS commit \code{0bf5bc1}; rebuilt from the commit, \code{5e32eb6},
+        it records that, and no value changed. Run from \code{5e32eb6} without the option, the
+        script writes \code{paper_v2}'s \code{numbers.tex} apart from the date and the commit, so
+        \code{0bf5bc1} still stands for \code{paper/} and \code{paper_v2/}.
+  \item \textbf{Checks:} 0 errors, 0 warnings, no overfull or underfull line and no missing
+        letter; 14 pages. Pages 1--9 end at the same words as \code{paper_v2}'s, with the code
+        statement at the same place on page~8 and the references from the top of page~9; in the
+        appendix, pages 10 and 12 end a line or two earlier, a side effect of small changes in
+        width such as \vi{Bảng} for Table in the captions. BibTeX's 9 notices are \code{paper_v2}'s (V3 of \code{plan_v2}). A
+        script compares each file's \verb|\val|, \verb|\cite|, \verb|\ref|, \verb|\label|,
+        \verb|\input| and \verb|\code| keys with \code{paper_v2}'s: all match.
+\end{itemize}
+
+\section{The final checks (L9, 10 November)}\label{sec:l9}
+
+\begin{itemize}
+  \item \textbf{Wrappers:} the 15 \code{vitext} wrappers and the two helper environments are gone;
+        the PDF has the same words in the same order on every page before and after.
+  \item \textbf{Keys:} every file has \code{paper_v2}'s \verb|\val|, \verb|\cite|, \verb|\ref|,
+        \verb|\label|, \verb|\input| and \verb|\code| keys; the one allowed addition is
+        \code{--lang vi} in Appendix~G (L8).
+  \item \textbf{English:} none is left outside the quotations (N13), the terms given in
+        parentheses at their first mention and the node types' English names in Section~3
+        (checked by script).
+  \item \textbf{Glossary:} no term that the glossary rules out (such as \vi{tập kiểm tra} or
+        \vi{người đánh giá}); every \vi{đánh giá} is an evaluation, every \vi{kiểm tra} a check and
+        every \vi{kiểm định} a statistical test.
+  \item \textbf{Typography:} no straight quote and no space before punctuation; a tie before every
+        cross-reference and between every number and its unit (two units and one awkward
+        \vi{được được} fixed in L9); headings wrap only where a tie chooses the break (5.1 and
+        Appendix~E).
+  \item \textbf{Numbers:} \code{numbers.tex} and the 11 figure data files are byte for byte what
+        \code{make_numbers.py --lang vi} writes.
+  \item \textbf{PDF:} the title, author, keywords and language (\code{vi}) are in its XMP
+        metadata; as in \code{paper_v2}, its older document-information block lacks the author and
+        keywords, which \code{acmart}'s metadata package leaves out.
+  \item \textbf{Build and length:} LuaLaTeX, 0 errors, 0 warnings, no overfull or underfull line
+        and no missing letter; BibTeX's 9 notices as in \code{paper_v2}. 16 pages
+        (\code{paper_v2}: 14). The code statement starts 8.85 pages in and the references 9.13
+        (\code{paper_v2}: 7.77 and 8.02), so the main text is about 1.1 pages longer, within N15.
+\end{itemize}
+
+\section{Decisions}\label{sec:decisions}
+
+\begin{enumerate}[label=N\arabic*]
+  \item \textbf{Frozen versions (10 November):} \code{paper/} and \code{paper_v2/} change only
+        for a must (Section~\ref{sec:rules}).
+  \item \textbf{The folder (10 November):} \code{paper_v2_vn/}, which the author creates in the
+        Overleaf project.
+  \item \textbf{Purpose and length (10 November):} the same format as \code{paper_v2},
+        translated in full. A main text up to about one page longer than \code{paper_v2}'s
+        8 pages is fine; if it runs clearly longer, L9 reports it and asks before anything is
+        cut.
+  \item \textbf{Numbers (10 November):} the Vietnamese way, with a decimal comma and a dot
+        between thousands (\vi{0,666}; \vi{1.147.920}; \vi{82,2\%}). Version numbers, commits,
+        branches, the split fingerprint, the GPU's name and path names stay as they are.
+        \code{make_numbers.py} gets a \code{--lang vi} option, which I write in L1 and the author
+        commits. It writes the Vietnamese \code{numbers.tex}: these separators, and Vietnamese
+        forms for the nine values that hold English words, which are seven lists of places such
+        as ``6th, 7th and 8th'' (\vi{thứ 6, 7 và 8}) and the two counts of the McAuley data such
+        as ``142.8 million'' (\vi{142,8 triệu}). Without the option, the script writes what it
+        wrote before (only the date in the file's second line changes, as on every run), so
+        \code{paper/} and \code{paper_v2/} are untouched. The Vietnamese \code{numbers.tex}
+        records the new commit of the LMSPS repository.
+  \item \textbf{Terms (10 November):} no Vietnamese terms exist yet for this work; L2 proposes
+        the glossary for the author's approval.
+  \item \textbf{Names (10 November):} the author, \vi{Phan Hoàng Tuấn Anh}; the supervisors in
+        the acknowledgments, \vi{TS.~Ngô Dương Hà} and \vi{TS.~Phạm Nguyễn Huy Phương}; the
+        affiliation, \vi{Khoa Công nghệ Thông tin, Trường Đại học Công Thương Thành phố Hồ Chí
+        Minh (HUIT)}.
+  \item \textbf{References (10 November):} the reference list stays in English, as the works were
+        published, and citations keep ``et al.''\ (``McAuley et al.~[14]''), so ACM's
+        bibliography style is used unchanged.
+  \item \textbf{Appendix (10 November):} Appendices A--G are translated too (L8).
+  \item \textbf{CCS concepts (10 November):} the heading is \vi{Phân loại CCS}, and ACM's terms
+        stay in English (Q7).
+  \item \textbf{Meta-path (10 November):} \vi{đường dẫn meta}, as proposed, with ``(meta-path)''
+        at the first mention, and \vi{đường dẫn} for a path (Q8: ``leave as is'').
+  \item \textbf{Validation and test (10 November):} \vi{xác thực} and \vi{thử nghiệm} (Q9). So
+        \vi{kiểm định} stays free for statistical tests (\vi{kiểm định t} of Welch), an
+        experiment is \vi{thực nghiệm} and a check \vi{kiểm tra}.
+  \item \textbf{Seed and epoch (10 November):} the English words stay (Q10).
+  \item \textbf{Quotations (10 November):} the cited papers' English words stay, in quotation
+        marks, followed by a Vietnamese translation in parentheses and the citation (Q11).
+  \item \textbf{Review (10 November):} a product review is \vi{nhận xét}, a reviewer \vi{người
+        nhận xét}, co-review \vi{đồng nhận xét} and a rating \vi{số sao} (Q12). \vi{Đánh giá}
+        then means evaluation only.
+  \item \textbf{Length (10 November):} the main text may end about 1.3 pages after
+        \code{paper_v2}'s, as projected after L4 (Q13), instead of the one page of N3: the
+        remaining parts keep natural wording rather than a terser one, and nothing is cut. L9
+        reports the final length.
+  \item \textbf{Acknowledgments (10 November):} the plain wording, as in the English: \vi{Tác giả
+        xin cảm ơn TS.~Ngô Dương Hà và TS.~Phạm Nguyễn Huy Phương đã hướng dẫn} (Q14).
+  \item \textbf{Title and meta-path (L10, 20 November):} the title is now \vi{Đánh giá chi phí và
+        hiệu quả của việc tìm kiếm meta-path cho gợi ý sản phẩm dựa trên HAN}, a descriptive title
+        chosen by the author instead of a translation of the English question. The subtitle is
+        unchanged. \vi{meta-path} replaces \vi{đường dẫn meta} in all 54 places, with no gloss at
+        the first mention, and the short form \vi{đường dẫn} for a path in all 266 places, so the
+        paper uses one term. This supersedes N10. \code{paper/} and \code{paper_v2/} are not affected.
+  \item \textbf{Abstract (L10, 20 November):} the author's reviewed abstract. It leaves out the clause on
+        merging duplicate editions (with \verb|\val{before-testleak-pct}|) and the sentence on GAT beating
+        both meta-path models, which the English abstract keeps. The searched sets are \vi{tổng hợp từ
+        30 lần chạy}, and the last sentence reads \vi{chưa cho thấy hiệu quả vượt trội}.
+  \item \textbf{CCS concepts (L10, 20 November):} removed, since the paper is not for an ACM venue
+        (N9 is void). The keywords stay. The heading code for \vi{Phân loại CCS} stays in the
+        preamble, so putting back the two \verb|\ccsdesc| lines restores the block.
+  \item \textbf{Punctuation (L10, 20 November):} no semicolons and no comma before \vi{và}, in the
+        text, the captions, the tables, the figures and the PDF keywords (rule S10 of the glossary).
+        All 155 semicolons and 94 such commas are gone. Most became a full stop or were dropped. A
+        semicolon inside parentheses became a comma, and in a table cell a comma or a full stop,
+        never a full stop before a number, since thousands take a dot (15.831). Lists whose items
+        contain commas are numbered (1), (2). Where the plain change read badly or was ambiguous,
+        the sentence was rewritten with the same content: the three ways and the three reasons in
+        the introduction, the manual sets' four principles, the future work, the parts of the
+        appendix that list files, and the AI statement. No \verb|\val|, citation or reference
+        changed, and the main text ends 0.05 page later (9.11 pages in).
+  \item \textbf{Introduction (L10, 20 November):} two changes by the author. The first of the three
+        reasons is clearer: \vi{Thứ nhất, LMSPS đánh giá meta-path bằng mạng riêng mà nó dùng khi
+        tìm kiếm chứ không phải bằng HAN, nên những meta-path tốt nhất với mạng đó chưa chắc là tốt
+        nhất với HAN.} The sentence on cleaning the data at the end of the third paragraph is
+        removed, since the first contribution gives the same figure (\verb|\val{before-testleak-pct}|)
+        and the one after merging. Section~1 is 0.04 page shorter. \code{paper_v2} keeps its
+        English wording.
+  \item \textbf{Random sets and the author's introduction (L10, 20 November):} the author's term
+        \vi{tập chọn ngẫu nhiên} replaces \vi{tập rút ngẫu nhiên} everywhere: the abstract, the text,
+        the tables, the figures and an appendix heading. The short form is \vi{tập ngẫu nhiên}, one
+        draw is \vi{lần chọn} (\vi{6 meta-path, lần chọn 2}) and \vi{rút đều} is \vi{chọn đều}. So
+        that \vi{chọn ngẫu nhiên} keeps one meaning, other sampling is \vi{lấy mẫu} (LMSPS's
+        meta-paths, the negatives), ties are \vi{bằng điểm thì xếp ngẫu nhiên}, and the
+        validation-selected set is \vi{vốn là một tập ngẫu nhiên}. \vi{SVD rút gọn} (truncated SVD)
+        is not a draw and stays. The author's final introduction (20 November) drops \vi{một lần
+        (one-shot)} from LMSPS's description, the gloss \vi{(leakage)}, and the sentence on the
+        cheapest option, which Section~8 keeps. Its two limits are reworded, and its \vi{tác vụ}
+        became \vi{bài toán}, as everywhere else. The main text ends 0.03 page later (9.11 pages in).
+  \item \textbf{Embedding and path weights (L10, 20 November):} the author's choices.
+        \vi{embedding} replaces \vi{vectơ nhúng} (8 places, with its first-mention gloss) and
+        \vi{vectơ} where it is a learned user or product vector (16 places): \vi{embedding tự do},
+        \vi{các embedding người dùng}, \vi{Embedding $h_p$}. The LSA title vectors and HAN's
+        attention vector stay \vi{vectơ}, since they are an input and a parameter, not a learned
+        representation. \vi{cân trọng số} becomes \vi{gán trọng số cho} (HAN in Section~1, MCRec in
+        Section~2), the verb the results use (\vi{trọng số mà HAN gán cho nó}), rather than
+        \vi{đo trọng số}, since attention assigns the weights and does not measure them.
+  \item \textbf{Path instances (L10, 20 November):} the author found \vi{thể hiện} unclear, so an
+        instance of a meta-path is \vi{một đường đi theo meta-path đó} (Section~3). This also ties
+        it to \vi{số đường đi}, the walk count by which HAN's graphs are pruned (Section~5).
+  \item \textbf{Input features (L10, 20 November):} the author found \vi{mã one-hot} and \vi{mã
+        băm} unclear. As inputs they are vectors (N23): \vi{vectơ one-hot} of the product group,
+        \vi{vectơ multi-hot} of the category-name tokens, and for a user \vi{một vectơ nhị phân
+        64 chiều sinh từ ID khách hàng bằng hàm băm} (8 of its 64 positions set, as
+        \code{hgb/dat_generator.py} builds it), in Section~4 and Table~5.
+  \item \textbf{No Discussion or Threats section (L10, 20 November):} the author's choice, so
+        \vi{Kết luận} is now Section~8. Their main points moved. Why the searched sets lose, with
+        the caveat that this explanation is untested, ends Section~7.4, and why GAT leads is in
+        Section~7.5. The conclusion gained the cheapest choice, the lesson that a search should be
+        judged by the recommender it serves, and a \vi{Hạn chế} paragraph (the small schema, the
+        single random split, the untuned configuration, the smaller search, the AI-assisted manual
+        sets). The sampled-metric item is covered in Section~6. The training details and the
+        leaf-only categories are Appendix~H. The cross-references in Sections 1, 2 and 4 follow.
+        The main text ends 0.34 page earlier (8.74 pages in). \code{paper_v2} keeps its Sections 8
+        and 9.
+  \item \textbf{Related work wording (L10, 20 November):} one-shot search is described rather than
+        named (\vi{chỉ huấn luyện một lần: mọi ứng viên được huấn luyện cùng lúc trong một siêu
+        mạng}), since \vi{tìm kiếm một lần} or \vi{chạy một lần} can be read as a search run only
+        once. Yu et al.'s finding is
+        paraphrased with its citation instead of quoted, and RMS's random baseline is named
+        \vi{đối chứng ngẫu nhiên}. A top-k query finds \vi{$k$ meta-path tốt nhất}, as Zhu et al.
+        write.
+  \item \textbf{AI statement (L10, 20 November):} the author's final wording. It does not mention
+        the drafting, editing or translation of the text, and it says the AI \vi{hỗ trợ viết} the
+        script. The assistant told the author that this under-reports its part (it drafted and
+        translated the text and wrote the script) and proposed wording that names the English
+        version or not. The author kept this wording.
+  \item \textbf{Search against manual design (L10, 21 November):} the author's framing. The paper
+        compares the searched sets with the manual sets, and the random sets are the control
+        (\vi{đối chứng}) that shows how much the choice of meta-paths matters. Changed: the abstract
+        (two ways plus a control, the last sentence on search against manual design), the keywords
+        (\vi{thiết kế meta-path thủ công} for \vi{đối chứng ngẫu nhiên}), the introduction (the
+        question, two ways plus a control, the findings, contributions 3 and 4), the related-work
+        paragraph (now \vi{Đánh giá phương pháp tìm kiếm}, starting from LMSPS's HAN comparison with
+        HAN's original meta-paths), the setup list, Sections~7.2 (\vi{Đối chứng ngẫu nhiên}, now with
+        the cheapest choice) and 7.3 (\vi{Chi phí so với hiệu quả}), the conclusion and the overview
+        figure. GAT and the popularity model are \vi{mô hình cơ sở}. No number, table or result
+        changed, and the random sets' result is still in the abstract. \code{paper_v2} keeps its
+        framing.
+  \item \textbf{A verdict that depends on the context (L10, 22 November):} the author's framing. The
+        searched sets come fairly close to the manual ones (\vi{khá gần}, not \vi{rất gần}, as the
+        gap on the pre-registered metric is significant), so the choice depends on the context.
+        Manual design is better when an expert can design the meta-paths in less time than the
+        search takes. Without one, search gives nearly equivalent sets (\vi{gần tương đương}) with no
+        domain knowledge. It is not written that search wins then, since the random sets did at
+        least as well at no cost. The abstract, the introduction and the conclusion say this, and
+        Section~7.3 gives the yardstick (about 20 GPU hours). The conclusion's limitations add that
+        the manual sets were not designed by a domain expert.
+  \item \textbf{No appendix, a supplementary document (L10, 22 November):} the author's choice. The
+        paper ends with the references, at ten pages. The appendix became a document of its own,
+        \code{supplement_vn.tex} (\vi{Tài liệu bổ sung}, seven pages), which the author keeps ready
+        in case someone asks for the details, so the paper does not refer to it. Moved into the
+        paper: the ten random sets (rows of the sets table, the 4- and 6-path draws side by side so
+        that the paper stays at ten pages), the key settings and the software versions
+        (Section~6), why Recall@10 and Precision@10 are not reported, the numbers behind four claims
+        of Section~7 (the user groups, HAN against metapath2vec, the random sets' weak link to the
+        search's preference, GAT's lead by user group) and the runs' agreement (Section~5), the two
+        minor limitations (one sentence each) and, in the code statement, the commits, the data
+        rebuild and the records. The quotation in Section~4 now has its source, the McAuley data
+        page, as a footnote, which was in the appendix. Only in the supplementary document: the
+        overview figure, the tables of the graph, the changes, the settings, the user groups and
+        the full results, the search's details and the commands. Its sections are lettered A--H
+        and called \vi{Mục}, and its tables and figure are numbered S1, S2, \ldots. It prints the
+        paper's numbers through the \code{xr} package (labels prefixed \code{P-}, printed with
+        \verb|\ref*| so that no link points into the other PDF), so the paper is built first:
+        \code{latexmkrc} does this with Overleaf's rule for \code{xr}. Column balancing stays off,
+        since acmart's \verb|\balance| would come in the second column of the last page and warn.
+  \item \textbf{Ancestor categories are \vi{danh mục cấp trên} (L10, 22 November):} the author's
+        choice, for \vi{tổ tiên}. The author first wrote \vi{danh mục cha}, which is only the direct
+        parent, while the numbers (48,7\% of the products in one category, a median of 13
+        categories) are for every category up to the root. Changed: Section~4, the conclusion's
+        limitations, two places in the supplementary document and the glossary.
+\end{enumerate}
+
+\section{Questions}\label{sec:questions}
+
+Q1--Q7 were answered on 10 November (N3--N9), and Q8--Q12, the five term choices of L2, the same
+day (N10--N14), and Q13, on the length, after L4 (N15). The rest of the glossary and the sample
+stand as proposed unless the author marks changes. Q14, on the acknowledgments, was answered
+after L7 (N16). None is open.
+
+\section{The parts}\label{sec:parts}
+
+{\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}L>{\raggedright\arraybackslash}p{0.13\textwidth}@{}}
+  \toprule
+  Part & What it does & Needs \\
+  \midrule
+  L1 Set up & \code{paper_v2_vn/} as a copy of \code{paper_v2} (still in English) that builds with
+    LuaLaTeX: the Vietnamese language setup (captions, the names of the abstract, keywords,
+    acknowledgments and CCS concepts, decimal commas in formulas and figure axes, the pdfLaTeX
+    stop, a little more stretch), the names with diacritics (N6), and \code{numbers.tex} in the
+    format of N4, with \code{make_numbers.py} for you to commit. Checks: 0 warnings and
+    \code{paper_v2}'s layout. Sends the whole new folder and the script. Done 10 November
+    (Section~\ref{sec:l1}). & N4, N6 \\
+  L2 Glossary and style & A glossary of the paper's terms (English, Vietnamese, the form used at
+    first mention), proposed for your approval (N5); the style rules (\vi{chúng tôi} for ``we'', sentence
+    case in headings, \vi{Mục}, \vi{Bảng}, \vi{Hình} and \vi{Phụ lục} for Section, Table, Figure
+    and Appendix, spaces and punctuation); and, as a sample of the style, the title, subtitle,
+    abstract and keywords. For your approval before L3. Done 10 November: 131 entries and 12
+    rules in \code{glossary_vn.tex}, updated for N10--N14; the Vietnamese abstract moves the main
+    text's end about 0.06 page later. & N5, N7 \\
+  L3 Tables and figures & The 11 tables and 4 figures: captions, column heads, notes, labels,
+    legends, the pipeline diagram and the axes; every width checked so that nothing overflows.
+    Done 10 November: also the figures' descriptions for screen readers; the base papers' own
+    settings in Table~6 in the Vietnamese number format (0,005; 1.000); the main text ends about
+    0.12 page later (7.95 pages in). & L2 \\
+  L4 Sections 1--3 & Introduction, Related work, Preliminaries (about 1,300 English words). Done
+    10 November: 0.24 page longer than the English; the node types' English names added in
+    Section~3 to explain the letters P, C and U; eight new terms in the glossary. & L2 \\
+  L5 Sections 4--5 & Data and Method (about 1,900 words). Done 10 November: 0.33 page longer
+    than the English, so the main text ends 8.52 pages in, on course for the 9.0 of N15; five
+    new terms in the glossary. & L2 \\
+  L6 Sections 6--7 & Setup and Results (about 1,700 words and 118 numbers). Done 10 November:
+    0.19 page longer than the English, so the main text ends 8.71 pages in; at the rate so far,
+    Sections 8--10 and the end statements bring it to about 8.9; the document has 16 pages. & L2
+    \\
+  L7 Sections 8--10 and the end & Discussion, Threats to validity, Conclusion, the code and data
+    statement, the AI statement with the translation added, and the acknowledgments (about 1,050
+    words). Done 10 November: the AI statement adds that the assistant translated this version,
+    following a glossary that it proposed and the author decided, and that the author reviewed
+    the translation; the code statement starts 8.85 pages in (\code{paper_v2}: 7.77), so the
+    main text is about 1.1 pages longer, within N15, and the references begin 9.13 pages in. & L2
+    \\
+  L8 Appendix & Appendices A--G (about 1,700 words of prose; their tables come from L3). Done
+    10 November: one deliberate addition to \code{paper_v2}, in Appendix~G's Records, which
+    names \code{make_numbers.py}'s \code{--lang vi} option because it writes this version's
+    numbers (the parity script lists it as allowed, with that reason); the heading of
+    Appendix~E tied so that it breaks before \vi{và}; 16 pages in all. & L2, N8 \\
+  L9 Final pass & The whole paper against \code{paper_v2}: every key, table row and figure label;
+    the \code{vitext} wrappers removed;
+    the glossary applied throughout; no English left by mistake; typography; the PDF's title,
+    keywords and language; the page count against N3. Sends the complete folder. Done 10
+    November (Section~\ref{sec:l9}). & L3--L8, N3 \\
+  \bottomrule
+\end{tabularx}\par}
+
+If the author or the supervisors send corrections after reading the Vietnamese text, they come
+in as one more part, L10, after L9 or after any earlier part.
+
+\end{document}

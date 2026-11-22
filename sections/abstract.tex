@@ -1,0 +1,19 @@
+% sections/abstract.tex -- the abstract (paper_v2_vn, translated in L2 from paper_v2's
+% sections/abstract.tex, as the sample of the style; terms as in glossary_vn.tex). Every number is
+% \val{} from numbers.tex.
+HAN và các mô hình tương tự khai thác đồ thị không đồng nhất thông qua các meta-path, vốn thường
+được chọn thủ công. Các meta-path do phương pháp tìm kiếm LMSPS tìm được đã giúp HAN phân loại nút
+tốt hơn, nhưng việc tìm kiếm như vậy có đáng với chi phí trong bài toán gợi ý hay không thì chưa
+được kiểm chứng. Trên Amazon-Meta, chúng tôi so sánh hai cách chọn meta-path cho HAN từ cùng một tập
+\val{search-cands} ứng viên: thủ công (cố định từ trước) và bằng LMSPS được điều chỉnh cho bài toán
+dự đoán liên kết (tổng hợp từ \val{search-runs} lần chạy), với các tập chọn ngẫu nhiên làm đối
+chứng. Mọi tập được thử nghiệm trên HAN và metapath2vec. Các tập tìm được kém các tập thủ công
+\val{han-6-hit-relabs}--\val{han-4-hit-relabs}\% theo độ đo đã cố định từ trước và chỉ ngang bằng
+khi xếp hạng toàn bộ, sau khoảng \val{search-total-h}~giờ~GPU tìm kiếm. Phần thua kém chủ yếu nằm
+ở sách và nhạc, những sản phẩm mà các meta-path danh mục của các tập tìm được không đến được. Đối
+chứng ngẫu nhiên cho thấy việc chọn meta-path ít ảnh hưởng đến HAN trên lược đồ này: mọi tập cùng
+kích thước chỉ chênh nhau trong phạm vi \val{han-4-span} Hit@10 và các tập chọn ngẫu nhiên đạt kết
+quả ít nhất ngang bằng cả hai cách. Với HAN trên lược đồ nhỏ này, kết quả của tìm kiếm tự động khá
+gần với thiết kế thủ công, vì vậy lựa chọn giữa hai cách tùy thuộc vào bối cảnh: thiết kế thủ công
+tốt hơn khi có chuyên gia làm được việc này trong thời gian ngắn hơn thời gian tìm kiếm, còn tìm
+kiếm cho các tập gần tương đương mà không cần kiến thức chuyên môn.

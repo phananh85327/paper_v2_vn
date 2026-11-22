@@ -1,0 +1,349 @@
+% glossary_vn.tex -- the terms and the style of the Vietnamese version (part L2 of plan_v2_vn.tex),
+% for the author's approval before L3. A standalone document; compile it with LuaLaTeX, like
+% paper_v2_vn.tex. Entries marked (N10) to (N14) follow the author's answers of 10 November.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{iftex}
+\RequireLuaTeX   % Vietnamese letters need LuaLaTeX here, as in paper_v2_vn.tex
+\usepackage{fontspec}
+\usepackage[vietnamese,main=english]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{microtype}
+\usepackage{icomma}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\DeclareRobustCommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\vi}[1]{\foreignlanguage{vietnamese}{#1}}
+% one entry: English, Vietnamese, note
+\newcommand{\g}[3]{#1 & \vi{#2} & #3 \\}
+\newcommand{\grp}[1]{\addlinespace[6pt]\multicolumn{3}{@{}l}{\textbf{#1}} \\ \addlinespace[2pt]}
+\setlist{itemsep=2pt,topsep=3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+
+\title{Glossary and style for \texttt{paper\_v2\_vn}\\[4pt]\large \vi{Thuật ngữ và quy ước trình
+bày của bản tiếng Việt}}
+\author{}
+\date{10 November 2026}
+
+\begin{document}
+\maketitle
+
+This is part L2 of the plan: the terms every later part uses, the style rules, and, in
+\code{paper_v2_vn} itself, the title, subtitle, abstract and keywords as a sample of the style.
+No Vietnamese terms existed for this work (N5), so all of them are proposals for your approval.
+The five choices that recur most were settled on 10 November (decisions N10 to N14 of the plan)
+and are marked here. Everything else can still be changed by a note on the entry.
+
+\section{Style rules}
+
+\begin{enumerate}[label=S\arabic*]
+  \item \textbf{Voice and register.} ``We'' is \vi{chúng tôi}; ``the author'' (the AI statement,
+        the acknowledgments) is \vi{tác giả}. Formal academic Vietnamese, in sentences as short
+        as the English ones. No claim is added or dropped, and the hedges stay: mostly
+        \vi{chủ yếu}, about \vi{khoảng}, at least \vi{ít nhất}, at most \vi{nhiều nhất}, often
+        \vi{thường}, to our knowledge \vi{theo hiểu biết của chúng tôi}.
+  \item \textbf{Terms.} Always the Vietnamese term of Section~\ref{sec:terms}. For the terms
+        whose note says ``first:'', the English term follows in parentheses at the first mention
+        in the abstract and again at the first in the body, as in \vi{giai đoạn khởi động
+        (warm-up)}. Since 20 November, meta-path (N17) and embedding (N23) are no longer glossed:
+        they stay in English.
+  \item \textbf{Words with two meanings.} A product review is \vi{nhận xét} and its rating
+        \vi{số sao} (N14); \vi{đánh giá} is evaluating a model. \vi{Thử nghiệm} is the test data
+        and testing on it (N11), so an experiment is \vi{thực nghiệm} and a check \vi{kiểm tra};
+        \vi{xác thực} is the validation data, and \vi{kiểm định} a statistical test (\vi{kiểm
+        định t}). \vi{Tập} alone is a path set; the data are \vi{tập huấn luyện}, \vi{tập xác
+        thực} and \vi{tập thử nghiệm}.
+  \item \textbf{What stays in English} (Section~\ref{sec:english}): the names of models,
+        metrics, paths and sets, code and files, datasets and venues; the reference list (N7);
+        ACM's CCS terms (N9).
+  \item \textbf{Numbers.} Every number is \verb|\val{key}| (N4). Design constants typed in the
+        text take the same format: \vi{0,005}, \vi{80/10/10}. Units: \vi{giờ GPU}, \vi{phút GPU},
+        GB, and \vi{triệu} for a million (``27.4M parameters'' becomes \vi{27,4 triệu tham số}),
+        each tied to its number so that a line never starts with the unit
+        (\verb|\val{...}~giờ~GPU|).
+        Ranges take an en dash (57--82); \% follows the number without a space. Where the English
+        writes a small number in words, so does the Vietnamese (four paths, \vi{bốn meta-path}).
+  \item \textbf{Cross-references,} always with a tie: \vi{Mục}~\verb|\ref| for a section or
+        subsection, \vi{Bảng}, \vi{Hình}, \vi{Phụ lục}, and \vi{công thức}~\verb|\eqref|. Several
+        take the singular: \vi{Mục 6 và 7}, \vi{Bảng 9 và 10}, \vi{Hình 1b}.
+  \item \textbf{Citations} as in the English (\verb|\citep|, \verb|\citet|). A place in the cited
+        work is written in Vietnamese: \vi{[10, Bảng 4]}, \vi{[7, Phụ lục D]}, \vi{[14, §3.3]}.
+        ``et al.''\ stays (N7).
+  \item \textbf{Quotations} keep the cited paper's English words, inside quotation marks and set
+        as English (\verb|\foreignlanguage{english}{...}|), followed by a Vietnamese translation
+        in parentheses and then the citation (N13): ``highly sensitive to the meta-paths they
+        use'' (\vi{rất nhạy với các meta-path mà chúng sử dụng}) [17].
+  \item \textbf{Headings} in sentence case: only the first word and names take a capital
+        (\vi{Kết quả theo nhóm sản phẩm}). \code{acmart} sets section headings in capitals by
+        itself. A \verb|\paragraph| heading ends with a full stop, as in the English.
+  \item \textbf{Lists and punctuation.} No comma before \vi{và}, in a list (\vi{A, B và C}) or
+        between two clauses (N20). Where dropping the comma would leave a sentence ambiguous, the
+        sentence is split, or \vi{và} gives way to the word the comma stood for: \vi{rồi} for a
+        sequence, \vi{còn} for a contrast, \vi{nên} for a consequence, \vi{đồng thời} for two facts
+        at once. No semicolons either (N20). Two clauses become two sentences, items inside
+        parentheses take a comma, a list whose items contain commas is numbered (1), (2), and a
+        table cell takes a comma or a full stop, never a full stop before a number, since
+        thousands take a dot (15.831). No space before : ? ! or \%. Quotation marks are \vi{“ ”},
+        written \verb|``...''|.
+  \item \textbf{Emphasis:} \verb|\emph| marks a term where it is defined, as in the English
+        (\vi{\emph{nhóm đồng hạng}}).
+  \item \textbf{Line breaks.} Vietnamese text is not hyphenated. A line that overflows is fixed by
+        rewording, or by \verb|\foreignlanguage{english}{...}| around a long English term.
+\end{enumerate}
+
+\section{The terms}\label{sec:terms}
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}%
+  >{\raggedright\arraybackslash}p{0.29\textwidth}%
+  >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+  \toprule
+  English & Vietnamese & Note \\
+  \midrule
+  \endfirsthead
+  \toprule
+  English & Vietnamese & Note \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  \grp{A. The task and the graph}
+  \g{heterogeneous graph}{đồ thị không đồng nhất}{}
+  \g{homogeneous}{đồng nhất}{the homogeneous baseline: \vi{mô hình cơ sở đồng nhất}}
+  \g{meta-path}{meta-path}{kept in English since 20 November (N17), before that \vi{đường dẫn meta} (N10)}
+  \g{path (a meta-path)}{meta-path}{the path \code{PUP}: \vi{meta-path \code{PUP}}}
+  \g{path set; set}{tập meta-path; tập}{}
+  \g{set size; at four paths}{kích thước tập; với bốn meta-path}{the six-path sets: \vi{các tập
+    sáu meta-path}}
+  \g{hop; total hops}{bước; tổng số bước}{a path of $l$ hops: \vi{meta-path $l$ bước}}
+  \g{instance (of a path)}{đường đi theo meta-path}{counted as \vi{số đường đi}, the walk count
+    of Section~5. Was \vi{thể hiện} until 20 November (N24)}
+  \g{node; node type}{nút; kiểu nút}{as in work on graph neural networks}
+  \g{edge; relation; edge type}{cạnh; quan hệ; kiểu cạnh}{}
+  \g{composite relation}{quan hệ hợp thành}{}
+  \g{adjacency matrix}{ma trận kề}{}
+  \g{schema}{lược đồ}{this small schema: \vi{lược đồ nhỏ này}}
+  \g{neighbour; neighbourhood}{láng giềng; vùng lân cận}{}
+  \g{channel (one path's input in HAN)}{kênh}{an empty channel: \vi{một kênh rỗng}}
+  \g{walk count}{số đường đi}{HAN's graphs: \vi{20 láng giềng mạnh nhất theo số đường đi};
+    first: \vi{số đường đi (walk count)}}
+  \g{random walk; walk length}{bước đi ngẫu nhiên; độ dài bước đi}{metapath2vec}
+  \g{self-loop}{cạnh tự nối}{first: \vi{cạnh tự nối (self-loop)}}
+  \g{binary; symmetric; made symmetric}{nhị phân; đối xứng; đối xứng hóa}{}
+  \g{target nodes}{nút đích}{}
+  \g{(a path) reaches (a product)}{đến được}{the products \code{PCCP} reaches: \vi{các sản phẩm
+    mà \code{PCCP} đến được}}
+  \g{degree}{bậc}{the largest user degree: \vi{bậc lớn nhất của người dùng}}
+  \g{$k$-core}{$k$-lõi}{first: \vi{$k$-lõi ($k$-core)}}
+
+  \grp{B. Products, users and the data}
+  \g{product; product record}{sản phẩm; bản ghi sản phẩm}{}
+  \g{product group: book, music, DVD, video}{nhóm sản phẩm: sách, nhạc, DVD, video}{Amazon's
+    \emph{group} field}
+  \g{category; leaf category}{danh mục; danh mục lá}{}
+  \g{category hierarchy; root; parent; child; sibling; ancestor}{cây phân cấp danh mục; gốc;
+    cha; con; anh em; cấp trên}{N32: every ancestor category is \vi{mọi danh mục cấp trên}, not
+    \vi{tổ tiên}, and never \vi{cha}, which is only the direct parent}
+  \g{category path (Amazon's, root to leaf)}{chuỗi danh mục (từ gốc đến lá)}{kept apart from a
+    meta-path through categories}
+  \g{category path (a meta-path through categories)}{meta-path danh mục}{}
+  \g{dense; near-empty (path)}{dày đặc; gần rỗng}{\vi{meta-path danh mục dày đặc}, \vi{meta-path
+    gần rỗng}}
+  \g{also bought; co-purchase}{mua kèm}{Amazon's ``customers also bought''}
+  \g{co-review}{đồng nhận xét}{the co-review path \code{PUP}: \vi{meta-path đồng nhận xét
+    \code{PUP}}}
+  \g{user; customer; customer ID}{người dùng; khách hàng; mã khách hàng}{}
+  \g{account}{tài khoản}{}
+  \g{review; review line; reviewer}{nhận xét; dòng nhận xét; người nhận xét}{N14; never
+    \vi{đánh giá} (S3)}
+  \g{rating}{số sao}{a rating of at least 4: \vi{từ 4 sao trở lên}}
+  \g{votes; helpful votes}{lượt bình chọn; lượt bình chọn hữu ích}{}
+  \g{positive review; interaction; positive interaction}{nhận xét tích cực; tương tác; tương tác
+    tích cực}{}
+  \g{edition; format; work}{ấn bản; định dạng; tác phẩm}{the DVD and the VHS of one film: \vi{bản
+    DVD và bản VHS của một bộ phim}}
+  \g{duplicate editions; cluster; merge}{ấn bản trùng lặp; cụm; gộp}{}
+  \g{copy (of a review line)}{bản sao}{a copy in training: \vi{một bản sao trong tập huấn
+    luyện}}
+  \g{twin products}{sản phẩm song sinh}{}
+  \g{crawl}{dữ liệu thu thập}{a crawl of Amazon's product pages: \vi{dữ liệu thu thập từ các
+    trang sản phẩm của Amazon}}
+  \g{audit}{rà soát}{}
+  \g{title (of a product)}{tiêu đề}{}
+  \g{catalogue}{kho sản phẩm}{not \vi{danh mục}, which is a category}
+  \g{raw data; raw lines}{dữ liệu thô; dòng thô}{}
+  \g{features; raw features; feature matrix}{đặc trưng; đặc trưng gốc; ma trận đặc
+    trưng}{}
+  \g{LSA vector; TF-IDF; truncated SVD; vocabulary; token}{vectơ LSA; TF-IDF; SVD rút gọn; bộ từ
+    vựng; token}{}
+  \g{one-hot; multi-hot; hashed code}{vectơ one-hot; vectơ multi-hot; vectơ nhị phân sinh bằng hàm
+    băm}{inputs, so \vi{vectơ} (N23). Was \vi{mã one-hot}, \vi{mã multi-hot}, \vi{mã băm} (N25)}
+  \g{64-d (vector)}{(vectơ) 64 chiều}{}
+
+  \grp{C. Splits, models and training}
+  \g{split; split seed}{phép chia; seed của phép chia}{}
+  \g{training / validation / test edges}{cạnh huấn luyện / xác thực / thử nghiệm}{N11; the data:
+    \vi{tập huấn luyện / xác thực / thử nghiệm}}
+  \g{held-out edge}{cạnh giữ lại}{}
+  \g{leakage; leakage controls}{rò rỉ dữ liệu; biện pháp chống rò rỉ}{first: \vi{rò rỉ dữ liệu
+    (leakage)}}
+  \g{fingerprint (of the training edges)}{dấu vân tay}{first: \vi{dấu vân tay (fingerprint)}}
+  \g{recommender system; recommender}{hệ thống gợi ý; mô hình gợi ý}{}
+  \g{recommendation; product recommendation}{gợi ý; gợi ý sản phẩm}{}
+  \g{link prediction; node classification}{dự đoán liên kết; phân loại nút}{}
+  \g{task}{bài toán}{\vi{bài toán phân loại nút}, not \vi{tác vụ} (N22)}
+  \g{model; network; layer}{mô hình; mạng; tầng}{}
+  \g{attention; node-level; semantic-level}{cơ chế chú ý; mức nút; mức ngữ nghĩa}{}
+  \g{attention layer; head}{tầng chú ý; đầu chú ý}{8 heads: \vi{8 đầu chú ý}}
+  \g{graph attention network}{mạng chú ý đồ thị}{GAT}
+  \g{graph neural network}{mạng nơ-ron đồ thị}{}
+  \g{co-attention}{đồng chú ý}{first: \vi{đồng chú ý (co-attention)}}
+  \g{item (as in user--item)}{sản phẩm}{\vi{cặp người dùng--sản phẩm}}
+  \g{type-blind}{không phân biệt kiểu}{a type-blind GAT: \vi{GAT không phân biệt kiểu}}
+  \g{embedding}{embedding}{kept in English since 20 November (N23), before that \vi{vectơ nhúng}}
+  \g{vector; free vector}{vectơ; embedding tự do}{a learned user or product vector is an embedding
+    (N23). \vi{vectơ} stays for an input or a parameter: \vi{vectơ LSA}, \vi{vectơ chú ý}}
+  \g{encoder; encode}{bộ mã hóa; mã hóa}{}
+  \g{input projection; linear map}{phép chiếu đầu vào; ánh xạ tuyến tính}{}
+  \g{supernet}{siêu mạng}{}
+  \g{weight; path weight; an equal share}{trọng số; trọng số meta-path; mức chia đều}{weights
+    held equal: \vi{giữ các trọng số bằng nhau}}
+  \g{warm-up}{giai đoạn khởi động}{first: \vi{giai đoạn khởi động (warm-up)}}
+  \g{score; dot product}{điểm; tích vô hướng}{a pair is scored by: \vi{một cặp được tính điểm
+    bằng}}
+  \g{loss; BPR loss; cross-entropy}{hàm mất mát; hàm mất mát BPR; entropy chéo}{}
+  \g{validation BPR}{BPR xác thực}{}
+  \g{negative (sample)}{mẫu âm}{99 fixed negatives: \vi{99 mẫu âm cố định}}
+  \g{epoch; seed}{epoch; seed}{kept in English (N12); seed noise: \vi{nhiễu giữa các seed}}
+  \g{early stopping; patience; checkpoint}{dừng sớm; patience; điểm lưu}{first: \vi{điểm lưu
+    (checkpoint)}}
+  \g{learning rate; weight decay; optimiser; batch; temperature}{tốc độ học; suy giảm trọng số; bộ
+    tối ưu; lô; nhiệt độ}{}
+  \g{parameter; hyperparameter; configuration; setting}{tham số; siêu tham số; cấu hình; thiết
+    lập}{}
+  \g{dropout; PReLU; skip-gram; context node; window}{dropout; PReLU; skip-gram; nút ngữ cảnh; cửa
+    sổ}{}
+  \g{frozen (embeddings); repeated template}{đã cố định; khuôn mẫu lặp lại}{metapath2vec}
+  \g{baseline; reference}{mô hình cơ sở; đối chứng}{the random sets are the control, \vi{đối chứng
+    ngẫu nhiên} (N29). GAT and the popularity model are baselines, \vi{mô hình cơ sở}}
+  \g{popularity (the model); popularity floor}{mô hình phổ biến; mức sàn của mô hình phổ biến}{in
+    tables: \vi{Phổ biến}}
+  \g{benchmark}{bộ đánh giá chuẩn}{HGB}
+  \g{union of all relations; user side}{hợp của mọi quan hệ; phía người dùng}{}
+
+  \grp{D. The search}
+  \g{meta-path search; automatic discovery}{tìm kiếm meta-path; phát hiện tự động}{}
+  \g{one-shot search}{(described, not named)}{since 21 November the paper says what it does:
+    \vi{chỉ huấn luyện một lần: mọi ứng viên được huấn luyện cùng lúc trong một siêu mạng} (N27)}
+  \g{neural architecture search}{tìm kiếm kiến trúc mạng nơ-ron}{}
+  \g{meta-structure; meta-graph}{cấu trúc meta; đồ thị meta}{first, each: with the English in
+    parentheses}
+  \g{genetic algorithm; reinforcement learning}{thuật toán di truyền; học tăng cường}{}
+  \g{query-based; search-based}{dựa trên truy vấn; dựa trên tìm kiếm}{}
+  \g{search policy; state of the art}{chiến lược tìm kiếm; tiên tiến nhất}{}
+  \g{heuristic}{heuristic}{stays}
+  \g{candidate; candidate path}{ứng viên; meta-path ứng viên}{}
+  \g{pool; final pool}{nhóm ứng viên; nhóm ứng viên cuối}{}
+  \g{Gumbel noise}{nhiễu Gumbel}{Gumbel-softmax stays}
+  \g{run; winner}{lần chạy; tập thắng}{30 runs per set size: \vi{30 lần chạy cho mỗi kích thước
+    tập}}
+  \g{tie group; tie}{nhóm đồng hạng; đồng hạng}{first: \vi{nhóm đồng hạng (tie group)}}
+  \g{tolerance $\delta$}{ngưỡng dung sai $\delta$}{}
+  \g{averaged score; least squares}{điểm trung bình; bình phương tối thiểu}{}
+  \g{set effect}{hiệu ứng của tập}{the $b_s$ of the fit}
+  \g{first-order step}{bước bậc nhất}{as in DARTS}
+  \g{one-standard-error rule; standard error}{quy tắc một sai số chuẩn; sai số chuẩn}{}
+  \g{window; plateau}{cửa sổ; vùng phẳng}{}
+  \g{vote; consensus set; pick}{bỏ phiếu; tập đồng thuận; lựa chọn}{}
+  \g{fleet (of runs)}{loạt chạy}{200 fleets with shuffled scores: \vi{200 loạt chạy có điểm bị
+    xáo trộn}}
+  \g{null; shuffled; beyond chance}{đối chứng; xáo trộn; hơn mức ngẫu nhiên}{the null a search has
+    to beat: \vi{đối chứng mà một phương pháp tìm kiếm phải vượt qua}}
+  \g{searched sets; manual sets; random draws}{tập tìm được; tập thủ công; tập chọn ngẫu
+    nhiên}{short form \vi{tập ngẫu nhiên}. Was \vi{tập rút ngẫu nhiên} before 20 November (N22)}
+  \g{draw (one random set)}{lần chọn}{6 paths, draw 2: \vi{6 meta-path, lần chọn 2}. Drawn
+    uniformly: \vi{chọn đều}. Was \vi{lần rút} (N22)}
+  \g{family (of sets)}{loại}{three families: \vi{ba loại tập}}
+  \g{by hand; hand design}{thủ công; thiết kế thủ công}{}
+  \g{fixed in advance}{cố định từ trước}{the metric fixed in advance: \vi{độ đo đã cố định từ
+    trước}}
+  \g{stated principles; kind of evidence}{nguyên tắc nêu rõ; loại bằng chứng}{}
+  \g{behaviour path; content path; dead path}{meta-path hành vi; meta-path nội dung; meta-path
+    chết}{}
+  \g{preference; $\alpha$ rank}{mức ưa thích; hạng $\alpha$}{}
+  \g{pilot run; re-selection}{lần chạy thử; chọn lại}{}
+  \g{deterministic GPU kernels}{kernel GPU tất định}{``kernel'' stays}
+  \g{GPU hours; GPU minutes; compute}{giờ GPU; phút GPU; tài nguyên tính toán}{}
+
+  \grp{E. Evaluation and statistics}
+  \g{metric; main metric}{độ đo; độ đo chính}{}
+  \g{sampled (metric)}{lấy mẫu}{sampled Hit@10: \vi{Hit@10 lấy mẫu}}
+  \g{full ranking}{xếp hạng toàn bộ}{full-ranking Hit@10: \vi{Hit@10 xếp hạng toàn bộ}}
+  \g{rank; ranking; ties (in a ranking)}{hạng; xếp hạng; bằng điểm}{ties broken at random:
+    \vi{bằng điểm thì xếp ngẫu nhiên}, so that \vi{chọn ngẫu nhiên} means only the random sets (N22)}
+  \g{relevant product}{sản phẩm liên quan}{}
+  \g{test (a set); check (noun); experiment}{thử nghiệm; kiểm tra; thực nghiệm}{S3}
+  \g{evaluate; evaluation}{đánh giá}{never a product review (S3)}
+  \g{validation pick}{tập chọn theo xác thực}{}
+  \g{user groups}{nhóm người dùng}{by the number of training edges: \vi{theo số cạnh huấn
+    luyện}}
+  \g{long tail; most-bought}{đuôi dài; được mua nhiều nhất}{}
+  \g{trail; tie; beat; lose; lead; gap}{kém; ngang bằng; vượt; thua; mức dẫn trước; chênh
+    lệch}{GAT's lead: \vi{mức dẫn trước của GAT}}
+  \g{relative gap}{chênh lệch tương đối}{}
+  \g{margin; spread}{khoảng cách; độ phân tán}{the margins lie within seed noise: \vi{các khoảng
+    cách nằm trong nhiễu giữa các seed}}
+  \g{place (in a ranking of sets)}{vị trí}{HAN puts the searched sets 6th, 7th and 8th: \vi{HAN xếp
+    các tập tìm được ở vị trí thứ 6, 7 và 8}}
+  \g{mixed (results)}{trái chiều}{}
+  \g{sensitivity check}{phép kiểm tra độ nhạy}{}
+  \g{Spearman correlation}{hệ số tương quan Spearman}{}
+  \g{permutation $p$-value; shuffles}{giá trị $p$ hoán vị; lần xáo trộn}{}
+  \g{Welch's two-sided $t$-test}{kiểm định $t$ hai phía của Welch}{}
+  \g{$p$-value; power; multiple comparisons}{giá trị $p$; (said in words); nhiều phép so sánh}{since
+    21 November: low power is \vi{khó phát hiện các chênh lệch nhỏ}, and \vi{không được hiệu chỉnh
+    cho việc thực hiện nhiều phép so sánh}, not \vi{lực kiểm định} or \vi{so sánh bội}}
+  \g{mean; median; standard deviation; range; 90\% range}{trung bình; trung vị; độ lệch chuẩn;
+    khoảng; khoảng 90\%}{}
+  \g{sensitivity}{độ nhạy}{}
+
+  \grp{F. The paper's parts}
+  \g{Introduction; Related work; Preliminaries}{Giới thiệu; Các nghiên cứu liên quan; Kiến thức
+    cơ sở}{}
+  \g{Data; Method; Experimental setup}{Dữ liệu; Phương pháp; Thiết lập thực nghiệm}{}
+  \g{Results; Discussion; Conclusion}{Kết quả; Thảo luận; Kết luận}{}
+  \g{Threats to validity}{Các yếu tố đe dọa tính hợp lệ}{}
+  \g{Code and data availability; Use of AI assistance}{Mã nguồn và dữ liệu; Sử dụng trợ lý AI}{}
+  \g{Section; Table; Figure; Appendix; Eq.}{Mục; Bảng; Hình; Phụ lục; công thức}{S6}
+  \g{supplementary material}{tài liệu bổ sung}{N31: the former appendix, a document of its own
+    (sections Mục A--H, tables Bảng S1, \ldots)}
+  \g{contributions}{đóng góp}{}
+  \g{future work}{hướng nghiên cứu tiếp theo}{}
+  \g{repository; commit; script}{kho mã; commit; script}{``commit'' and ``script'' stay}
+  \g{branch; folder; package; log}{nhánh; thư mục; gói; nhật ký}{}
+  \g{rerun; cap; pass (over the walks)}{chạy lại; mức trần; lượt}{}
+  \g{bit for bit; conda environment}{chính xác đến từng bit; môi trường conda}{}
+  \g{guidance; funding}{hướng dẫn; tài trợ}{the acknowledgments}
+\end{longtable}}
+
+\section{What stays in English}\label{sec:english}
+
+\begin{itemize}
+  \item Models and methods: HAN, GAT, LMSPS, metapath2vec, MCRec, HGRec, FHRec, AMERec, GEMS, RMS,
+        DiffMG, DARTS, ENAS, HGB, PReLU, Adam, Gumbel-softmax, skip-gram, dropout.
+  \item Metrics and losses: Hit@10, NDCG@10, Recall@20, Precision@10, Micro-F1, BPR.
+  \item Paths and sets: \code{PUP}, \code{PCCP} and every other path; \code{a1}, \code{a2},
+        \code{c}, M1--M8.
+  \item Data and software: Amazon-Meta, SNAP, the product groups' DVD and VHS, file names,
+        commands, branches and commits; Python, PyTorch, CUDA, NumPy, DGL, Windows, conda.
+  \item The reference list and ``et al.''\ (N7); ACM's CCS terms (N9).
+  \item Two terms: meta-path (N17) and embedding (N23).
+\end{itemize}
+
+\end{document}

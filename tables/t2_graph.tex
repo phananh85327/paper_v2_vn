@@ -1,0 +1,39 @@
+% t2_graph.tex -- T2: the graph and the split (paper_v2_vn, translated in L3 from paper_v2's
+% tables/t2_graph.tex). Numbers from numbers.tex (data/AMAZON/meta.json, audit.json, label files;
+% the split rebuilt and checked by make_numbers.py).
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{Đồ thị và phép chia. Mọi đồ thị mà các mô hình thấy chỉ chứa các cạnh huấn luyện.}
+  \label{tab:graph}
+  \begin{tabularx}{\linewidth}{@{}lrL@{}}
+    \toprule
+    Kiểu nút & Số nút & Đặc trưng \\
+    \midrule
+    Sản phẩm (P) & \val{after-products} & vectơ LSA \val{title-dim} chiều của tiêu đề (khác 0 với
+      \val{title-coverage-pct}\%) và nhóm sản phẩm: sách \val{group-book-pct}\%, nhạc
+      \val{group-music-pct}\%, DVD \val{group-dvd-pct}\%, video \val{group-video-pct}\% \\
+    Danh mục (C) & \val{after-categories} & vectơ multi-hot \val{cat-vocab} chiều của các token trong
+      tên (toàn số 0 với \val{after-zerocat-pct}\%) \\
+    Người dùng (U) & \val{after-users} & vectơ nhị phân \val{user-dim} chiều sinh từ ID bằng hàm băm. Trong tìm kiếm, HAN và
+      metapath2vec thay bằng một embedding tự do \val{search-hidden} chiều \\
+    \midrule
+    Quan hệ & Số cạnh & \\
+    \midrule
+    P--P, mua kèm & \val{after-alsobought} & cặp sản phẩm (\val{rel-pp-rows} dòng có hướng), đã
+      đối xứng hóa \\
+    C--C, cha và con & \val{rel-cc} & \\
+    P--C, danh mục lá & \val{rel-pc} & trung vị \val{after-leafcats-med} danh mục mỗi sản phẩm \\
+    U--P, nhận xét tích cực & \val{rel-up} & chia ngẫu nhiên một lần: \val{split-train} cạnh huấn
+      luyện, \val{split-val} cạnh xác thực, \val{split-test} cạnh thử nghiệm (seed của phép
+      chia~\val{split-seed}) \\
+    \midrule
+    \multicolumn{3}{@{}>{\raggedright\arraybackslash}p{\linewidth}@{}}{Số cạnh huấn luyện mỗi
+      người dùng: trung vị \val{train-deg-med}, trung bình \val{train-deg-mean}, lớn nhất
+      \val{train-deg-max}. Cạnh thử nghiệm theo số cạnh huấn luyện của người dùng:
+      \val{testdeg-d1} (1--5), \val{testdeg-d2} (6--20), \val{testdeg-d3} (từ 21 trở lên) và
+      \val{testdeg-d0} (không có). Mỗi cạnh xác thực và thử nghiệm được xếp hạng so với
+      \val{split-negatives} mẫu âm lấy mẫu và so với mọi sản phẩm.} \\
+    \bottomrule
+  \end{tabularx}
+\end{widetable}

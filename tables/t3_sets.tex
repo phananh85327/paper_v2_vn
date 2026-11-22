@@ -1,0 +1,53 @@
+% t3_sets.tex -- T3: the 24 path sets (paper_v2_vn, translated in L3 from paper_v2's
+% tables/t3_sets.tex; HAN repository, arch.py, via numbers.tex). Since N31 it also lists the ten
+% random draws, which were a table of their own in the appendix (t3b_random.tex, now in the
+% supplementary document). The reasons of the manual sets
+% follow LMSPS review/manual_metapath_sets.md (revised version).
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \caption{Cả 24 tập meta-path: tìm được, thủ công và chọn ngẫu nhiên làm đối chứng. Một meta-path
+    được viết từ sản phẩm đi ra
+    và đại diện cho cả chính nó lẫn meta-path ngược của nó. Ví dụ, \code{PUP} nối hai sản phẩm được cùng
+    một người dùng nhận xét. Tập có dấu * là tập chọn theo xác thực của HAN
+    (Mục~\ref{sec:res-random}).}
+  \label{tab:sets}
+  \begin{tabularx}{\linewidth}{@{}llL@{}}
+    \toprule
+    Tập & Meta-path & Cách chọn \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{Tìm được: LMSPS, \val{search-runs} lần chạy cho mỗi kích thước
+      tập, kết hợp lại}} \\
+    \code{a1}, 4 meta-path & \texttt{\val{set-f4a1}} & điểm trung bình tốt nhất, trong một cửa sổ
+      \val{search-window-4} tập \\
+    \code{a2}, 4 meta-path & \texttt{\val{set-f4a2}} & tập còn lại của cửa sổ đó \\
+    \code{c}, 4 meta-path & \texttt{\val{set-f4c}} & tập đồng thuận của bỏ phiếu \\
+    \code{a1}, 6 meta-path & \texttt{\val{set-f6a1}} & đơn giản nhất trong \val{search-window-6}
+      tập của cửa sổ \\
+    \code{a2}, 6 meta-path & \texttt{\val{set-f6a2}} & đơn giản thứ hai \\
+    \code{c}, 6 meta-path & \texttt{\val{set-f6c}} & tập đồng thuận của bỏ phiếu \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{Thủ công: thiết kế với sự hỗ trợ của AI theo các nguyên tắc nêu
+      rõ, cố định từ trước}} \\
+    M1 & \texttt{\val{set-m1}} & một meta-path hành vi, một meta-path nội dung \\
+    M2 & \texttt{\val{set-m2}} & mỗi loại bằng chứng một meta-path: mua kèm, đồng nhận xét, danh
+      mục \\
+    M3 & \texttt{\val{set-m3}} & chỉ hành vi \\
+    M4 & \texttt{\val{set-m4}} & chỉ danh mục \\
+    M5 & \texttt{\val{set-m5}} & M2 và \code{PPUP}, dùng cho so sánh chính với 4 meta-path \\
+    M6 & \texttt{\val{set-m6}} & M5 và hai meta-path rộng hơn, dùng cho so sánh chính với 6 meta-path \\
+    M7 & \texttt{\val{set-m7}} & mọi meta-path dài tối đa hai bước, không chọn lọc \\
+    M8 & \texttt{\val{set-m8}} & các meta-path dài qua người dùng, như các lần chạy tìm kiếm trước
+      đó ưa thích \\
+    \midrule
+    \multicolumn{3}{@{}l}{\emph{Ngẫu nhiên (đối chứng): chọn đều và không lặp lại từ
+      \val{search-cands} ứng viên, cố định từ trước}} \\
+    \emph{lần chọn} & \emph{4 meta-path} & \emph{6 meta-path} \\
+    1 & \texttt{\val{set-r4d1}} & \texttt{\val{set-r6d1}} \\
+    2 & \texttt{\val{set-r4d2}} & \texttt{\val{set-r6d2}}\textsuperscript{*} \\
+    3 & \texttt{\val{set-r4d3}} & \texttt{\val{set-r6d3}} \\
+    4 & \texttt{\val{set-r4d4}} & \texttt{\val{set-r6d4}} \\
+    5 & \texttt{\val{set-r4d5}} & \texttt{\val{set-r6d5}} \\
+    \bottomrule
+  \end{tabularx}
+\end{widetable}

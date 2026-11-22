@@ -1,0 +1,58 @@
+% t4_main.tex -- T4: the main comparison (paper_v2_vn, translated in L3 from paper_v2's
+% tables/t4_main.tex; results.csv via numbers.tex; Welch tests computed by make_numbers.py).
+\begin{widetable}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \caption{Tập tìm được so với tập thủ công: kết quả trên tập thử nghiệm, trung bình $\pm$ độ lệch
+    chuẩn qua 3 seed huấn luyện. $\Delta$: tập tìm được trừ tập thủ công, kèm $p$ của kiểm định
+    Welch hai phía. Lấy mẫu: mỗi cạnh thử nghiệm được xếp hạng so với \val{split-negatives} mẫu âm,
+    với Hit@10 là độ đo đã cố định từ trước. Toàn bộ: so với mọi sản phẩm mà người dùng không có
+    cạnh nối tới, với Recall@20 lấy trung bình theo người dùng.}
+  \label{tab:main}
+  \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llllll@{}}
+    \toprule
+    & & \multicolumn{2}{c}{Lấy mẫu} & \multicolumn{2}{c}{Xếp hạng toàn bộ} \\
+    \cmidrule(lr){3-4}\cmidrule(l){5-6}
+    Mô hình & Tập & Hit@10 & NDCG@10 & Hit@10 & Recall@20 \\
+    \midrule
+    HAN & \code{a1}, 4 meta-path & \val{han-f4a1-hit-mean} $\pm$ \val{han-f4a1-hit-sd}
+      & \val{han-f4a1-ndcg-mean} & \val{han-f4a1-fhit-mean} $\pm$ \val{han-f4a1-fhit-sd}
+      & \val{han-f4a1-frec-mean} \\
+    & M5 & \val{han-m5-hit-mean} $\pm$ \val{han-m5-hit-sd} & \val{han-m5-ndcg-mean}
+      & \val{han-m5-fhit-mean} $\pm$ \val{han-m5-fhit-sd} & \val{han-m5-frec-mean} \\
+    & $\Delta$ ($p$) & \val{han-4-hit-diff} (\val{han-4-hit-p})
+      & \val{han-4-ndcg-diff} (\val{han-4-ndcg-p}) & \val{han-4-fhit-diff} (\val{han-4-fhit-p})
+      & \val{han-4-frec-diff} (\val{han-4-frec-p}) \\
+    \addlinespace
+    & \code{a1}, 6 meta-path & \val{han-f6a1-hit-mean} $\pm$ \val{han-f6a1-hit-sd}
+      & \val{han-f6a1-ndcg-mean} & \val{han-f6a1-fhit-mean} $\pm$ \val{han-f6a1-fhit-sd}
+      & \val{han-f6a1-frec-mean} \\
+    & M6 & \val{han-m6-hit-mean} $\pm$ \val{han-m6-hit-sd} & \val{han-m6-ndcg-mean}
+      & \val{han-m6-fhit-mean} $\pm$ \val{han-m6-fhit-sd} & \val{han-m6-frec-mean} \\
+    & $\Delta$ ($p$) & \val{han-6-hit-diff} (\val{han-6-hit-p})
+      & \val{han-6-ndcg-diff} (\val{han-6-ndcg-p}) & \val{han-6-fhit-diff} (\val{han-6-fhit-p})
+      & \val{han-6-frec-diff} (\val{han-6-frec-p}) \\
+    \midrule
+    metapath2vec & \code{a1}, 4 meta-path & \val{mtv-f4a1-hit-mean} $\pm$ \val{mtv-f4a1-hit-sd}
+      & \val{mtv-f4a1-ndcg-mean} & \val{mtv-f4a1-fhit-mean} $\pm$ \val{mtv-f4a1-fhit-sd}
+      & \val{mtv-f4a1-frec-mean} \\
+    & M5 & \val{mtv-m5-hit-mean} $\pm$ \val{mtv-m5-hit-sd} & \val{mtv-m5-ndcg-mean}
+      & \val{mtv-m5-fhit-mean} $\pm$ \val{mtv-m5-fhit-sd} & \val{mtv-m5-frec-mean} \\
+    & $\Delta$ ($p$) & \val{mtv-4-hit-diff} (\val{mtv-4-hit-p})
+      & \val{mtv-4-ndcg-diff} (\val{mtv-4-ndcg-p}) & \val{mtv-4-fhit-diff} (\val{mtv-4-fhit-p})
+      & \val{mtv-4-frec-diff} (\val{mtv-4-frec-p}) \\
+    \addlinespace
+    & \code{a1}, 6 meta-path & \val{mtv-f6a1-hit-mean} $\pm$ \val{mtv-f6a1-hit-sd}
+      & \val{mtv-f6a1-ndcg-mean} & \val{mtv-f6a1-fhit-mean} $\pm$ \val{mtv-f6a1-fhit-sd}
+      & \val{mtv-f6a1-frec-mean} \\
+    & M6 & \val{mtv-m6-hit-mean} $\pm$ \val{mtv-m6-hit-sd} & \val{mtv-m6-ndcg-mean}
+      & \val{mtv-m6-fhit-mean} $\pm$ \val{mtv-m6-fhit-sd} & \val{mtv-m6-frec-mean} \\
+    & $\Delta$ ($p$) & \val{mtv-6-hit-diff} (\val{mtv-6-hit-p})
+      & \val{mtv-6-ndcg-diff} (\val{mtv-6-ndcg-p}) & \val{mtv-6-fhit-diff} (\val{mtv-6-fhit-p})
+      & \val{mtv-6-frec-diff} (\val{mtv-6-frec-p}) \\
+    \midrule
+    Phổ biến & -- & \val{pop-hit} & \val{pop-ndcg} & \val{pop-fhit} & \val{pop-frec} \\
+    \bottomrule
+  \end{tabular*}
+\end{widetable}

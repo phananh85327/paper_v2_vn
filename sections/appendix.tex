@@ -1,0 +1,240 @@
+% sections/appendix.tex -- the body of the supplementary document, supplement_vn.tex (paper_v2_vn,
+% translated in L8 from paper_v2's sections/appendix.tex; terms as in glossary_vn.tex). Until N31
+% it was the paper's appendix. Its references to the paper are \ref*{P-...} (xr, see
+% supplement_vn.tex), and its own sections are called Mục, lettered A-H. Its sections follow the
+% paper: the study at a glance, the data (Section 4), changes from the base papers and the search
+% (Section 5), the random draws and the settings (Section 6), full results (Section 7),
+% reproducibility. One addition to paper_v2: the Records paragraph names make_numbers.py's
+% --lang vi option, which writes this version's numbers. Every number is \val{} from numbers.tex.
+\section{Tổng quan nghiên cứu}
+\label{app:overview}
+
+Hình~\ref{fig:pipeline} trình bày nghiên cứu từ dữ liệu thô đến các cạnh thử nghiệm
+(Mục~\ref*{P-sec:data}--\ref*{P-sec:setup}).
+
+\input{figures/f1_pipeline}
+
+\section{Dữ liệu và đồ thị}
+\label{app:graph}
+
+Bảng~\ref{tab:graph} tóm tắt đồ thị và phép chia ở Mục~\ref*{P-sec:data}. Phần còn lại của mục
+này nêu những chi tiết về dữ liệu mà Mục~\ref*{P-sec:data} không trình bày.
+
+\paragraph{Gộp ấn bản.} Quy tắc gộp nối \val{edition-pairs} cặp thành \val{edition-clusters} cụm
+gồm \val{edition-size-min} đến \val{edition-size-max} sản phẩm (\val{edition-size-two-pct}\% số cụm
+chỉ gồm hai sản phẩm) và để lại \val{raw-works} tác phẩm từ \val{raw-usable} bản ghi sản phẩm dùng
+được. Với dữ liệu nhận xét Amazon ra đời sau và lớn hơn của \citet{mcauley2015image}, trang dữ liệu
+cảnh báo rằng các nhận xét thô có chứa bản trùng lặp. Các tệp đã loại trùng lặp giữ
+\val{mcauley-dedup-reviews} trong số \val{mcauley-raw-reviews}
+nhận xét.\footnote{\url{https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html}, truy cập
+ngày 5 tháng 11 năm 2026.}
+
+\paragraph{Sản phẩm song sinh.} Một phép kiểm tra thứ hai tìm các sản phẩm có tập người nhận xét
+giống hệt nhau. Phép kiểm tra này tìm thấy \val{twin-products} sản phẩm trong \val{twin-groups}
+nhóm, với \val{twin-test} cạnh thử nghiệm có một sản phẩm song sinh như vậy trong tập huấn luyện.
+Loại bỏ các cạnh này không làm Hit@10 thử nghiệm của lần chạy nào thay đổi quá \val{twin-maxdiff}.
+
+\paragraph{Đặc trưng tiêu đề.} Vectơ tiêu đề của một sản phẩm là một vectơ LSA: TF-IDF trên bộ từ
+vựng gồm \val{title-vocab} token, giảm chiều bằng SVD rút gọn xuống \val{title-dim} chiều. Vectơ này
+khác 0 với \val{title-coverage-pct}\% số sản phẩm.
+
+\paragraph{Liên kết danh mục.} Sản phẩm chỉ liên kết với các danh mục lá của nó. Nếu liên kết thêm
+mọi danh mục cấp trên, sản phẩm trung vị sẽ có \val{cat-all-median} danh mục thay vì
+\val{after-leafcats-med}, \val{cat-all-largest-pct}\% số sản phẩm sẽ rơi vào cùng một danh mục và
+các đường đi P--C--P sẽ dày đặc gấp \val{cat-pcp-ratio} lần. Với liên kết đến danh mục lá,
+\code{PCP} chỉ để \val{pcp-isolated} sản phẩm không có láng giềng nào.
+
+\input{tables/t2_graph}
+
+\section{Thay đổi so với các bài báo gốc}
+\label{app:changes}
+
+Bảng~\ref{tab:changes} liệt kê những gì nghiên cứu này thay đổi trong ba phương pháp gốc, kèm lý do.
+Phần lớn các thay đổi xuất phát từ bài toán. LMSPS và HAN được xây dựng cho bài toán phân loại nút.
+Dự đoán liên kết cần một điểm cho cặp người dùng--sản phẩm, một hàm mất mát trên các cặp như vậy
+và, trong tìm kiếm, sự cẩn trọng để một cạnh huấn luyện không chạm tới chính đặc trưng của nó. Các
+thay đổi khác làm cho phép so sánh công bằng: mọi tập meta-path đều gặp cùng một phía người dùng,
+cùng các thiết lập và cùng quy tắc dừng, trong HAN cũng như trong metapath2vec. Phần còn lại làm cho
+quyết định của tìm kiếm tái lập được: tìm kiếm tính điểm mọi tập của nhóm ứng viên cuối mà không có
+nhiễu, rồi nhiều lần chạy được kết hợp thành một lựa chọn. Thiết lập của các bài báo gốc được ghi
+như chúng báo cáo, còn thiết lập của chúng tôi là thiết lập của các lần chạy (Mục~\ref{app:settings}).
+
+\input{tables/t6_changes}
+
+\section{Chi tiết về tìm kiếm}
+\label{app:search}
+
+\paragraph{Mức đồng thuận giữa các lần chạy.} Các lần chạy tính điểm những tập khác nhau, vì nhóm
+ứng viên cuối của chúng khác nhau, nhưng chúng xếp hạng giống nhau những tập mà chúng cùng có: điểm
+của hai lần chạy trên các tập chung có hệ số tương quan Spearman trung vị \val{search-agree-4} với
+bốn meta-path và \val{search-agree-6} với sáu, trong khi điểm của một tập dao động
+\val{search-noise-4} và \val{search-noise-6} (độ lệch chuẩn) từ lần chạy này sang lần chạy khác
+(Mục~\ref*{P-sec:fleet}).
+
+\paragraph{Bỏ phiếu so với đối chứng.} Bỏ phiếu chọn ra \val{search-vote-4} tập khác nhau với bốn
+meta-path, so với trung vị \val{search-null-med-4} (khoảng 90\%
+\val{search-null-lo-4}--\val{search-null-hi-4}) trong \val{search-null-fleets} loạt chạy có điểm bị
+xáo trộn trong từng lần chạy. Với sáu meta-path, bỏ phiếu chọn ra \val{search-vote-6} tập,
+so với \val{search-null-med-6} (\val{search-null-lo-6}--\val{search-null-hi-6}). Hình~\ref*{P-fig:ties}b thể
+hiện cả hai.
+
+\paragraph{Thứ hạng của các meta-path.} Qua \val{search-runs} lần chạy của mỗi kích thước, hạng
+$\alpha$ trung bình của \code{PUPUP} và \code{PUPPUP} là \val{rank-pupup-4} và \val{rank-puppup-4}
+trong \val{search-cands} với bốn meta-path, còn với sáu là \val{rank-pupup-6} và \val{rank-puppup-6}.
+Các meta-path danh mục dày đặc mà các tập thủ công dùng xếp hạng thấp: \code{PCP} ở
+\val{rank-pcp-4} và \val{rank-pcp-6}, \code{PCCCP} ở \val{rank-pcccp-4} và \val{rank-pcccp-6}. Lấy
+trung bình trên cả hai kích thước, các meta-path danh mục gần rỗng xếp hạng \val{kind-empty-rank}
+và các meta-path dày đặc \val{kind-cat-rank} (Hình~\ref*{P-fig:weights}).
+
+\paragraph{Dung sai của tìm kiếm.} Với $\delta = \val{search-delta-alt}$ thay vì
+\val{search-delta}, bỏ phiếu chọn ra \val{search-vote-alt-4} và \val{search-vote-alt-6} tập khác
+nhau, so với trung vị trên điểm xáo trộn là \val{search-null-med-alt-4} và
+\val{search-null-med-alt-6}, nên các lần chạy vẫn đồng thuận hơn mức ngẫu nhiên. Các điểm trung
+bình không phụ thuộc vào $\delta$, nên \code{a1} và \code{a2} cũng vậy.
+
+\section{Các tập chọn ngẫu nhiên và~các~thiết~lập}
+\label{app:settings}
+
+Với một sản phẩm liên quan cho mỗi lần xếp hạng, Recall@10 bằng Hit@10 và Precision@10 bằng
+Hit@10$/10$, nên Mục~\ref*{P-sec:setup} không báo cáo hai độ đo này. Bảng~\ref{tab:random} liệt kê mười
+tập chọn ngẫu nhiên của Mục~\ref*{P-sec:setup}. Bảng~\ref{tab:settings} nêu mọi thiết lập của tìm
+kiếm và của các mô hình. Mỗi thiết lập được cố định trước các lần chạy và dùng cho mọi tập meta-path (Mục~\ref*{P-sec:setup}). Các giá trị được đọc từ bản ghi và nhật ký của các lần chạy: của tìm
+kiếm từ \val{search-runs-total} bản ghi (vốn giống nhau ở mọi thiết lập trừ seed và kích thước
+tập), còn của các mô hình từ các lệnh và phần mô tả mô hình trong nhật ký của chúng. Mọi lần chạy được báo
+cáo đều dừng sớm: HAN ở epoch \val{han-stop-min}--\val{han-stop-max} trong tối đa
+\val{han-set-stage} epoch cho phép, GAT ở \val{gat-stop-min}--\val{gat-stop-max} (một seed sau khi
+chạy lại với mức trần cao hơn) và metapath2vec sau \val{mtv-stop-min}--\val{mtv-stop-max} lượt.
+
+\input{tables/t3b_random}
+\input{tables/t8_settings}
+
+\section{Kết quả đầy đủ}
+\label{app:full}
+
+Bảng~\ref{tab:full-han} và~\ref{tab:full-mtv} nêu mọi độ đo cho mọi tập meta-path ở seed~1, seed mà
+mọi tập đều được chạy. Bảng~\ref*{P-tab:main} nêu trung bình ba seed của so sánh chính. Qua các seed,
+Hit@10 thử nghiệm của các lần chạy chính dao động nhiều nhất \val{main-hit-sd-max} (độ lệch chuẩn,
+Mục~\ref*{P-sec:setup}), nên các chênh lệch nhỏ trong các bảng này nằm trong nhiễu giữa các seed.
+
+Bảng~\ref{tab:groups} nêu Hit@10 thử nghiệm của mọi mô hình theo số cạnh huấn luyện của người dùng
+(Mục~\ref*{P-sec:res-models}). Phần còn lại của mục này nêu những kết quả mà
+Mục~\ref*{P-sec:results} không trình bày.
+
+\paragraph{Nhóm người dùng.} \code{a1} của HAN kém tập thủ công cùng kích thước ở mọi nhóm người
+dùng, với chênh lệch \val{han-4-hit-d1-diff}, \val{han-4-hit-d2-diff} và \val{han-4-hit-d3-diff} ở
+bốn meta-path và \val{han-6-hit-d1-diff}, \val{han-6-hit-d2-diff} và \val{han-6-hit-d3-diff} ở sáu,
+cho người dùng có 1--5, 6--20 và từ 21 cạnh huấn luyện trở lên. Mức dẫn trước của GAT so với tập
+chọn theo xác thực của HAN là \val{gat-lead-d1}, \val{gat-lead-d2} và \val{gat-lead-d3} trong cùng
+các nhóm.
+
+\paragraph{Thêm meta-path.} Thêm meta-path giúp HAN ở mọi loại tập: các tập tìm được đạt
+\val{han-searched6-mean-s1} với sáu meta-path so với \val{han-searched4-mean-s1} với bốn, còn các
+tập chọn ngẫu nhiên đạt \val{han-r6-hit-mean} so với \val{han-r4-hit-mean}.
+
+\paragraph{Trọng số và mức ưa thích meta-path.} HAN gán cho \code{PUPPUP}, \code{PUPUP} và
+\code{PUP} trọng số bằng \val{weight-puppup}, \val{weight-pupup} và \val{weight-pup} lần mức chia
+đều, đồng thời loại \code{PPCCPP} ở cả \val{uses-ppccpp} tập chứa nó. Trên \val{pref-cand-n} tập lấy từ các
+ứng viên, hạng $\alpha$ trung bình của các meta-path trong một tập cũng có hệ số tương quan Spearman
+\val{pref-cand-val-rho} với BPR xác thực của HAN (\val{pref-cand-val-pt}). Riêng trong mười tập chọn
+ngẫu nhiên, tương quan của nó với Hit@10 thử nghiệm là yếu (\val{pref-random-rho},
+\val{pref-random-pt}), còn trên cả 24 tập là \val{pref-all-rho} (\val{pref-all-pt}): quan hệ này dựa
+trên các tập tìm được.
+
+\paragraph{HAN và metapath2vec.} Hai mô hình ưa thích các tập khác nhau: trên 23 tập có meta-path
+qua người dùng, giá trị Hit@10 của chúng có hệ số tương quan Spearman chỉ \val{han-mtv-rho}. Chúng
+cũng gợi ý những sản phẩm rất khác nhau. Trong top 10 xếp hạng toàn bộ của \val{bg-users} người dùng
+thử nghiệm, các sản phẩm của HAN có trung vị \val{bg-han-deg-med} người dùng huấn luyện
+(\val{bg-han-deg-min}--\val{bg-han-deg-max} giữa các tập), của metapath2vec là \val{bg-mtv-deg-med}
+và của GAT là \val{bg-gat-deg}, so với \val{bg-all-deg} của một sản phẩm trung bình. Trong các gợi ý
+của HAN, \val{bg-han-top1-med}\% đến từ 1\% sản phẩm được mua nhiều nhất, so với
+\val{bg-gat-top1}\% của GAT và nhiều nhất \val{bg-mtv-top1-max}\% của metapath2vec. Theo nhóm sản phẩm, HAN
+dẫn trước metapath2vec \val{bg-han-mtv-dvd} với DVD và \val{bg-han-mtv-video} với video nhưng kém nó
+với nhạc (\val{bg-han-mtv-music}, trung vị trên 23 tập). Hai mô hình đổi chỗ cho nhau giữa xếp hạng
+lấy mẫu và xếp hạng toàn bộ (Mục~\ref*{P-sec:res-models}): các sản phẩm phổ biến của HAN dễ dàng thắng
+\val{split-negatives} mẫu âm ngẫu nhiên, trong khi các sản phẩm đuôi dài của metapath2vec làm tốt
+hơn một cách tương đối khi so với mọi sản phẩm, đúng loại bất đồng mà \citet{krichene2022sampled}
+đã cảnh báo.
+
+\input{tables/t5_groups}
+\input{tables/t9_full}
+
+\section{Khả năng tái lập}
+\label{app:repro}
+
+\paragraph{Mã nguồn.} Quy trình xử lý dữ liệu và tìm kiếm nằm trong kho mã LMSPS, các mô hình và
+phần đánh giá trong kho mã HAN (mục Mã nguồn và dữ liệu của bài báo). Các kết quả trong bài báo đến
+từ commit
+\texttt{\val{repo-lmsps-commit}} của kho thứ nhất (nhánh \texttt{\val{repo-lmsps-branch}}) và
+commit \texttt{\val{repo-han-commit}} của kho thứ hai (nhánh \texttt{\val{repo-han-branch}}).
+
+\paragraph{Dữ liệu.} Amazon-Meta lấy từ SNAP (Mục~\ref*{P-sec:data}). Script \code{generate_data.bat}
+trong kho mã LMSPS (thư mục \code{hgb}) trích xuất và làm sạch tệp thô, ghi các tệp đồ thị và rà
+soát kết quả, với các thiết lập ở Mục~\ref*{P-sec:data}. Mỗi lần chạy ghi lại một dấu vân tay
+(fingerprint) của các cạnh huấn luyện trong phép chia của nó, \texttt{\val{split-fingerprint}} với
+seed của phép chia~\val{split-seed}. Script \code{check_handover.py} của kho mã HAN xác nhận rằng dữ
+liệu của nó chính là dữ liệu mà tìm kiếm đã chạy trên.
+
+\paragraph{Môi trường.} Một GPU NVIDIA \val{env-gpu} (\val{env-gpu-mem}\,GB) chạy Windows, với
+Python \val{env-python}, PyTorch \val{env-torch} xây dựng cho CUDA \val{env-cuda} và NumPy
+\val{env-numpy}. Tìm kiếm còn dùng DGL \val{env-dgl} cho bước lan truyền đặc trưng một lần trên
+CPU. Tệp \code{requirements.txt} của mỗi kho mã nêu phiên bản các gói của nó. Các script của cả
+hai kho chạy trong một môi trường conda. Các lần chạy mô hình mất khoảng \val{models-hours}~giờ~GPU:
+\val{han-hours} cho \val{han-runs} lần chạy HAN, \val{mtv-hours} cho metapath2vec và
+\val{gat-hours} cho GAT.
+
+\paragraph{Các lệnh.} Trong kho mã LMSPS (thư mục \code{hgb}), \code{run_fleet_v3.bat pilot} trước
+hết kiểm tra rằng hai lần chạy với cùng seed cho kết quả giống nhau. Sau đó,
+\code{run_fleet_v3.bat final4} và \code{final6} chạy \val{search-runs} lần tìm kiếm của mỗi kích
+thước, mỗi lần ghi một tệp nhật ký và một bản ghi JSON. Cuối cùng, \code{run_fleet_v3.bat reselect}
+kết hợp
+chúng thành các tập được bàn giao (Mục~\ref*{P-sec:fleet}). Trong kho mã HAN, \code{run_all.bat} chạy
+thực nghiệm theo từng giai đoạn: kiểm tra dữ liệu, các đồ thị meta-path, hai lần rà soát, một
+phép kiểm tra bộ nhớ ngắn, mô hình phổ biến, HAN, GAT, metapath2vec, các seed bổ sung và bảng kết
+quả. Với tham số \code{dry}, \code{run_all.bat} in ra mọi lệnh mà không chạy. Mục~\ref*{P-sec:setup} nêu thời gian chạy.
+
+\paragraph{Tính lặp lại.} Tìm kiếm dùng các kernel GPU tất định, nên seed quyết định một lần chạy:
+hai lần chạy thử với seed~1 trùng khớp về $\alpha$, về nhóm ứng viên cuối và ở cả \val{pilot-sets}
+tập được tính điểm. Việc huấn luyện HAN không lặp lại chính xác đến từng bit trên GPU, nhưng các
+khác biệt nhỏ. Một lần chạy lặp lại (\code{a1} với bốn meta-path, seed~1) dừng ở cùng epoch với
+cùng epoch tốt nhất (\val{repeat-han-best}), BPR xác thực (\val{repeat-han-val}) và Hit@10 thử
+nghiệm (\val{repeat-han-hit}). Trong các nhóm người dùng, Hit@10 của nó khác nhau nhiều nhất
+\val{repeat-han-groupdiff}.
+
+\paragraph{Bản ghi.} Kho mã LMSPS lưu nhật ký và bản ghi của mọi lần tìm kiếm
+(\code{hgb/logs/Fleet v3}) cùng lần chạy thử và các lần chọn lại. Kho mã HAN lưu nhật ký của mọi
+lần chạy mô hình và bảng kết quả (\code{output/AMAZON/v3}), nhật ký của phép kiểm tra giai đoạn khởi
+động (Mục~\ref*{P-sec:res-sensitivity}) và các ghi chú rà soát cùng script của chúng (\code{review}),
+trong đó có đầu ra của phép kiểm tra theo nhóm sản phẩm (Mục~\ref*{P-sec:res-weights}). Script
+\code{paper/make_numbers.py} trong kho mã LMSPS tính các con số, bảng và hình của bài báo và của tài
+liệu này từ các bản ghi đó, với tùy chọn \code{--lang vi} cho định dạng số của bản tiếng Việt.
+Script này cũng kiểm tra rằng mọi lần chạy đều dùng cùng dữ liệu và hai lần chạy thử cho kết quả giống nhau.
+
+\paragraph{Công cụ gợi ý.} Kho mã HAN có các công cụ để xem một mô hình đã huấn luyện gợi ý những
+gì. Script \code{recommend.py} liệt kê các sản phẩm hàng đầu cho một người dùng và các sản phẩm
+giống nhất với một sản phẩm. Các script \code{recommend_6path.bat} và \code{recommend_4path.bat}
+chạy nó trên GAT và, với HAN và metapath2vec, trên một kết quả đại diện cho mỗi loại tập meta-path.
+Script \code{recommend_api.py} phục vụ cùng các truy vấn đó qua HTTP.
+
+\paragraph{Không có trong các kho mã.} Các kho mã không chứa: (1) tệp thô, vốn vẫn nằm trên
+trang của SNAP, (2) các tệp trung gian của bước trích xuất và tệp nút của đồ thị, mà
+\code{generate_data.bat} dựng lại, (3) các mô hình đã huấn luyện (tệp \code{.pt}), mà phép kiểm tra theo nhóm sản phẩm (Mục~\ref*{P-sec:res-weights}) và các
+công cụ gợi ý cần đến.
+
+% =============================================================================================
+\section{Các hạn chế khác}
+\label{app:limits}
+
+Mục~\ref*{P-sec:conclusion} nêu các hạn chế chính và tóm tắt hai hạn chế nhỏ hơn. Chi tiết của hai
+hạn chế này là:
+\begin{itemize}
+  \item \emph{Chi tiết huấn luyện.} BPR xác thực vẫn còn cải thiện với trung vị \val{han-gain-med}
+        trong mười epoch cuối (nhiều nhất \val{han-gain-max}, riêng các lần chạy của tập tìm được
+        nhiều nhất \val{searched-gain-max}), nên huấn luyện lâu hơn nhiều khả năng sẽ nới rộng hơn
+        là thu hẹp các khoảng cách. Tìm kiếm đã chọn các tập của nó trên các cạnh xác thực mà HAN
+        cũng dùng để dừng sớm, nên các tập chỉ được so sánh trên các cạnh thử nghiệm. Các đồ thị
+        meta-path qua người dùng của HAN chứa chính các cạnh huấn luyện mà nó học để dự đoán. Tìm
+        kiếm có hiệu chỉnh điều này, HAN thì không, vì phép hiệu chỉnh không giúp ích cho HAN trên
+        một mẫu nhỏ.
+  \item \emph{Chỉ liên kết với danh mục lá:} nếu liên kết mọi danh mục cấp trên, các ứng viên và
+        lựa chọn của tìm kiếm sẽ khác (Mục~\ref{app:graph}).
+\end{itemize}
